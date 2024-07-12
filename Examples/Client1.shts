@@ -1,0 +1,76 @@
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <title>WebSocket Client Page 1</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&amp;display=swap" rel="stylesheet"></head>
+<body>
+    <h1>WebSocket Client Page 1</h1>
+    <div id="messages"></div>
+	<input type="text" id="inputMessage" placeholder="Type a message">
+    <button onclick="sendMessage()">Send Message</button>
+    <button onclick="connectWebSocket(45678)">Connect WebSocket Client</button>
+    <button onclick="closeWebSocket()">Close WebSocket Client</button>
+	<button onclick="host(45678)">Host</button>
+	<script>
+	// Save content to file to update the current state of the application
+	function saveContentToFile() {
+        const content = document.documentElement.outerHTML;
+        SHTS.save(content);
+    }
+	
+	window.addEventListener("unload", function() {
+		saveContentToFile();
+	});
+	</script>
+    <script>
+        let websocket = null;
+
+        function connectWebSocket(port) {
+            if (websocket !== null) {
+                alert("WebSocket is already connected.");
+                return;
+            }
+
+            websocket = new WebSocket(`ws://localhost:${port}`);
+            websocket.onopen = function() {
+                document.getElementById('messages').innerHTML += '<p>WebSocket connection opened.</p>';
+                websocket.send("Page 1: Hello from Page 1!");
+            };
+
+            websocket.onmessage = function(event) {
+                document.getElementById('messages').innerHTML += `<p>Received message: ${event.data}</p>`;
+            };
+
+            websocket.onclose = function() {
+                document.getElementById('messages').innerHTML += '<p>WebSocket connection closed.</p>';
+                websocket = null;
+            };
+
+            websocket.onerror = function(error) {
+                document.getElementById('messages').innerHTML += `<p>Error: ${error.message}</p>`;
+            };
+        }
+		
+		function host(port) {
+			closeWebSocket();
+			SHTS.startServer(port);
+			connectWebSocket(port);
+		}
+
+        function closeWebSocket() {
+            if (websocket !== null) {
+                websocket.close();
+            }
+        }
+
+        function sendMessage() {
+            if (websocket !== null && websocket.readyState === WebSocket.OPEN) {
+                const message = document.getElementById('inputMessage').value;
+                websocket.send(`Page 1: ${message}`);
+            } else {
+                alert("WebSocket is not connected.");
+            }
+        }
+    </script>
+
+
+</body></html>

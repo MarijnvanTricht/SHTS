@@ -1,0 +1,224 @@
+<html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&amp;display=swap" rel="stylesheet">
+<title>Home</title>
+<style>
+	body {
+		background-color: white;
+		margin: 0px;
+		color: black;
+		font-family: "Inter", sans-serif;
+		font-optical-sizing: auto;
+		font-weight: 400;
+		font-style: normal;
+		font-variation-settings: "slnt" 0;
+	}
+	
+	#dropZone {
+        width: calc(100vw - 23px);
+        height: 45px;
+        border: 2px dashed #ccc;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+		margin: 10px;
+		margin-bottom: 5px;
+		margin-top: 5px;
+    }
+
+    #fileList {
+		margin-top: 0px;
+		margin-bottom: 0px;
+        list-style: none;
+        padding: 3px;
+    }
+
+    .fileItem {
+        padding: 10px;
+        margin: 5px;
+        background-color: #7D8491;
+		color: white;
+        border: 1px solid white;
+        cursor: pointer;
+		border-radius: 10px;
+    }
+
+    .fileItem:hover {
+        background-color: #7D8491;
+		border: 1px solid #888;
+    }
+	
+	.fileNameWrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+    }
+	
+	.deleteBtn {
+        background-color: Brown;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+		border-radius: 5px;
+        cursor: pointer;
+		border: 1px solid #888;
+    }
+
+    .deleteBtn:hover {
+        background-color: Brown;
+		border: 1px solid white;
+    }
+	
+	.fileContent {
+        display: none;
+    }
+</style>
+<script>
+	// Save content to file to update the current state of the application
+	function saveContentToFile() {
+        const content = document.documentElement.outerHTML;
+        SHTS.save(content);
+    }
+</script>
+</head>
+<body class="">
+    <ul id="fileList"></ul>
+	<div id="dropZone">Drag and drop to add new templates or to update existing items</div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const dropZone = document.getElementsByTagName('body')[0];
+            const fileList = document.getElementById('fileList');
+            const filesData = {};  // Object to store file contents by name
+
+            dropZone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                dropZone.classList.add('dragging');
+            });
+
+            dropZone.addEventListener('dragleave', () => {
+                dropZone.classList.remove('dragging');
+            });
+
+            dropZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropZone.classList.remove('dragging');
+
+                const files = Array.from(e.dataTransfer.files);
+                files.forEach(file => {
+                    if (filesData[file.name]) {
+                        updateFileContent(file);
+                    } else {
+                        addFileItem(file);
+                    }
+                });
+            });
+
+            function addFileItem(file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    filesData[file.name] = e.target.result;
+
+                    createListItem(file.name, e.target.result);
+					
+					// Save
+					saveContentToFile();
+                };
+                reader.readAsText(file);
+            }
+
+            function updateFileContent(file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    filesData[file.name] = e.target.result;
+
+                    const listItem = document.getElementById(`file-${file.name}`);
+                    listItem.remove(); // Remove the old list item
+                    createListItem(file.name, e.target.result); // Create a new one with updated content
+					
+					// Save
+					saveContentToFile();
+                };
+                reader.readAsText(file);
+            }
+
+            function createListItem(fileName, fileContent) {
+                const listItem = document.createElement('li');
+                listItem.classList.add('fileItem');
+                listItem.id = `file-${fileName}`;
+
+                const fileNameWrapper = document.createElement('div');
+                fileNameWrapper.classList.add('fileNameWrapper');
+
+                const fileNameSpan = document.createElement('span');
+                fileNameSpan.textContent = fileName;
+                fileNameWrapper.appendChild(fileNameSpan);
+
+                fileNameWrapper.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    fileClickHandler(listItem);
+                });
+
+                const deleteBtn = document.createElement('button');
+                deleteBtn.classList.add('deleteBtn');
+                deleteBtn.textContent = 'Delete';
+                deleteBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    listItem.remove();
+                    delete filesData[fileName];
+					
+					// Save
+					saveContentToFile();
+                });
+
+                const fileContentDiv = document.createElement('div');
+                fileContentDiv.classList.add('fileContent');
+                fileContentDiv.textContent = fileContent;
+
+                fileNameWrapper.appendChild(deleteBtn);
+                listItem.appendChild(fileNameWrapper);
+                listItem.appendChild(fileContentDiv);
+                fileList.appendChild(listItem);
+            }
+
+            function fileClickHandler(listItem) {
+                const fileContent = listItem.querySelector('.fileContent').textContent;
+				SHTS.new(fileContent);
+            }
+
+            // Function to reattach event listeners to existing list items
+            function reattachEventListeners() {
+                const listItems = document.querySelectorAll('.fileItem');
+                listItems.forEach(listItem => {
+                    const fileNameWrapper = listItem.querySelector('.fileNameWrapper');
+                    const deleteBtn = listItem.querySelector('.deleteBtn');
+
+                    fileNameWrapper.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        fileClickHandler(listItem);
+                    });
+
+                    deleteBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        listItem.remove();
+                        const fileName = listItem.id.replace('file-', '');
+                        delete filesData[fileName];
+						
+						// Save
+						saveContentToFile();
+                    });
+
+                    // Repopulate filesData
+                    const fileName = listItem.id.replace('file-', '');
+                    const fileContent = listItem.querySelector('.fileContent').textContent;
+                    filesData[fileName] = fileContent;
+                });
+            }
+
+            reattachEventListeners();
+        });
+    </script>
+</body></html>

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Encrypted Note</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
+<style>
+	body {
+        font-family: Arial, sans-serif;
+        margin: 0px;
+		overflow: hidden;
+    }
+        
+	textarea {
+        width: calc(100vw - 0px);
+        height: calc(100vh - 0px);
+        font-size: 16px;
+		border: none;
+        padding: 5px;
+        box-sizing: border-box;
+        resize: none;
+    }
+	
+	textarea:focus {
+        outline: none;
+    }
+	
+	#customContextMenu {
+		display: none;
+		position: absolute;
+		z-index: 1000;
+		background-color: #f2f2f2;
+		border: 1px solid #ccc;
+		box-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+		font-family: "Arial", sans-serif;
+	}
+	#customContextMenu ul {
+		list-style: none;
+		width: 80px;
+		padding: 5px 0;
+		margin: 0;
+		font-size: 12px;
+	}
+	#customContextMenu ul li {
+		padding: 8px 12px;
+		cursor: pointer;
+	}
+	#customContextMenu ul li:hover {
+		background-color: #d9d9d9;
+	}
+	#customContextMenu ul #spacer {
+		padding: 0px;
+		margin-left: 5px;
+	}
+	#customContextMenu ul #spacer:hover {
+		background-color: #f2f2f2;
+	}
+</style>
+<script>
+    // Save encrypted content to file to update the current state of the application
+    function saveContentToFile() {
+        const content = document.documentElement.outerHTML;
+	    SHTS.save(content);
+    }
+    
+    function saveEncryptedData() {
+        const textarea = document.getElementsByTagName('textarea')[0];
+        if (textarea.value === "") {
+            document.getElementById('data').textContent = "";
+        } else {
+            const encryptedContent = CryptoJS.AES.encrypt(textarea.value, encryptionKey).toString();
+		    document.getElementById('data').textContent = encryptedContent;
+        }
+    }
+	
+    // Fairly efficient auto-save
+    window.addEventListener('beforeunload', function (event) {
+        saveContentToFile();
+    });
+    let encryptionKey = prompt("Enter the encryption key:");
+    document.addEventListener('DOMContentLoaded', function() {
+        const textarea = document.getElementsByTagName('textarea')[0];
+        const customContextMenu = document.getElementById('customContextMenu');
+        const downloadAnchor = document.getElementById('downloadAnchor');
+        let savedNote = document.getElementById('data').textContent;
+        
+        if (encryptionKey === null) {
+            // If the user confirms to exit, close the window or redirect to another page
+            window.close(); // This might not work in all browsers due to security reasons
+            return; // Or you can redirect to another page or simply break the loop
+        }
+        
+        // Decrypt the note if there's saved content
+        if (savedNote) {
+            try {
+                const decrypted = CryptoJS.AES.decrypt(savedNote, encryptionKey);
+                savedNote = decrypted.toString(CryptoJS.enc.Utf8);
+                if (savedNote) {
+                    textarea.value = savedNote;
+                } else {
+                    confirmExit = alert("Incorrect key or the content is not encrypted properly.");
+                    location.reload();
+                }
+            } catch (e) {
+                confirmExit = alert("Incorrect key or the content is not encrypted properly.");
+                location.reload();
+            }
+        }
+                    
+        // Show custom context menu on right-click
+        textarea.addEventListener('contextmenu', function(event) {
+            event.preventDefault();
+            customContextMenu.style.display = 'block';
+            customContextMenu.style.left = `${event.pageX}px`;
+            customContextMenu.style.top = `${event.pageY}px`;
+        });
+        
+        textarea.addEventListener('keydown', function(e) {
+            if (e.key === 'Tab') {
+                e.preventDefault();
+                const start = this.selectionStart;
+                const end = this.selectionEnd;
+                this.value = this.value.substring(0, start) + "    " + this.value.substring(end);
+                this.selectionStart = this.selectionEnd = start + 4;
+            }
+            saveEncryptedData();
+        });
+        // Hide custom context menu on clicking elsewhere
+        document.addEventListener('click', function(event) {
+            if (!customContextMenu.contains(event.target)) {
+                customContextMenu.style.display = 'none';
+            }
+        });
+        // Focus textarea and execute command
+        function executeCommand(command) {
+            textarea.focus();
+            document.execCommand(command);
+            customContextMenu.style.display = 'none';
+        }
+        // Undo functionality
+        document.getElementById('undo').addEventListener('click', function() {
+            executeCommand('undo');
+        });
+        // Redo functionality
+        document.getElementById('redo').addEventListener('click', function() {
+            executeCommand('redo');
+        });
+        // Cut functionality
+        document.getElementById('cut').addEventListener('click', function() {
+            executeCommand('cut');
+        });
+        // Copy functionality
+        document.getElementById('copy').addEventListener('click', function() {
+            executeCommand('copy');
+        });
+        // Paste functionality
+        document.getElementById('paste').addEventListener('click', function() {
+            textarea.focus();
+            navigator.clipboard.readText().then(text => {
+                document.execCommand('insertText', false, text);
+            });
+            customContextMenu.style.display = 'none';
+        });
+        // Delete functionality
+        document.getElementById('delete').addEventListener('click', function() {
+            executeCommand('delete');
+        });
+        // Select All functionality
+        document.getElementById('selectAll').addEventListener('click', function() {
+            textarea.select();
+            customContextMenu.style.display = 'none';
+        });
+        // Handle drag and drop
+        textarea.addEventListener('dragover', handleDragOver, false);
+        textarea.addEventListener('drop', handleFileSelect, false);
+        function handleDragOver(event) {
+            event.preventDefault();
+            event.dataTransfer.dropEffect = 'copy';
+        }
+        function handleFileSelect(event) {
+            event.preventDefault();
+            const files = event.dataTransfer.files;
+            for (let i = 0, f; f = files[i]; i++) {
+                const reader = new FileReader();
+                reader.onload = (function(theFile) {
+                    return function(e) {
+                        const currentContent = textarea.value;
+                        // Check if the file is an image
+                        if (theFile.type.match('image.*')) {
+                            const newContent = `data:${theFile.type};base64,${btoa(e.target.result)}`;
+                            textarea.value = currentContent + newContent;
+                        } else {
+                            const newContent = e.target.result.replace(/\t/g, '    ');
+                            textarea.value = currentContent + newContent;
+                        }
+                    };
+                })(f);
+                if (f.type.match('image.*')) {
+                    reader.readAsDataURL(f);
+                } else {
+                    reader.readAsText(f);
+                }
+            }
+        }
+    });
+</script>
+</head>
+<body>
+<textarea></textarea>
+<div id="data" style="display:none;"></div>
+<div id="customContextMenu" style="display: none;">
+  <ul>
+    <li id="undo">Undo</li>
+    <li id="redo">Redo</li>
+    <li id="spacer">-----------------</li>
+    <li id="cut">Cut</li>
+    <li id="copy">Copy</li>
+    <li id="paste">Paste</li>
+    <li id="delete">Delete</li>
+    <li id="spacer">-----------------</li>
+    <li id="selectAll">Select all</li>
+  </ul>
+</div>
+<a id="downloadAnchor" style="display: none;"></a>
+</body>
+</html>

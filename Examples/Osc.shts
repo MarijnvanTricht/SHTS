@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>OSC Client</title>
+</head>
+<body>
+    <h1>OSC Client</h1>
+    <div id="messages"></div>
+	<button onclick="startserver(45678)">Start Server</button>
+	<button onclick="stopserver()">Stop Server</button>
+    <button onclick="connectWebSocket(45678)">Connect OSC Client</button>
+    <button onclick="closeWebSocket()">Close OSC Client</button>
+    <button onclick="sendMessage('Hello')">Send Message</button>
+    <script>
+        let websocket = null;
+
+		function startserver(port) {
+			SHTS.startServer(port + 1, {protocol:'udp', outport:port, inport:port-1});
+			document.getElementById('messages').innerHTML = `<p>Should start Websocket server @ ${port+1}: udp send @ ${port}: udp receive @ ${port-1}</p>`;
+			connectWebSocket(45678);
+		}
+		
+		function stopserver() {
+			document.getElementById('messages').innerHTML = `<p>Should stop Websocket server</p>`;
+			SHTS.stopServer();
+		}
+		
+        function connectWebSocket(port) {
+            if (websocket !== null) {
+                alert("WebSocket is already connected.");
+                return;
+            }
+			
+            websocket = new WebSocket(`ws://localhost:${port + 1}`);
+            websocket.onopen = function() {
+                document.getElementById('messages').innerHTML = '<p>WebSocket connection opened.</p>';
+                sendMessage('Hello');
+            };
+
+            websocket.onmessage = function(event) {
+				if (event.data instanceof Blob) {
+					// Convert Blob to ArrayBuffer
+					let reader = new FileReader();
+					reader.onload = function() {
+						let arrayBuffer = reader.result;
+						processAndDisplayMessage(arrayBuffer);
+					};
+					reader.readAsArrayBuffer(event.data);
+				} else if (event.data instanceof ArrayBuffer) {
+					// Directly process ArrayBuffer
+					processAndDisplayMessage(event.data);
+				} else if (typeof event.data === 'string') {
+					// Directly process string
+					processAndDisplayMessage(event.data);
+				} else {
+					console.error('Unsupported message type:', typeof event.data);
+					document.getElementById('messages').innerHTML = `<p>Received unsupported message type</p>`;
+				}
+			};
+
+            websocket.onclose = function() {
+                document.getElementById('messages').innerHTML = '<p>WebSocket connection closed.</p>';
+                websocket = null;
+            };
+
+            websocket.onerror = function(error) {
+                document.getElementById('messages').innerHTML = `<p>Error: ${error.message}</p>`;
+            };
+        }
+		
+		function processAndDisplayMessage(data) {
+			try {
+				const decodedMessage = decodeOSCMessage(data);
+				document.getElementById('messages').innerHTML = `<p>Received message: ${JSON.stringify(decodedMessage)}</p>`;
+			} catch (err) {
+				console.error('Error decoding message:', err);
+				document.getElementById('messages').innerHTML = `<p>Received invalid message</p>`;
+			}
+		}
+
+        function closeWebSocket() {
+            if (websocket !== null) {
+                websocket.close();
+            }
+        }
+
+        function sendMessage(message) {
+            if (websocket !== null && websocket.readyState === WebSocket.OPEN) {
+                websocket.send(createOSCMessage(message, []));
+            } else {
+                alert("WebSocket is not connected.");
+            }
+        }
+		
+		function createOSCMessage(address, args) {
+			let buffer = new ArrayBuffer(1024); // Allocate more than needed
+			let view = new DataView(buffer);
+
+			// Write the address pattern
+			let offset = 0;
+			for (let i = 0; i < address.length; i++, offset++) {
+				view.setUint8(offset, address.charCodeAt(i));
+			}
+			view.setUint8(offset++, 0); // Null terminator for address
+
+			// Align to a 4-byte boundary
+			while (offset & 0x3) {
+				view.setUint8(offset++, 0);
+			}
+
+			// Write the types
+			let typeOffset = offset;
+			view.setUint8(offset++, ','.charCodeAt(0)); // Type tag begins with ','
+			for (let arg of args) {
+				let type = typeof arg;
+				if (type === 'number') {
+					view.setUint8(offset++, 'f'.charCodeAt(0)); // Float type
+				} else {
+					throw new Error("Unsupported argument type");
+				}
+			}
+			view.setUint8(offset++, 0); // Null terminator for types
+
+			// Align to a 4-byte boundary
+			while (offset & 0x3) {
+				view.setUint8(offset++, 0);
+			}
+
+			// Write the arguments
+			for (let arg of args) {
+				if (typeof arg === 'number') {
+					view.setFloat32(offset, arg, false); // Write as big-endian float
+					offset += 4;
+				}
+			}
+
+			return buffer.slice(0, offset); // Trim buffer to the actual size used
+		}
+		
+		function decodeOSCMessage(input) {
+			// Normalize the input to an ArrayBuffer
+			if (typeof input === 'string') {
+				// Convert string to Uint8Array
+				let encoder = new TextEncoder();
+				input = encoder.encode(input);
+			}
+
+			if (input instanceof ArrayBuffer) {
+				// Input is already an ArrayBuffer, no conversion needed
+			} else if (input instanceof Uint8Array || ArrayBuffer.isView(input)) {
+				// Convert typed array or other array views to ArrayBuffer
+				input = input.buffer.slice(input.byteOffset, input.byteOffset + input.byteLength);
+			} else {
+				throw new TypeError('Input must be an ArrayBuffer, Uint8Array, or a string');
+			}
+
+			let view = new DataView(input);
+			let offset = 0;
+
+			// Read the address pattern
+			let address = '';
+			while (view.getUint8(offset) !== 0) {
+				address += String.fromCharCode(view.getUint8(offset++));
+			}
+			offset++; // Skip the null terminator
+
+			// Align to a 4-byte boundary
+			while (offset & 0x3) {
+				offset++;
+			}
+
+			// Read the type tags
+			if (view.getUint8(offset++) !== ','.charCodeAt(0)) {
+				throw new Error("Type tags must start with ','");
+			}
+
+			let types = '';
+			while (view.getUint8(offset) !== 0) {
+				types += String.fromCharCode(view.getUint8(offset++));
+			}
+			offset++; // Skip the null terminator
+
+			// Align to a 4-byte boundary
+			while (offset & 0x3) {
+				offset++;
+			}
+
+			// Read the arguments
+			let args = [];
+			for (let type of types) {
+				if (type === 'f') {
+					args.push(view.getFloat32(offset, false)); // Read as big-endian float
+					offset += 4;
+				} else if (type === 'i') {
+					args.push(view.getInt32(offset, false)); // Read as big-endian integer
+					offset += 4;
+				} else {
+					throw new Error("Unsupported argument type");
+				}
+			}
+
+			return { address, args };
+		}
+		
+    </script>
+</body>
+</html>
