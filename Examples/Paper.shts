@@ -392,5 +392,4 @@ function draw() {
 	appInstance.draw();
 }
 </script>
-
-<main><canvas id="defaultCanvas0" class="p5Canvas" width="1774" height="1214" style="width: 887px; height: 607px;"></canvas></main></body></html>
+</body></html>
