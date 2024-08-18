@@ -4,25 +4,25 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Hello World</title>
 <style>
-    .button-container {
-        display: inline-block;
-    }
-	
+	.button-container {
+		display: inline-block;
+	}
+
 	.container {
 		style="margin:8px 0px 0px 4px;"
 	}
-	
+
 	button {
-        margin: 2px;
-    }
+		margin: 2px;
+	}
 </style>
 <script>
 	// Save content to file to update the current state of the application
 	function saveContentToFile() {
-        const content = document.documentElement.outerHTML;
-        SHTS.save(content);
-    }
-	
+		const content = document.documentElement.outerHTML;
+		SHTS.save(content);
+	}
+		
 	// Other functions to be used with SHTS are:
 	// SHTS.new(content); (same as save, but at a different new location)
 	// SHTS.startServer(port, bridge_info); (to start a websocket server @ port)
@@ -35,48 +35,48 @@
 	});
 </script>
 <script>
-    function helloworld() {
-        // Retrieve the counter value from the HTML
-        let counter = parseInt(document.getElementById("counter").textContent);
+	function helloworld() {
+		// Retrieve the counter value from the HTML
+		let counter = parseInt(document.getElementById("counter").textContent);
         
 		// Add hello world element and update counter
 		const helloWorldElement = document.createElement("p");
-        helloWorldElement.textContent = "hello world";
-        document.body.appendChild(helloWorldElement);
-        counter++;
-		
-        // Update the counter in the HTML to display the correct value 
-        document.getElementById("counter").textContent = counter;
+		helloWorldElement.textContent = "hello world";
+		document.body.appendChild(helloWorldElement);
+		counter++;
+
+		// Update the counter in the HTML to display the correct value 
+		document.getElementById("counter").textContent = counter;
 		console.log("Hello World", counter);
 		document.title = "Hello World " + counter;
-		
+
 		// Save this file
 		saveContentToFile();
-    }
-	
+	}
+
 	function clearhelloworld() {
 		console.log("clear");
 
 		// Delete p tags
 		var paragraphs = document.getElementsByTagName('p');
-        for (var i = paragraphs.length - 1; i >= 0; i--) {
-            paragraphs[i].parentNode.removeChild(paragraphs[i]);
-        }
+		for (var i = paragraphs.length - 1; i >= 0; i--) {
+			paragraphs[i].parentNode.removeChild(paragraphs[i]);
+		}
 
-        // Update the counter display in the HTML
-        document.getElementById("counter").textContent = "0";
+		// Update the counter display in the HTML
+		document.getElementById("counter").textContent = "0";
 		console.log("Hello World", counter);
 		document.title = "Hello World";
 		
 		// Save this file
 		saveContentToFile();
-    }
+	}
 </script>
 </head>
 <body>
-    <button onclick="helloworld()">Add Hello World</button>
+	<button onclick="helloworld()">Add Hello World</button>
 	<button onclick="clearhelloworld()">Clear</button>
 	<!-- hello world container -->
-    <div class="container">Times "hello world" added: <span id="counter">0</span>
+	<div class="container">Times "hello world" added: <span id="counter">0</span>
 	</div>
 </body></html>
