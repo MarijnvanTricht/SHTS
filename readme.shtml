@@ -145,7 +145,11 @@ run install && delete clone</code></pre>
 		<h3>Program usage</h3>
 		<p>SHTS can be started with a few command arguments to augment the program behaviour. The arguments are:</p>
 		<ul>
+<<<<<<< HEAD
 			<li><code>--allow-network-access</code> <i>For allowing the server to start.</i></li>
+=======
+			<li><code>--allow-network-access</code> <i>For allowing to start the server.</i></li>
+>>>>>>> 8c9a9029b29a32fd9130a486034e6a4c9c134c52
 			<li><code>--deny-network-access</code> <i>For disabling the message to allow to start the server.</i></li>
 			<li><code>--disable-save-warning</code> <i>For disabling the message when the user cancels the save dialog.</i></li>
 			<li><code>--save-before-creating</code> <i>Default the application creates a tempfile when html content is loaded to a new file with SHTS.new(content). 
