@@ -1,3 +1,4 @@
+<!-- SHTS example created by Marijn van Tricht -->
 <html lang="en"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -359,6 +360,4 @@
 <body class="">
     <ul id="fileList"><li class="fileItem" id="file-Pico8Port.shts"><div class="buttonGroup"><button class="btn">View</button><button class="btn">Download</button><button class="deleteBtn">Delete</button></div><div class="fileNameWrapper"><span>Pico8Port.shts</span></div><div class="fileContent">[object Object]</div></li></ul>
     <div id="dropZone">Drag and drop to add items to this vault</div>
-
-
 </body></html>

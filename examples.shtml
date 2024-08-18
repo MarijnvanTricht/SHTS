@@ -1,0 +1,5187 @@
+<html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&amp;display=swap" rel="stylesheet">
+<title>Examples</title>
+<style>
+	body {
+		background-color: white;
+		margin: 0px;
+		color: black;
+		font-family: "Inter", sans-serif;
+		font-optical-sizing: auto;
+		font-weight: 400;
+		font-style: normal;
+		font-variation-settings: "slnt" 0;
+	}
+	
+	#dropZone {
+        width: calc(100vw - 23px);
+        height: 45px;
+        border: 2px dashed #ccc;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+		margin: 10px;
+		margin-bottom: 5px;
+		margin-top: 5px;
+    }
+
+    #fileList {
+		margin-top: 0px;
+		margin-bottom: 0px;
+        list-style: none;
+        padding: 3px;
+    }
+
+    .fileItem {
+        padding: 10px;
+        margin: 5px;
+        background-color: #7D8491;
+		color: white;
+        border: 1px solid white;
+        cursor: pointer;
+		border-radius: 10px;
+    }
+
+    .fileItem:hover {
+        background-color: #7D8491;
+		border: 1px solid #888;
+    }
+	
+	.fileNameWrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+    }
+	
+	.deleteBtn {
+        background-color: Brown;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+		border-radius: 5px;
+        cursor: pointer;
+		border: 1px solid #888;
+    }
+
+    .deleteBtn:hover {
+        background-color: Brown;
+		border: 1px solid white;
+    }
+	
+	.fileContent {
+        display: none;
+    }
+</style>
+<script>
+	// Save content to file to update the current state of the application
+	function saveContentToFile() {
+        const content = document.documentElement.outerHTML;
+        SHTS.save(content);
+    }
+</script>
+</head>
+<body class="">
+    <ul id="fileList"><li class="fileItem" id="file-Helloworld.shts"><div class="fileNameWrapper"><span>Helloworld.shts</span><button class="deleteBtn">Delete</button></div><div class="fileContent">&lt;html lang="en"&gt;&lt;head&gt;
+
+&lt;meta charset="UTF-8"&gt;
+
+&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+
+&lt;title&gt;Hello World&lt;/title&gt;
+
+&lt;style&gt;
+
+    .button-container {
+
+        display: inline-block;
+
+    }
+
+	
+
+	.container {
+
+		style="margin:8px 0px 0px 4px;"
+
+	}
+
+	
+
+	button {
+
+        margin: 2px;
+
+    }
+
+&lt;/style&gt;
+
+&lt;script&gt;
+
+	// Save content to file to update the current state of the application
+
+	function saveContentToFile() {
+
+        const content = document.documentElement.outerHTML;
+
+        SHTS.save(content);
+
+    }
+
+	
+
+	// Other functions to be used with SHTS are:
+
+	// SHTS.new(content); (same as save, but at a different new location)
+
+	// SHTS.startServer(port, bridge_info); (to start a websocket server @ port)
+
+	// bridge_info may be {protocol:'tcp', port:9090} or {protocol:'udp', inport:9090, outport:9091}
+
+	// SHTS.stopServer();
+
+	
+
+	// Fairly efficient auto-save
+
+	window.addEventListener('beforeunload', function (event) {
+
+		saveContentToFile();
+
+	});
+
+&lt;/script&gt;
+
+&lt;script&gt;
+
+    function helloworld() {
+
+        // Retrieve the counter value from the HTML
+
+        let counter = parseInt(document.getElementById("counter").textContent);
+
+        
+
+		// Add hello world element and update counter
+
+		const helloWorldElement = document.createElement("p");
+
+        helloWorldElement.textContent = "hello world";
+
+        document.body.appendChild(helloWorldElement);
+
+        counter++;
+
+		
+
+        // Update the counter in the HTML to display the correct value 
+
+        document.getElementById("counter").textContent = counter;
+
+		console.log("Hello World", counter);
+
+		document.title = "Hello World " + counter;
+
+		
+
+		// Save this file
+
+		saveContentToFile();
+
+    }
+
+	
+
+	function clearhelloworld() {
+
+		console.log("clear");
+
+
+
+		// Delete p tags
+
+		var paragraphs = document.getElementsByTagName('p');
+
+        for (var i = paragraphs.length - 1; i &gt;= 0; i--) {
+
+            paragraphs[i].parentNode.removeChild(paragraphs[i]);
+
+        }
+
+
+
+        // Update the counter display in the HTML
+
+        document.getElementById("counter").textContent = "0";
+
+		console.log("Hello World", counter);
+
+		document.title = "Hello World";
+
+		
+
+		// Save this file
+
+		saveContentToFile();
+
+    }
+
+&lt;/script&gt;
+
+&lt;/head&gt;
+
+&lt;body&gt;
+
+    &lt;button onclick="helloworld()"&gt;Add Hello World&lt;/button&gt;
+
+	&lt;button onclick="clearhelloworld()"&gt;Clear&lt;/button&gt;
+
+	&lt;!-- hello world container --&gt;
+
+    &lt;div class="container"&gt;Times "hello world" added: &lt;span id="counter"&gt;0&lt;/span&gt;
+
+	&lt;/div&gt;
+
+&lt;/body&gt;&lt;/html&gt;</div></li><li class="fileItem" id="file-Note.shts"><div class="fileNameWrapper"><span>Note.shts</span><button class="deleteBtn">Delete</button></div><div class="fileContent">&lt;html lang="en"&gt;&lt;head&gt;
+
+&lt;meta charset="UTF-8"&gt;
+
+&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+
+&lt;title&gt;note&lt;/title&gt;
+
+&lt;style&gt;
+
+	body {
+
+        font-family: Arial, sans-serif;
+
+        margin: 0px;
+
+		overflow: hidden;
+
+    }
+
+        
+
+	textarea {
+
+        width: calc(100vw - 0px);
+
+        height: calc(100vh - 0px);
+
+        font-size: 16px;
+
+		border: none;
+
+        padding: 5px;
+
+        box-sizing: border-box;
+
+        resize: none;
+
+    }
+
+	
+
+	textarea:focus {
+
+        outline: none;
+
+    }
+
+	
+
+	#customContextMenu {
+
+		display: none;
+
+		position: absolute;
+
+		z-index: 1000;
+
+		background-color: #f2f2f2;
+
+		border: 1px solid #ccc;
+
+		box-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+
+		font-family: "Arial", sans-serif;
+
+	}
+
+
+
+	#customContextMenu ul {
+
+		list-style: none;
+
+		width: 80px;
+
+		padding: 5px 0;
+
+		margin: 0;
+
+		font-size: 12px;
+
+	}
+
+
+
+	#customContextMenu ul li {
+
+		padding: 8px 12px;
+
+		cursor: pointer;
+
+	}
+
+
+
+	#customContextMenu ul li:hover {
+
+		background-color: #d9d9d9;
+
+	}
+
+
+
+	#customContextMenu ul #spacer {
+
+		padding: 0px;
+
+		margin-left: 5px;
+
+	}
+
+
+
+	#customContextMenu ul #spacer:hover {
+
+		background-color: #f2f2f2;
+
+	}
+
+&lt;/style&gt;
+
+&lt;script&gt;
+
+	// Save content to file to update the current state of the application
+
+	function saveContentToFile() {
+
+        const content = document.documentElement.outerHTML;
+
+        SHTS.save(content);
+
+    }
+
+	
+
+	// Fairly efficient auto-save
+
+	window.addEventListener('beforeunload', function (event) {
+
+		saveContentToFile();
+
+	});
+
+&lt;/script&gt;
+
+&lt;/head&gt;
+
+&lt;body&gt;
+
+&lt;textarea&gt;&lt;/textarea&gt;
+
+&lt;div id="data"&gt;&lt;/div&gt;
+
+&lt;div id="customContextMenu" style="display: none;"&gt;
+
+  &lt;ul&gt;
+
+    &lt;li id="undo"&gt;Undo&lt;/li&gt;
+
+    &lt;li id="redo"&gt;Redo&lt;/li&gt;
+
+    &lt;li id="spacer"&gt;-----------------&lt;/li&gt;
+
+    &lt;li id="cut"&gt;Cut&lt;/li&gt;
+
+    &lt;li id="copy"&gt;Copy&lt;/li&gt;
+
+    &lt;li id="paste"&gt;Paste&lt;/li&gt;
+
+    &lt;li id="delete"&gt;Delete&lt;/li&gt;
+
+    &lt;li id="spacer"&gt;-----------------&lt;/li&gt;
+
+    &lt;li id="selectAll"&gt;Select all&lt;/li&gt;
+
+    &lt;li id="spacer"&gt;-----------------&lt;/li&gt;
+
+    &lt;li id="saveTxt"&gt;Save as&lt;/li&gt;
+
+  &lt;/ul&gt;
+
+&lt;/div&gt;
+
+&lt;a id="downloadAnchor" style="display: none;"&gt;&lt;/a&gt;
+
+&lt;script&gt;
+
+document.addEventListener('DOMContentLoaded', function() {
+
+    const textarea = document.getElementsByTagName('textarea')[0];
+
+    const customContextMenu = document.getElementById('customContextMenu');
+
+    const downloadAnchor = document.getElementById('downloadAnchor');
+
+
+
+    // Show custom context menu on right-click
+
+    textarea.addEventListener('contextmenu', function(event) {
+
+        event.preventDefault();
+
+
+
+        customContextMenu.style.display = 'block';
+
+        customContextMenu.style.left = `${event.pageX}px`;
+
+        customContextMenu.style.top = `${event.pageY}px`;
+
+    });
+
+	
+
+	textarea.addEventListener('keydown', function(e) {
+
+        if (e.key === 'Tab') {
+
+            e.preventDefault();
+
+            const start = this.selectionStart;
+
+            const end = this.selectionEnd;
+
+            this.value = this.value.substring(0, start) + "    " + this.value.substring(end);
+
+            this.selectionStart = this.selectionEnd = start + 4;
+
+        }
+
+    });
+
+
+
+    // Hide custom context menu on clicking elsewhere
+
+    document.addEventListener('click', function(event) {
+
+        if (!customContextMenu.contains(event.target)) {
+
+            customContextMenu.style.display = 'none';
+
+        }
+
+    });
+
+
+
+    // Focus textarea and execute command
+
+    function executeCommand(command) {
+
+        textarea.focus();
+
+        document.execCommand(command);
+
+        customContextMenu.style.display = 'none';
+
+    }
+
+
+
+    // Undo functionality
+
+    document.getElementById('undo').addEventListener('click', function() {
+
+        executeCommand('undo');
+
+    });
+
+
+
+    // Redo functionality
+
+    document.getElementById('redo').addEventListener('click', function() {
+
+        executeCommand('redo');
+
+    });
+
+
+
+    // Cut functionality
+
+    document.getElementById('cut').addEventListener('click', function() {
+
+        executeCommand('cut');
+
+    });
+
+
+
+    // Copy functionality
+
+    document.getElementById('copy').addEventListener('click', function() {
+
+        executeCommand('copy');
+
+    });
+
+
+
+    // Paste functionality
+
+    document.getElementById('paste').addEventListener('click', function() {
+
+        textarea.focus();
+
+        navigator.clipboard.readText().then(text =&gt; {
+
+            document.execCommand('insertText', false, text);
+
+        });
+
+        customContextMenu.style.display = 'none';
+
+    });
+
+
+
+    // Delete functionality
+
+    document.getElementById('delete').addEventListener('click', function() {
+
+        executeCommand('delete');
+
+    });
+
+
+
+    // Select All functionality
+
+    document.getElementById('selectAll').addEventListener('click', function() {
+
+        textarea.select();
+
+        customContextMenu.style.display = 'none';
+
+    });
+
+
+
+    // Save as .txt functionality
+
+    document.getElementById('saveTxt').addEventListener('click', function() {
+
+        const text = textarea.value;
+
+        const blob = new Blob([text], { type: 'text/plain' });
+
+        const url = URL.createObjectURL(blob);
+
+        downloadAnchor.href = url;
+
+        downloadAnchor.download = 'content.txt';
+
+        downloadAnchor.click();
+
+        setTimeout(() =&gt; {
+
+            window.URL.revokeObjectURL(url);
+
+        }, 0);
+
+        customContextMenu.style.display = 'none';
+
+    });
+
+	
+
+    document.getElementsByTagName('textarea')[0].addEventListener('input', function() {
+
+        document.getElementById('data').textContent = this.value;
+
+    });
+
+
+
+    function clearNote() {
+
+        document.getElementsByTagName('textarea')[0].value = '';
+
+        document.getElementById('data').innerText = '';
+
+    }
+
+		
+
+
+
+	const savedNote = document.getElementById('data').textContent;
+
+    if (savedNote !== '') {
+
+		document.getElementsByTagName('textarea')[0].value = savedNote;
+
+	}
+
+	
+
+	document.getElementsByTagName('textarea')[0].addEventListener('dragover', handleDragOver, false);
+
+	document.getElementsByTagName('textarea')[0].addEventListener('drop', handleFileSelect, false);
+
+
+
+	function handleDragOver(event) {
+
+		event.preventDefault();
+
+		event.dataTransfer.dropEffect = 'copy';
+
+	}
+
+
+
+	function handleFileSelect(event) {
+
+		event.preventDefault();
+
+		const files = event.dataTransfer.files; 
+
+		const output = document.getElementById('output');
+
+
+
+		for (let i = 0, f; f = files[i]; i++) {
+
+			const reader = new FileReader();
+
+
+
+			reader.onload = (function(theFile) {
+
+				return function(e) {
+
+					const textarea = document.getElementsByTagName('textarea')[0];
+
+					const currentContent = textarea.value;
+
+
+
+					// Check if the file is an image
+
+					if (theFile.type.match('image.*')) {
+
+						const newContent = `data:${theFile.type};base64,${btoa(e.target.result)}`;
+
+						textarea.value = currentContent + newContent;
+
+					} else {
+
+						const newContent = e.target.result.replace(/\t/g, '    ');
+
+						textarea.value = currentContent + newContent;
+
+					}
+
+
+
+					document.getElementById('data').textContent = textarea.value;
+
+				};
+
+			})(f);
+
+
+
+			if (f.type.match('image.*')) {
+
+				reader.readAsDataURL(f);
+
+			} else {
+
+				reader.readAsText(f);
+
+			}
+
+		}
+
+	}
+
+});
+
+&lt;/script&gt;
+
+&lt;/body&gt;&lt;/html&gt;</div></li><li class="fileItem" id="file-Paper.shts"><div class="fileNameWrapper"><span>Paper.shts</span><button class="deleteBtn">Delete</button></div><div class="fileContent">&lt;html lang="en"&gt;&lt;head&gt;
+
+    &lt;meta charset="UTF-8"&gt;
+
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+
+    &lt;title&gt;paper&lt;/title&gt;
+
+    &lt;!-- Include p5.js library --&gt;
+
+    &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"&gt;&lt;/script&gt;
+
+    &lt;style&gt;
+
+		html {
+
+			background-color:#ddd;
+
+		}
+
+        body {
+
+			overflow: hidden;
+
+            margin: 0;
+
+            padding: 0;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            height: 100vh;
+
+        }
+
+        canvas {
+
+            border: 0px solid black;
+
+        }
+
+		#notes {
+
+			position: absolute;
+
+			top: 70px;
+
+			right: 20px;
+
+			background-color: rgba(255, 255, 255, 0.97);
+
+			padding: 10px;
+
+			border-radius: 5px;
+
+			border: 1px solid black;
+
+			z-index: 1;
+
+		}
+
+		#stats {
+
+			position: absolute;
+
+			bottom: 4px;
+
+			left: 40px;
+
+			background-color: rgba(255, 255, 255, 0.97);
+
+			padding: 2px 5px 2px 5px;
+
+			border-radius: 5px;
+
+			border: 1px solid black;
+
+			z-index: 1;
+
+			font-family: monospace;
+
+			font-size: 12px;
+
+			line-height: 1.2; 
+
+		}
+
+    &lt;/style&gt;
+
+&lt;/head&gt;
+
+&lt;body&gt;
+
+&lt;script&gt;
+
+	// Save content to file to update the current state of the application
+
+	function saveContentToFile() {
+
+        const content = document.documentElement.outerHTML;
+
+        SHTS.save(content);
+
+    }
+
+	
+
+	// Fairly efficient auto-save
+
+	window.addEventListener('beforeunload', function (event) {
+
+		saveContentToFile();
+
+	});
+
+&lt;/script&gt;
+
+&lt;script&gt;
+
+	// P5js fix, delete old instance
+
+	document.addEventListener('DOMContentLoaded', function() {
+
+		var mainElement = document.querySelector('main');
+
+		if (mainElement) {
+
+			mainElement.parentNode.removeChild(mainElement);
+
+		}
+
+	});
+
+&lt;/script&gt;
+
+&lt;script&gt;
+
+	// block right mouse click
+
+	document.addEventListener('DOMContentLoaded', (event) =&gt; {
+
+		document.addEventListener('contextmenu', (e) =&gt; {
+
+			e.preventDefault();
+
+		});
+
+	});
+
+&lt;/script&gt;
+
+&lt;script&gt;
+
+/* ================= GLOBAL VARIABLES =================== */
+
+let canvasWidth = window.innerWidth;
+
+let canvasHeight = window.innerHeight + 3;
+
+let autosave = false;
+
+
+
+/* ================== APP ====================== */
+
+
+
+class app {
+
+	constructor() {
+
+		this.title = "paper";
+
+		this.autosave = true;
+
+		this.brushsize = 6;
+
+		this.pixelsize = 1;
+
+		this.grid = this.newGrid();
+
+		this.newLinePoints = [];
+
+		this.delLinePoints = [];
+
+		this.gridupdate = true;
+
+	}
+
+	
+
+	newGrid() {
+
+		const grid = [];
+
+		for (let x = 0; x &lt; canvasWidth; x += this.pixelsize) {
+
+			let col = [];
+
+			for (let y = 0; y &lt; canvasHeight; y += this.pixelsize) {
+
+				col.push(255); 
+
+			}
+
+			grid.push(col);
+
+		}
+
+		return grid;
+
+	}
+
+	expandGrid() {
+
+		let newWidth = canvasWidth;
+
+		let newHeight = canvasHeight;
+
+
+
+		if (canvasWidth * this.pixelsize &gt; this.grid.length || canvasHeight * this.pixelsize &gt; this.grid[0].length) {
+
+			const newGrid = this.newGrid();
+
+			for (let x = 0; x &lt; this.grid.length; x++) {
+
+				for (let y = 0; y &lt; this.grid[0].length; y++) {
+
+					newGrid[x][y] = this.grid[x][y];
+
+				}
+
+			}
+
+			this.grid = newGrid;
+
+		}
+
+		this.gridupdate = true;
+
+	}
+
+	drawGrid() {
+
+		if (this.gridupdate === true) {
+
+			console.log("update grid");
+
+			push();
+
+			noStroke();
+
+			background(255);
+
+			for (let x = 0; x &lt; canvasWidth; x += this.pixelsize) {
+
+				for (let y = 0; y &lt; canvasHeight; y += this.pixelsize) {
+
+					let ix = floor(x/this.pixelsize);
+
+					let iy = floor(y/this.pixelsize);
+
+					if (this.grid[ix][iy] != 255) {
+
+						fill(color(this.grid[ix][iy]));
+
+						rect(x, y, this.pixelsize, this.pixelsize);
+
+					}
+
+				}
+
+			}
+
+			pop();
+
+			this.gridupdate = false;
+
+		}
+
+	}
+
+	dotGrid(p1, pixelcolor = 0) {
+
+		let radius = Math.ceil(this.brushsize / 2);
+
+		for (let i = p1.x - radius; i &lt;= p1.x + radius; i++) {
+
+			for (let j = p1.y - radius; j &lt;= p1.y + radius; j++) {
+
+				let dx = i - p1.x;
+
+				let dy = j - p1.y;
+
+				if (dx*dx + dy*dy &lt;= radius*radius) {
+
+					let ix = Math.floor(i / this.pixelsize);
+
+					let iy = Math.floor(j / this.pixelsize);
+
+					if (ix &gt;= 0 &amp;&amp; iy &gt;= 0 &amp;&amp; ix &lt; this.grid.length &amp;&amp; iy &lt; this.grid[0].length) {
+
+						this.grid[ix][iy] = pixelcolor;
+
+					}
+
+				}
+
+			}
+
+		}
+
+	}
+
+	
+
+	lineGrid(p1, p2, pixelcolor = 0) {
+
+		let dx = p2.x - p1.x;
+
+		let dy = p2.y - p1.y;
+
+		let steps = max(abs(dx), abs(dy));
+
+		let xIncrement = dx / steps;
+
+		let yIncrement = dy / steps;
+
+		let x = p1.x;
+
+		let y = p1.y;
+
+		for (let i = 0; i &lt; steps; i++) {
+
+			for (let brushX = -this.brushsize / 2; brushX &lt;= this.brushsize / 2; brushX++) {
+
+				for (let brushY = -this.brushsize / 2; brushY &lt;= this.brushsize / 2; brushY++) {
+
+					let ix = floor((x + brushX) / this.pixelsize);
+
+					let iy = floor((y + brushY) / this.pixelsize);
+
+					this.grid[ix][iy] = pixelcolor;
+
+				}
+
+			}
+
+			x += xIncrement;
+
+			y += yIncrement;
+
+		}
+
+	}
+
+	lineGridDot(p1, p2, pixelcolor = 0) {
+
+		let dx = p2.x - p1.x;
+
+		let dy = p2.y - p1.y;
+
+		let steps = Math.max(Math.abs(dx), Math.abs(dy));
+
+		let xIncrement = dx / steps;
+
+		let yIncrement = dy / steps;
+
+		let x = p1.x;
+
+		let y = p1.y;
+
+
+
+		for (let i = 0; i &lt; steps; i++) {
+
+			for (let brushX = -this.brushsize / 2; brushX &lt;= this.brushsize / 2; brushX++) {
+
+				for (let brushY = -this.brushsize / 2; brushY &lt;= this.brushsize / 2; brushY++) {
+
+					let cx = x + brushX;
+
+					let cy = y + brushY;
+
+					let distance = Math.sqrt(Math.pow(cx - x, 2) + Math.pow(cy - y, 2));
+
+					if (distance &lt;= this.brushsize / 2) {
+
+						let ix = Math.floor(cx / this.pixelsize);
+
+						let iy = Math.floor(cy / this.pixelsize);
+
+						if (ix &gt;= 0 &amp;&amp; iy &gt;= 0 &amp;&amp; ix &lt; this.grid.length &amp;&amp; iy &lt; this.grid[0].length) {
+
+							this.grid[ix][iy] = pixelcolor;
+
+						}
+
+					}
+
+				}
+
+			}
+
+			x += xIncrement;
+
+			y += yIncrement;
+
+		}
+
+	}
+
+
+
+	mouseReleased() {
+
+		if (this.newLinePoints.length &gt; 0) {
+
+			this.dotGrid(this.newLinePoints[0]);
+
+
+
+			for (let i = 0; i &lt; this.newLinePoints.length - 1; i++) {
+
+				let p1 = this.newLinePoints[i];
+
+				let p2 = this.newLinePoints[i + 1];
+
+				this.lineGridDot(p1, p2);
+
+			}
+
+			
+
+			this.newLinePoints = [];
+
+		}
+
+		
+
+		if (this.delLinePoints.length &gt; 0) {		
+
+			this.dotGrid(this.delLinePoints[0]);
+
+		
+
+			for (let i = 0; i &lt; this.delLinePoints.length - 1; i++) {
+
+				let p1 = this.delLinePoints[i];
+
+				let p2 = this.delLinePoints[i + 1];
+
+				this.lineGridDot(p1, p2, 255);
+
+			}
+
+			
+
+			this.delLinePoints = [];
+
+		}
+
+		this.gridupdate = true;
+
+	}
+
+	mousePressed() { 
+
+		if (mouseButton === RIGHT) {
+
+			//this.delLinePoints.push(createVector(mouseX, mouseY));
+
+		} else {
+
+			//this.newLinePoints.push(createVector(mouseX, mouseY)); 
+
+		}
+
+	}
+
+	mouseDragged() {		
+
+		if (mouseButton === RIGHT) {
+
+			this.delLinePoints.push(createVector(mouseX, mouseY));
+
+		} else {
+
+			this.newLinePoints.push(createVector(mouseX, mouseY));
+
+		}
+
+	}
+
+	
+
+	keyReleased() {
+
+		if (key === 'Shift') {
+
+			this.brushsize = 10;
+
+		}	
+
+	}
+
+	keyPressed() {
+
+		if (key === 'Shift') {
+
+			this.brushsize = 50;
+
+		}
+
+	}
+
+	
+
+	windowResized() { 
+
+		this.expandGrid();
+
+		this.gridupdate = true; 
+
+	}
+
+	
+
+    stringify() {
+
+        return JSON.stringify(this.grid);
+
+    }
+
+
+
+    parse(gridString) {
+
+        this.grid = JSON.parse(gridString);
+
+		this.windowResized();
+
+    }
+
+	
+
+	draw() {
+
+		this.drawGrid();
+
+		
+
+		// preview new linepoints
+
+		if (this.newLinePoints.length &gt; 0) {
+
+			for (let i = 0; i &lt; this.newLinePoints.length - 1; i++) {
+
+				let p1 = this.newLinePoints[i];
+
+				let p2 = this.newLinePoints[i + 1];
+
+				strokeWeight(this.brushsize);
+
+				stroke(0);
+
+				fill(0);
+
+				line(p1.x,p1.y, p2.x,p2.y);
+
+			}
+
+		}
+
+		
+
+		if (this.delLinePoints.length &gt; 0) {
+
+			for (let i = 0; i &lt; this.delLinePoints.length - 1; i++) {
+
+				let p1 = this.delLinePoints[i];
+
+				let p2 = this.delLinePoints[i + 1];
+
+				strokeWeight(this.brushsize);
+
+				stroke(255);
+
+				fill(255);
+
+				line(p1.x,p1.y, p2.x,p2.y);
+
+			}
+
+		}
+
+	}
+
+}
+
+
+
+let appInstance;
+
+
+
+/* ================== FUNCTIONS ====================== */
+
+
+
+function mouseReleased() {
+
+	appInstance.mouseReleased();
+
+	if (autosave) {
+
+		saveData();
+
+	}
+
+}
+
+
+
+function mousePressed() {
+
+	appInstance.mousePressed();
+
+}
+
+
+
+function mouseDragged() {
+
+	appInstance.mouseDragged();
+
+}
+
+
+
+function keyReleased() {
+
+	appInstance.keyReleased();
+
+}
+
+
+
+function keyPressed() {
+
+	appInstance.keyPressed();
+
+}
+
+
+
+function loadData() {	
+
+	console.log("loadData");
+
+	const existingScriptTag = document.querySelector('script[type="text/json"]');
+
+
+
+	if (existingScriptTag) {
+
+		appInstance.parse(existingScriptTag.textContent);
+
+	} else {
+
+		console.log("Serialized data not found.");
+
+	}
+
+}
+
+
+
+function saveData() {
+
+    // Serialize the canvas
+
+    const serializedData = appInstance.stringify();
+
+
+
+    // Store serialized data in a script tag within the HTML content
+
+    let scriptTag = document.querySelector('script[type="text/json"]');
+
+    if (scriptTag) {
+
+		console.log("adding to scriptTag");
+
+        scriptTag.textContent = serializedData;
+
+    } else {
+
+		console.log("creating new scriptTag");
+
+        scriptTag = document.createElement('script');
+
+        scriptTag.type = 'text/json';
+
+        scriptTag.textContent = serializedData;
+
+		document.body.appendChild(scriptTag);
+
+    }
+
+	
+
+    var currentDateTime = new Date();
+
+    var formattedDate = currentDateTime.getFullYear() + '-' +
+
+        ('0' + (currentDateTime.getMonth() + 1)).slice(-2) + '-' +
+
+        ('0' + currentDateTime.getDate()).slice(-2);
+
+    var formattedTime = ('0' + currentDateTime.getHours()).slice(-2) + ':' +
+
+        ('0' + currentDateTime.getMinutes()).slice(-2) + ':' +
+
+        ('0' + currentDateTime.getSeconds()).slice(-2);
+
+	console.log("saved on: ", formattedDate, formattedTime);
+
+    // document.getElementById('lastdatesaved').innerHTML = formattedDate + ' ' + formattedTime;
+
+}
+
+
+
+/* ================== PROGRAM ======================== */
+
+
+
+function windowResized() {
+
+	canvasWidth = window.innerWidth;
+
+	canvasHeight = window.innerHeight + 3;
+
+	resizeCanvas(canvasWidth, canvasHeight);
+
+	appInstance.windowResized();
+
+}
+
+
+
+function preload() {
+
+	appInstance = new app();
+
+	loadData();
+
+	document.title = appInstance.title;
+
+	autosave = appInstance.autosave;
+
+}
+
+
+
+function setup() {
+
+	createCanvas(canvasWidth, canvasHeight);
+
+}
+
+
+
+function draw() {
+
+	appInstance.draw();
+
+}
+
+&lt;/script&gt;
+
+
+
+&lt;main&gt;&lt;canvas id="defaultCanvas0" class="p5Canvas" width="1774" height="1214" style="width: 887px; height: 607px;"&gt;&lt;/canvas&gt;&lt;/main&gt;&lt;/body&gt;&lt;/html&gt;</div></li><li class="fileItem" id="file-Editor.shts"><div class="fileNameWrapper"><span>Editor.shts</span><button class="deleteBtn">Delete</button></div><div class="fileContent">&lt;html lang="en" style="--scrollbar-bg:#FFF; --scrollbar-thumb:#CCC;"&gt;&lt;head&gt;
+
+&lt;!-- EDITOR.shts --&gt;
+
+&lt;script&gt;
+
+/* for the demo */
+
+const defaultExportName = "Editor.shts"
+
+&lt;/script&gt;
+
+    &lt;meta charset="UTF-8"&gt;
+
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+
+    &lt;title&gt;Editor&lt;/title&gt;
+
+    &lt;link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400&amp;amp;display=swap" rel="stylesheet"&gt;
+
+    &lt;style&gt;
+
+		/* Custom scrollbar styles */
+
+		:root {
+
+			--scrollbar-bg: #FFF;
+
+			--scrollbar-thumb: #CCC;
+
+		}
+
+		::-webkit-scrollbar {
+
+			width: 12px;
+
+			height: 12px;
+
+		}
+
+		::-webkit-scrollbar-track {
+
+			background: var(--scrollbar-bg);
+
+		}
+
+		::-webkit-scrollbar-thumb {
+
+			background-color: var(--scrollbar-thumb);
+
+			border-radius: 10px;
+
+			border: 3px solid var(--scrollbar-bg);
+
+		}
+
+		::-webkit-scrollbar-thumb:hover {
+
+			background-color: #888;
+
+		}
+
+        body {
+
+            background-color: #272822;
+
+            color: #ddd;
+
+			scrollbar-width: thin;
+
+			scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-bg);
+
+			font-family: 'Open Sans', sans-serif;
+
+			font-size:14px;
+
+        }
+
+        #statusbar {
+
+            height: 10px;
+
+            width: 100vh;
+
+        }
+
+        #status {
+
+            display: inline;
+
+            height: 10px;
+
+        }
+
+        #editor {
+
+            width: 100%;
+
+            height: calc(100vh - 70px);
+
+            border: 0px solid #ccc;
+
+        }
+
+        #storedData, #themeTag, #post {
+
+            display: none;
+
+        }
+
+        #topmenu {
+
+            margin-bottom: 5px;
+
+            white-space: nowrap;
+
+            display: flex;
+
+            align-items: center; /* Align items in the center vertically */
+
+        }
+
+        #topmenu button {
+
+            margin-right: 2px;
+
+            padding: 2px 3px;
+
+            background-color: #444; /* Darker background color */
+
+            border: 1px solid #444; /* Border color matching the theme */
+
+            color: white; /* White text color */
+
+            border-radius: 1px; /* Rounded corners */
+
+            cursor: pointer; /* Pointer cursor on hover */
+
+            font-size: 12px; /* Font size adjustment */
+
+            display: flex;
+
+            align-items: center; /* Center items within the button */
+
+        }
+
+        /* Additional hover effect for buttons */
+
+        #topmenu button:hover {
+
+            background-color: #555; /* Slightly lighter background on hover */
+
+            border-color: #888; /* Slightly lighter border on hover */
+
+        }
+
+        #topmenu input {
+
+			flex-grow: 1;
+
+            margin: 0 2px;
+
+        }
+
+        input[type="text"] {
+
+            padding: 1px;
+
+            border: 1px solid #D3D3D3;
+
+            border-radius: 1px;
+
+            box-shadow: none;
+
+            background-color: #D3D3D3;
+
+            color: #272822;
+
+            outline: none;
+
+			height:22px;
+
+        }
+
+        input[type="text"]:focus {
+
+            border-color: #D3D3D3;
+
+        }
+
+        #saveAs, #saveFile, #newFile, #toggleTheme {
+
+            padding: 0px;
+
+            margin-top: 0px;
+
+        }
+
+        
+
+        #topmenu button {
+
+            height:22px;
+
+            overflow:hidden;
+
+        }
+
+        
+
+        #topmenu button svg {
+
+            width: 18px;
+
+            height: 20px;
+
+        }
+
+    &lt;/style&gt;
+
+	&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"&gt;&lt;/script&gt;
+
+    &lt;script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"&gt;&lt;/script&gt;
+
+	&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/theme-monokai.js"&gt;&lt;/script&gt;
+
+	&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/mode-javascript.js"&gt;&lt;/script&gt;
+
+	&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/theme-chrome.js"&gt;&lt;/script&gt;
+
+&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/mode-html.js"&gt;&lt;/script&gt;&lt;/head&gt;
+
+&lt;body style="background-color: rgb(221, 221, 221); color: rgb(39, 40, 34);"&gt;
+
+    &lt;div id="topmenu"&gt;
+
+        &lt;button id="fetch" style="background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); border: 1px solid rgb(204, 204, 204);"&gt;Fetch&lt;/button&gt;
+
+        &lt;button id="commit" style="background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); border: 1px solid rgb(204, 204, 204);"&gt;Commit&lt;/button&gt;
+
+        &lt;input type="text" style="width:20px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); border: 1px solid rgb(204, 204, 204);" id="githubToken" value="" placeholder="GitHub Token"&gt;
+
+        &lt;input type="text" style="width:20px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); border: 1px solid rgb(204, 204, 204);" id="repoOwner" value="" placeholder="Repo Owner"&gt;
+
+        &lt;input type="text" style="width:20px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); border: 1px solid rgb(204, 204, 204);" id="repoName" value="" placeholder="Repo Name"&gt;
+
+        &lt;input type="text" style="width:20px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); border: 1px solid rgb(204, 204, 204);" id="filePath" value="" placeholder="File Path"&gt;
+
+        &lt;input type="text" style="width:20px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); border: 1px solid rgb(204, 204, 204);" id="branch" value="" placeholder="Branch"&gt;
+
+        &lt;!-- "Save Icon" by Mahesh Keshvala from Noun Project, licensed under CC BY 3.0. --&gt;
+
+        &lt;!-- https://creativecommons.org/licenses/by/3.0/ --&gt;
+
+        &lt;!-- Source: https://thenounproject.com/icon/save-2209758/ --&gt;
+
+        &lt;!-- changes to the original icon are dynamically made switching to dark-mode.  --&gt;
+
+        &lt;button id="saveAs" style="background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); border: 1px solid rgb(204, 204, 204);"&gt;
+
+            &lt;svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 400 500" style="enable-background:new 0 0 400 400;" xml:space="preserve"&gt;&lt;g&gt;&lt;path d="M358.8,272.2v70.3c0,1.4-0.2,2.7-0.5,3.9v0c0,0,0,0,0,0c-1.4,6.9-7.5,12.1-14.7,12.1H56.3c-7.7,0-14.1-5.9-14.9-13.4   c-0.2-0.9-0.2-1.7-0.2-2.7v-70.3c0-8.3,6.8-15,15-15c4.1,0,7.9,1.7,10.6,4.4c2.7,2.7,4.4,6.5,4.4,10.6v56.3h257.7v-56.3   c0-8.3,6.8-15,15-15c4.1,0,7.9,1.7,10.6,4.4C357.1,264.3,358.8,268.1,358.8,272.2z" fill="#000"&gt;&lt;/path&gt;&lt;path d="M286.5,201.8l-73.7,73.7c-0.1,0.2-0.3,0.3-0.4,0.4c-2.7,2.7-6.2,4.4-9.7,4.9c-0.3,0-0.6,0.1-0.9,0.1   c-0.6,0.1-1.2,0.1-1.8,0.1h0l-1.7-0.1c-0.3,0-0.6-0.1-0.9-0.1c-3.6-0.5-7-2.2-9.7-4.9c-0.1-0.1-0.3-0.3-0.4-0.4l-73.7-73.7   c-3.4-3.4-5.1-7.9-5.1-12.4c0-4.5,1.7-9,5.1-12.4c6.8-6.8,17.9-6.8,24.8,0l44.3,44.3V59c0-9.6,7.9-17.5,17.5-17.5   c4.8,0,9.2,2,12.4,5.1c3.2,3.2,5.1,7.5,5.1,12.4v162.3l44.3-44.3c6.8-6.8,17.9-6.8,24.8,0C293.3,183.9,293.3,195,286.5,201.8z" fill="#000"&gt;&lt;/path&gt;&lt;/g&gt;&lt;text x="0" y="415" fill="#000" font-size="5px" font-weight="bold" font-family="'Helvetica Neue', Helvetica, Arial-Unicode, Arial, Sans-serif"&gt;Created by Mahesh Keshvala&lt;/text&gt;&lt;text x="0" y="420" fill="#000" font-size="5px" font-weight="bold" font-family="'Helvetica Neue', Helvetica, Arial-Unicode, Arial, Sans-serif"&gt;from the Noun Project&lt;/text&gt;&lt;/svg&gt;
+
+		&lt;/button&gt;
+
+		&lt;!-- "Save File Icon" by Kosong Tujuh from Noun Project, licensed under CC BY 3.0. --&gt;
+
+        &lt;!-- https://creativecommons.org/licenses/by/3.0/ --&gt;
+
+        &lt;!-- Source: https://thenounproject.com/icon/save-6980338/ --&gt;
+
+        &lt;!-- remove text element on the left corner  --&gt;
+
+        &lt;!-- changes to the original icon are dynamically made switching to dark-mode.  --&gt;
+
+		&lt;button id="saveFile" style="background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); border: 1px solid rgb(204, 204, 204);"&gt;
+
+            &lt;svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="-5.0 -10.0 110.0 135.0"&gt;&lt;g&gt;&lt;path d="m32.609 51.621c-1.1406 0-2.0703 0.92969-2.0703 2.0703v36.309h38.922v-36.309c0-1.1406-0.92969-2.0703-2.0703-2.0703z" fill="#000"&gt;&lt;/path&gt;&lt;path d="m30.539 10v15.602c0 1.1406 0.92969 2.0703 2.0703 2.0703h34.781c1.1406 0 2.0703-0.92969 2.0703-2.0703v-15.602h-5.0703v8.8398c0 0.89844-0.73047 1.6211-1.6211 1.6211s-1.6211-0.73047-1.6211-1.6211v-8.8398z" fill="#000"&gt;&lt;/path&gt;&lt;path d="m82.281 90c3.7188 0 6.7383-3.0195 6.7383-6.7383v-59.082c0-0.58984-0.23047-1.1406-0.64844-1.5586l-11.98-11.98c-0.42188-0.42188-0.96875-0.64844-1.5586-0.64844h-2.1289v15.602c0 2.9297-2.3789 5.3203-5.3203 5.3203h-34.781c-2.9297 0-5.3203-2.3789-5.3203-5.3203v-15.602h-9.5703c-3.7188 0-6.7383 3.0195-6.7383 6.7383v66.52c0 3.7188 3.0195 6.7383 6.7383 6.7383h9.5703v-36.309c0-2.9297 2.3789-5.3203 5.3203-5.3203h34.781c2.9297 0 5.3203 2.3789 5.3203 5.3203v36.309h9.5703z" fill="#000"&gt;&lt;/path&gt;&lt;/g&gt;&lt;/svg&gt;
+
+        &lt;/button&gt;
+
+		&lt;!-- "New File Icon" by wiran toni from Noun Project, licensed under CC BY 3.0. --&gt;
+
+        &lt;!-- https://creativecommons.org/licenses/by/3.0/ --&gt;
+
+        &lt;!-- Source: https://thenounproject.com/icon/new-file-6801117/ --&gt;
+
+        &lt;!-- remove text element on the left corner  --&gt;
+
+        &lt;!-- changes to the original icon are dynamically made switching to dark-mode.  --&gt;
+
+		&lt;button id="newFile" style="background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); border: 1px solid rgb(204, 204, 204);"&gt;
+
+            &lt;svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="-5.0 -10.0 110.0 135.0"&gt;&lt;g&gt;&lt;path d="m22.656 28.008v32.914c0 1.5547 1.2578 2.8125 2.8125 2.8125s2.8125-1.2578 2.8125-2.8125v-32.914c0-3.5547 2.8945-6.4453 6.4453-6.4453h23.199v10.816c0 5.082 4.1328 9.2148 9.2188 9.2148h10.262v30.395c0 3.5547-2.8945 6.4453-6.4453 6.4453h-32.508c-1.5547 0-2.8125 1.2578-2.8125 2.8125 0 1.5547 1.2578 2.8125 2.8125 2.8125h32.508c6.6562 0 12.07-5.4141 12.07-12.074v-33.199c0-0.11719-0.054688-0.21875-0.066406-0.33203-0.027344-0.24219-0.054688-0.49219-0.14844-0.72266-0.097656-0.23438-0.25391-0.42969-0.40625-0.62891-0.070312-0.085937-0.10156-0.19531-0.17969-0.27734l-19.48-20.035c-0.003906-0.003906-0.007812-0.007812-0.015625-0.007812-0.24219-0.24609-0.53516-0.44531-0.85547-0.58594-0.35938-0.16406-0.74219-0.25-1.1328-0.25391-0.007813 0-0.007813-0.003906-0.011719-0.003906h-26.012c-6.6523 0-12.066 5.4141-12.066 12.07zm40.895 4.3711v-6.7031l10.012 10.297h-6.418c-1.9805 0-3.5938-1.6133-3.5938-3.5938z" fill="#000"&gt;&lt;/path&gt;&lt;path d="m22.656 72.746h-2.875c-1.5547 0-2.8125 1.2578-2.8125 2.8125 0 1.5547 1.2578 2.8125 2.8125 2.8125h2.875v2.8789c0 1.5547 1.2578 2.8125 2.8125 2.8125s2.8125-1.2578 2.8125-2.8125v-2.875h2.875c1.5547 0 2.8125-1.2578 2.8125-2.8125s-1.2578-2.8125-2.8125-2.8125h-2.875v-2.875c0-1.5547-1.2578-2.8125-2.8125-2.8125s-2.8125 1.2578-2.8125 2.8125z" fill="#000"&gt;&lt;/path&gt;&lt;/g&gt;&lt;/svg&gt;
+
+        &lt;/button&gt;
+
+		&lt;!-- "Toggle Theme Icon" by Jessiey from Noun Project, licensed under CC BY 3.0. --&gt;
+
+        &lt;!-- https://creativecommons.org/licenses/by/3.0/ --&gt;
+
+        &lt;!-- Source: https://thenounproject.com/icon/theme-6000228/ --&gt;
+
+        &lt;!-- remove text element on the left corner  --&gt;
+
+        &lt;!-- changes to the original icon are dynamically made switching to dark-mode.  --&gt;
+
+		&lt;button id="toggleTheme" style="background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); border: 1px solid rgb(204, 204, 204); margin-right:0px;"&gt;
+
+            &lt;svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="-1.6 -3.2 35.2 43.2" x="0px" y="0px"&gt;&lt;path d="m14.29,7.81c-.39-.39-1.02-.39-1.41,0l-4.95,4.95c-.78.78-.78,2.05,0,2.83l2.12,2.12-4.24,4.24c-1.17,1.17-1.17,3.07,0,4.24.57.57,1.32.88,2.12.88s1.55-.31,2.12-.88l4.24-4.24,2.12,2.12c.78.78,2.05.78,2.83,0l4.95-4.95c.19-.19.29-.44.29-.71s-.11-.52-.29-.71L14.29,7.81Zm3.54,14.85l-2.83-2.83c-.39-.39-1.02-.39-1.41,0l-4.95,4.95c-.38.38-1.04.38-1.41,0-.39-.39-.39-1.02,0-1.41l4.95-4.95c.19-.19.29-.44.29-.71s-.11-.52-.29-.71l-2.83-2.83h0s4.24-4.24,4.24-4.24l8.49,8.49-4.24,4.24Z" fill="#000"&gt;&lt;/path&gt;&lt;path d="m12.82,13.4c-.39.39-.39,1.02,0,1.41l4.32,4.32c.2.2.45.29.71.29s.51-.1.71-.29c.39-.39.39-1.02,0-1.41l-4.32-4.32c-.39-.39-1.02-.39-1.41,0Z" fill="#000"&gt;&lt;/path&gt;&lt;path d="m28.43,12.05l-4.24-4.24s0,0,0,0,0,0,0,0l-2.12-2.12s0,0,0,0,0,0,0,0l-2.12-2.12c-.38-.38-.88-.59-1.41-.59h0c-.53,0-1.04.21-1.41.59l-2.12,2.12c-.39.39-.39,1.02,0,1.41.39.39,1.02.39,1.41,0l2.12-2.12,1.41,1.41-1.43,1.43c-.39.39-.39,1.02,0,1.41.2.2.45.29.71.29s.51-.1.71-.29l1.43-1.43.71.71-1.43,1.43c-.39.39-.39,1.02,0,1.41.2.2.45.29.71.29s.51-.1.71-.29l1.43-1.43.71.71-1.43,1.43c-.39.39-.39,1.02,0,1.41.2.2.45.29.71.29s.51-.1.71-.29l1.43-1.43,1.41,1.41-2.12,2.12c-.39.39-.39,1.02,0,1.41.2.2.45.29.71.29s.51-.1.71-.29l2.12-2.12c.38-.38.59-.88.59-1.41s-.21-1.04-.59-1.41Z" fill="#000"&gt;&lt;/path&gt;&lt;/svg&gt;
+
+        &lt;/button&gt;
+
+    &lt;/div&gt;
+
+    &lt;div style="height:5px;display:block;"&gt;&lt;/div&gt;
+
+    &lt;div id="editor" ondrop="handleDrop(event)" ondragover="allowDrop(event)" class=" ace_editor ace_hidpi ace-chrome" draggable="false"&gt;&lt;/div&gt;
+
+    &lt;div style="height:5px;display:block;"&gt;&lt;/div&gt;
+
+    &lt;div id="statusbar"&gt;Status:&amp;nbsp;&lt;div id="status"&gt;&lt;/div&gt;&lt;/div&gt;
+
+    &lt;div id="storedData"&gt;&lt;/div&gt;
+
+	&lt;div id="themeTag"&gt;light&lt;/div&gt;
+
+	&lt;div id="post"&gt;&lt;/div&gt;
+
+    &lt;script&gt;
+
+        const editor = ace.edit("editor");
+
+        editor.setTheme("ace/theme/monokai");
+
+        editor.session.setMode("ace/mode/javascript");
+
+        const getGithubConfig = () =&gt; {
+
+            return {
+
+                githubToken: document.getElementById('githubToken').value,
+
+                repoOwner: document.getElementById('repoOwner').value,
+
+                repoName: document.getElementById('repoName').value,
+
+                filePath: document.getElementById('filePath').value,
+
+                branch: document.getElementById('branch').value
+
+            };
+
+        };
+
+        const saveInputValues = () =&gt; {
+
+            document.getElementById('githubToken').setAttribute('value', document.getElementById('githubToken').value);
+
+            document.getElementById('repoOwner').setAttribute('value', document.getElementById('repoOwner').value);
+
+            document.getElementById('repoName').setAttribute('value', document.getElementById('repoName').value);
+
+            document.getElementById('filePath').setAttribute('value', document.getElementById('filePath').value);
+
+            document.getElementById('branch').setAttribute('value', document.getElementById('branch').value);
+
+        };
+
+        document.getElementById('githubToken').addEventListener('input', saveInputValues);
+
+        document.getElementById('repoOwner').addEventListener('input', saveInputValues);
+
+        document.getElementById('repoName').addEventListener('input', saveInputValues);
+
+        document.getElementById('filePath').addEventListener('input', saveInputValues);
+
+        document.getElementById('branch').addEventListener('input', saveInputValues);
+
+        editor.session.on('change', () =&gt; {
+
+            document.getElementById('storedData').textContent = editor.getValue();
+
+        });
+
+        document.getElementById('fetch').addEventListener('click', async () =&gt; {
+
+            const { githubToken, repoOwner, repoName, filePath } = getGithubConfig();
+
+            try {
+
+                const response = await axios.get(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/${filePath}`, {
+
+                    headers: { Authorization: `token ${githubToken}` }
+
+                });
+
+                const fileContent = atob(response.data.content);
+
+                editor.setValue(fileContent);
+
+                
+
+                const detectedLanguage = autoDetectLanguage(fileContent);
+
+                editor.session.setMode(`ace/mode/${detectedLanguage}`);
+
+                document.getElementById('storedData').textContent = fileContent;
+
+                document.getElementById('status').textContent = 'File fetched successfully';
+
+            } catch (error) {
+
+                console.error('Error fetching file:', error);
+
+                alert('Failed to fetch file from GitHub.');
+
+                document.getElementById('status').textContent = 'Failed to fetch file from GitHub';
+
+            }
+
+        });
+
+        document.getElementById('commit').addEventListener('click', async () =&gt; {
+
+            const { githubToken, repoOwner, repoName, filePath, branch } = getGithubConfig();
+
+            try {
+
+                const getShaResponse = await axios.get(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/${filePath}`, {
+
+                    headers: { Authorization: `token ${githubToken}` }
+
+                });
+
+                const sha = getShaResponse.data.sha;
+
+                const content = editor.getValue();
+
+                const encodedContent = btoa(unescape(encodeURIComponent(content)));
+
+                const response = await axios.put(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/${filePath}`, {
+
+                    message: 'Commit from Ace editor',
+
+                    content: encodedContent,
+
+                    sha: sha,
+
+                    branch: branch
+
+                }, {
+
+                    headers: { Authorization: `token ${githubToken}` }
+
+                });
+
+                alert('File committed to GitHub.');
+
+                document.getElementById('storedData').textContent = content;
+
+                document.getElementById('status').textContent = 'File committed successfully';
+
+            } catch (error) {
+
+                console.error('Error committing file:', error);
+
+                alert('Failed to commit file to GitHub.');
+
+                document.getElementById('status').textContent = 'Failed to commit file to GitHub';
+
+            }
+
+        });
+
+        function allowDrop(event) {
+
+            event.preventDefault();
+
+        }
+
+        function getModeForFileExtension(extension) {
+
+            const modes = {
+
+                'js': 'javascript',
+
+                'json': 'json',
+
+                'html': 'html',
+
+                'css': 'css',
+
+                'java': 'java',
+
+                'py': 'python',
+
+                'xml': 'xml',
+
+                'md': 'markdown'
+
+            };
+
+            return modes[extension] || 'text';
+
+        }
+
+        function autoDetectLanguage(content) {
+
+            const keywords = {
+
+                'html': /&lt;!DOCTYPE html&gt;|&lt;html\b|&lt;head\b|&lt;body\b|&lt;\/body&gt;|&lt;\/html&gt;|&lt;div\b|&lt;span\b|&lt;button\b|&lt;form\b|&lt;input\b|&lt;img\b|&lt;a\b|&lt;ul\b|&lt;li\b|&lt;table\b|&lt;tr\b|&lt;td\b|&lt;\/div&gt;|&lt;\/span&gt;|&lt;\/button&gt;|&lt;\/form&gt;|&lt;\/input&gt;|&lt;\/img&gt;|&lt;\/a&gt;|&lt;\/ul&gt;|&lt;\/li&gt;|&lt;\/table&gt;|&lt;\/tr&gt;|&lt;\/td&gt;/i,
+
+                'python': /\b(def|import|from|as|if|else|elif|for|while|return|print|class|with|try|except|lambda)\b/g,
+
+                'javascript': /\b(function|var|let|const|if|else|return|for|while|console\.log|=&gt;|import|export|class|new)\b/g,
+
+                'java': /\b(class|public|private|protected|void|static|int|new|if|else|while|for|return|import|package|throws|extends|implements)\b/g,
+
+                'css': /\b(color|background|font-size|margin|padding|border|display|flex|grid|align|justify|position|float|clear)\b/g,
+
+                'json': /^\s*(\{|\[)|\b(true|false|null)\b/g,
+
+                'xml': /^\s*&lt;\?xml\b|\&lt;\/?\w+\b/g,
+
+                'markdown': /^(#|\*|-|\d+\.)\s|\[(.*?)\]\((.*?)\)|`{1,3}/g,
+
+                'sql': /\b(SELECT|INSERT|UPDATE|DELETE|FROM|WHERE|JOIN|INNER|LEFT|RIGHT|FULL|CREATE|DROP|ALTER|TABLE|DATABASE|INDEX|VIEW)\b/g,
+
+                'bash': /(^#!\/bin\/bash\b|^#!\/bin\/sh\b)|\b(echo|export|if|then|else|fi|for|in|do|done|while|case|esac|function)\b/g,
+
+                'ruby': /\b(def|class|module|if|else|elsif|end|do|while|for|require|include|begin|rescue)\b/g,
+
+                'php': /\b(&lt;\?php|\$[a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]*|\becho\b|if|else|elseif|while|for|foreach|function|return|require|include)\b/g,
+
+                'csharp': /\b(class|public|private|protected|void|static|int|if|else|while|for|return|namespace|using|new|try|catch|finally|throw|async|await)\b/g,
+
+                'go': /\b(func|package|import|var|const|if|else|for|return|struct|interface|go|defer|select|case)\b/g,
+
+                'kotlin': /\b(fun|val|var|if|else|for|while|when|return|class|object|interface|import|package)\b/g,
+
+                'r': /\b(function|if|else|for|while|repeat|break|next|return|library|source|&lt;-|TRUE|FALSE)\b/g
+
+            };
+
+        
+
+            const matchCounts = {};
+
+            const lines = content.split('\n');
+
+            const maxLines = 100; // Adjust this to cover more or fewer lines
+
+        
+
+            // Check up to maxLines for more weight at the beginning
+
+            for (let i = 0; i &lt; Math.min(lines.length, maxLines); i++) {
+
+                const line = lines[i];
+
+                for (const [language, regex] of Object.entries(keywords)) {
+
+                    const matches = line.match(regex);
+
+                    if (matches) {
+
+                        if (!matchCounts[language]) {
+
+                            matchCounts[language] = 0;
+
+                        }
+
+                        matchCounts[language] += matches.length * (maxLines - i); // More weight for earlier lines
+
+                    }
+
+                }
+
+            }
+
+        
+
+            // Check the rest of the content with less weight
+
+            for (let i = maxLines; i &lt; lines.length; i++) {
+
+                const line = lines[i];
+
+                for (const [language, regex] of Object.entries(keywords)) {
+
+                    const matches = line.match(regex);
+
+                    if (matches) {
+
+                        if (!matchCounts[language]) {
+
+                            matchCounts[language] = 0;
+
+                        }
+
+                        matchCounts[language] += matches.length; // No extra weight for later lines
+
+                    }
+
+                }
+
+            }
+
+        
+
+            let detectedLanguage = 'text';
+
+            let maxMatches = 0;
+
+        
+
+            for (const [language, count] of Object.entries(matchCounts)) {
+
+                if (count &gt; maxMatches) {
+
+                    maxMatches = count;
+
+                    detectedLanguage = language;
+
+                }
+
+            }
+
+        
+
+            // If CSS, JavaScript, or XML is detected, check again if it might be HTML
+
+            if (['css', 'javascript', 'xml'].includes(detectedLanguage)) {
+
+                if (keywords.html.test(content)) {
+
+                    detectedLanguage = 'html';
+
+                }
+
+            }
+
+        
+
+            console.log("detected language: " + detectedLanguage);
+
+            return detectedLanguage;
+
+        }
+
+        function handleDrop(event) {
+
+            event.preventDefault();
+
+            const files = event.dataTransfer.files;
+
+            if (files.length &gt; 0) {
+
+                const file = files[0];
+
+                const reader = new FileReader();
+
+                const fileExtension = file.name.split('.').pop().toLowerCase();
+
+                reader.onload = function(e) {
+
+                    const cursorPos = editor.getCursorPosition();
+
+                    const fileContent = e.target.result;
+
+                    const detectedLanguage = autoDetectLanguage(fileContent);
+
+                    editor.session.setMode(`ace/mode/${detectedLanguage}`);
+
+                    editor.session.insert(cursorPos, fileContent);
+
+                };
+
+                if (file.type.startsWith("text/")) {
+
+                    reader.readAsText(file);
+
+                } else if (file.type === "image/png") {
+
+                    reader.onload = function(e) {
+
+                        const cursorPos = editor.getCursorPosition();
+
+                        const base64String = e.target.result;
+
+                        const imageTag = `![Image](${base64String})`;
+
+                        editor.session.insert(cursorPos, imageTag);
+
+                    };
+
+                    reader.readAsDataURL(file);
+
+                } else {
+
+                    reader.readAsText(file);
+
+                }
+
+            }
+
+        }
+
+        let detectTimeout;
+
+        editor.session.on('change', () =&gt; {
+
+            clearTimeout(detectTimeout);
+
+            detectTimeout = setTimeout(() =&gt; {
+
+                const content = editor.getValue();
+
+                const detectedLanguage = autoDetectLanguage(content);
+
+                editor.session.setMode(`ace/mode/${detectedLanguage}`);
+
+            }, 500);
+
+        });
+
+		let isDarkTheme = true;
+
+		function applyTheme() {
+
+            const bodyStyles = document.body.style;
+
+            const editorStyles = document.getElementById('editor').style;
+
+            const svgPaths = document.querySelectorAll('svg path');
+
+            const svgTexts = document.querySelectorAll('svg text');
+
+            if (isDarkTheme) {
+
+                document.getElementById('themeTag').textContent = "dark";
+
+                bodyStyles.backgroundColor = '#272822';
+
+                bodyStyles.color = '#ddd';
+
+                editor.setTheme("ace/theme/monokai");
+
+                document.querySelectorAll('input[type="text"]').forEach(input =&gt; {
+
+                    input.style.backgroundColor = '#D3D3D3';
+
+                    input.style.color = '#272822';
+
+                    input.style.border = '1px solid #D3D3D3';
+
+                });
+
+                document.querySelectorAll('#topmenu button').forEach(button =&gt; {
+
+                    button.style.backgroundColor = '#444';
+
+                    button.style.color = '#DDD';
+
+                    button.style.border = '1px solid #444';
+
+                });
+
+                // Update SVG color for dark theme
+
+                svgPaths.forEach(path =&gt; {
+
+                    path.setAttribute('fill', '#FFF');
+
+                });
+
+                svgTexts.forEach(text =&gt; {
+
+                    text.setAttribute('fill', '#FFF');
+
+                });
+
+                // Apply dark scrollbar styles
+
+                document.documentElement.style.setProperty('--scrollbar-bg', '#444');
+
+                document.documentElement.style.setProperty('--scrollbar-thumb', '#666');
+
+            } else {
+
+                document.getElementById('themeTag').textContent = "light";
+
+                bodyStyles.backgroundColor = '#DDD';
+
+                bodyStyles.color = '#272822';
+
+                editor.setTheme("ace/theme/chrome");
+
+                document.querySelectorAll('input[type="text"]').forEach(input =&gt; {
+
+                    input.style.backgroundColor = '#FFFFFF';
+
+                    input.style.color = '#000000';
+
+                    input.style.border = '1px solid #CCC';
+
+                });
+
+                document.querySelectorAll('#topmenu button').forEach(button =&gt; {
+
+                    button.style.backgroundColor = '#FFF';
+
+                    button.style.color = '#000';
+
+                    button.style.border = '1px solid #CCC';
+
+                });
+
+                // Update SVG color for light theme
+
+                svgPaths.forEach(path =&gt; {
+
+                    path.setAttribute('fill', '#000');
+
+                });
+
+                svgTexts.forEach(text =&gt; {
+
+                    text.setAttribute('fill', '#000');
+
+                });
+
+                // Revert to light scrollbar styles
+
+                document.documentElement.style.setProperty('--scrollbar-bg', '#FFF');
+
+                document.documentElement.style.setProperty('--scrollbar-thumb', '#CCC');
+
+            }
+
+        }
+
+		document.getElementById('toggleTheme').addEventListener('click', () =&gt; {
+
+			isDarkTheme = !isDarkTheme;
+
+			applyTheme();
+
+		});
+
+		
+
+		function saveAs() {
+
+			// Get the content from the editor
+
+			const content = editor.getValue();
+
+			// Update the storedData element with the editor content
+
+			document.getElementById('storedData').textContent = content;
+
+			// Create a blob with the content
+
+			const blob = new Blob([content], { type: 'text/plain' });
+
+			// Create a link element
+
+			const link = document.createElement('a');
+
+			// Set the download attribute with a filename
+
+			link.download = defaultExportName;
+
+			// Create an object URL for the blob
+
+			link.href = URL.createObjectURL(blob);
+
+			// Append the link to the body (required for Firefox)
+
+			document.body.appendChild(link);
+
+			// Programmatically click the link to trigger the download
+
+			link.click();
+
+			// Remove the link from the document
+
+			document.body.removeChild(link);
+
+		}
+
+		
+
+		document.getElementById('saveAs').addEventListener('click', () =&gt; {
+
+			saveAs();
+
+		});
+
+		
+
+		function newFile() {
+
+			editor.setValue("");
+
+			// Get all elements within the head tag
+
+			const headElements = document.head.children;
+
+			// Iterate over the elements
+
+			for (let i = 0; i &lt; headElements.length; i++) {
+
+				// Check if the current element is not a &lt;style&gt; tag
+
+				if (headElements[i].tagName !== 'STYLE') {
+
+					break; // Exit the loop once we encounter a non-&lt;style&gt; tag
+
+				}
+
+				// Remove the &lt;style&gt; tag
+
+				headElements[i].parentNode.removeChild(headElements[i]);
+
+				// Since we are modifying the DOM, decrement the index to account for the removed element
+
+				i--;
+
+			}
+
+            const editorElement = document.getElementById('editor');
+
+            const originalContent = editorElement.innerHTML;
+
+            editorElement.innerHTML = '';
+
+            const content = document.documentElement.outerHTML;
+
+			SHTS.new(content);
+
+		}
+
+		
+
+	    document.getElementById('newFile').addEventListener('click', () =&gt; {
+
+	        saveFile();
+
+	        newFile();
+
+		});
+
+		
+
+		function saveFile() {
+
+			document.getElementById('storedData').textContent = editor.getValue();
+
+			// Get all elements within the head tag
+
+			const headElements = document.head.children;
+
+			// Iterate over the elements
+
+			for (let i = 0; i &lt; headElements.length; i++) {
+
+				// Check if the current element is not a &lt;style&gt; tag
+
+				if (headElements[i].tagName !== 'STYLE') {
+
+					break; // Exit the loop once we encounter a non-&lt;style&gt; tag
+
+				}
+
+				// Remove the &lt;style&gt; tag
+
+				headElements[i].parentNode.removeChild(headElements[i]);
+
+				// Since we are modifying the DOM, decrement the index to account for the removed element
+
+				i--;
+
+			}
+
+            const editorElement = document.getElementById('editor');
+
+            const originalContent = editorElement.innerHTML;
+
+            editorElement.innerHTML = '';
+
+            const content = document.documentElement.outerHTML;
+
+            SHTS.save(content);
+
+		}
+
+		
+
+	    document.getElementById('saveFile').addEventListener('click', () =&gt; {
+
+			saveFile();
+
+		});
+
+		
+
+		window.onload = () =&gt; {		
+
+			console.log("get theme");
+
+            const themeTag = document.getElementById('themeTag').textContent;
+
+            if (themeTag === "dark") {
+
+                isDarkTheme = true;
+
+            } else {
+
+                isDarkTheme = false; // Default to light theme
+
+            }
+
+            
+
+			console.log("apply theme");
+
+			applyTheme();
+
+			
+
+			console.log("loading");
+
+			let fileContent = document.getElementById('storedData').textContent;
+
+			fileContent = fileContent.replace(/[\r\n]+/g, '\n');
+
+			editor.setValue(fileContent);
+
+                
+
+            const detectedLanguage = autoDetectLanguage(fileContent);
+
+            editor.session.setMode(`ace/mode/${detectedLanguage}`);
+
+            
+
+            // clear status
+
+            document.getElementById('status').textContent = "";
+
+        };
+
+        
+
+        window.addEventListener("beforeunload", (event) =&gt; {
+
+			document.getElementById('storedData').textContent = editor.getValue();
+
+			// Get all elements within the head tag
+
+			const headElements = document.head.children;
+
+			// Iterate over the elements
+
+			for (let i = 0; i &lt; headElements.length; i++) {
+
+				// Check if the current element is not a &lt;style&gt; tag
+
+				if (headElements[i].tagName !== 'STYLE') {
+
+					break; // Exit the loop once we encounter a non-&lt;style&gt; tag
+
+				}
+
+				// Remove the &lt;style&gt; tag
+
+				headElements[i].parentNode.removeChild(headElements[i]);
+
+				// Since we are modifying the DOM, decrement the index to account for the removed element
+
+				i--;
+
+			}
+
+            const editorElement = document.getElementById('editor');
+
+            const originalContent = editorElement.innerHTML;
+
+            editorElement.innerHTML = '';
+
+            const content = document.documentElement.outerHTML;
+
+            SHTS.save(content);
+
+        });
+
+    &lt;/script&gt;
+
+&lt;/body&gt;&lt;/html&gt;</div></li><li class="fileItem" id="file-EditorSource.shts"><div class="fileNameWrapper"><span>EditorSource.shts</span><button class="deleteBtn">Delete</button></div><div class="fileContent">&lt;html lang="en" style="--scrollbar-bg:#FFF; --scrollbar-thumb:#CCC;"&gt;&lt;head&gt;
+
+&lt;!-- EDITOR.shts --&gt;
+
+&lt;script&gt;
+
+/* for the demo */
+
+const defaultExportName = "Editor.shts"
+
+&lt;/script&gt;
+
+    &lt;meta charset="UTF-8"&gt;
+
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+
+    &lt;title&gt;Editor&lt;/title&gt;
+
+    &lt;link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400&amp;amp;display=swap" rel="stylesheet"&gt;
+
+    &lt;style&gt;
+
+		/* Custom scrollbar styles */
+
+		:root {
+
+			--scrollbar-bg: #FFF;
+
+			--scrollbar-thumb: #CCC;
+
+		}
+
+		::-webkit-scrollbar {
+
+			width: 12px;
+
+			height: 12px;
+
+		}
+
+		::-webkit-scrollbar-track {
+
+			background: var(--scrollbar-bg);
+
+		}
+
+		::-webkit-scrollbar-thumb {
+
+			background-color: var(--scrollbar-thumb);
+
+			border-radius: 10px;
+
+			border: 3px solid var(--scrollbar-bg);
+
+		}
+
+		::-webkit-scrollbar-thumb:hover {
+
+			background-color: #888;
+
+		}
+
+        body {
+
+            background-color: #272822;
+
+            color: #ddd;
+
+			scrollbar-width: thin;
+
+			scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-bg);
+
+			font-family: 'Open Sans', sans-serif;
+
+			font-size:14px;
+
+        }
+
+        #statusbar {
+
+            height: 10px;
+
+            width: 100vh;
+
+        }
+
+        #status {
+
+            display: inline;
+
+            height: 10px;
+
+        }
+
+        #editor {
+
+            width: 100%;
+
+            height: calc(100vh - 70px);
+
+            border: 0px solid #ccc;
+
+        }
+
+        #storedData, #themeTag, #post {
+
+            display: none;
+
+        }
+
+        #topmenu {
+
+            margin-bottom: 5px;
+
+            white-space: nowrap;
+
+            display: flex;
+
+            align-items: center; /* Align items in the center vertically */
+
+        }
+
+        #topmenu button {
+
+            margin-right: 2px;
+
+            padding: 2px 3px;
+
+            background-color: #444; /* Darker background color */
+
+            border: 1px solid #444; /* Border color matching the theme */
+
+            color: white; /* White text color */
+
+            border-radius: 1px; /* Rounded corners */
+
+            cursor: pointer; /* Pointer cursor on hover */
+
+            font-size: 12px; /* Font size adjustment */
+
+            display: flex;
+
+            align-items: center; /* Center items within the button */
+
+        }
+
+        /* Additional hover effect for buttons */
+
+        #topmenu button:hover {
+
+            background-color: #555; /* Slightly lighter background on hover */
+
+            border-color: #888; /* Slightly lighter border on hover */
+
+        }
+
+        #topmenu input {
+
+			flex-grow: 1;
+
+            margin: 0 2px;
+
+        }
+
+        input[type="text"] {
+
+            padding: 1px;
+
+            border: 1px solid #D3D3D3;
+
+            border-radius: 1px;
+
+            box-shadow: none;
+
+            background-color: #D3D3D3;
+
+            color: #272822;
+
+            outline: none;
+
+			height:22px;
+
+        }
+
+        input[type="text"]:focus {
+
+            border-color: #D3D3D3;
+
+        }
+
+        #saveAs, #saveFile, #newFile, #toggleTheme {
+
+            padding: 0px;
+
+            margin-top: 0px;
+
+        }
+
+        
+
+        #topmenu button {
+
+            height:22px;
+
+            overflow:hidden;
+
+        }
+
+        
+
+        #topmenu button svg {
+
+            width: 18px;
+
+            height: 20px;
+
+        }
+
+    &lt;/style&gt;
+
+	&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"&gt;&lt;/script&gt;
+
+    &lt;script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"&gt;&lt;/script&gt;
+
+	&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/theme-monokai.js"&gt;&lt;/script&gt;
+
+	&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/mode-javascript.js"&gt;&lt;/script&gt;
+
+	&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/theme-chrome.js"&gt;&lt;/script&gt;
+
+&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/mode-html.js"&gt;&lt;/script&gt;&lt;/head&gt;
+
+&lt;body style="background-color: rgb(221, 221, 221); color: rgb(39, 40, 34);"&gt;
+
+    &lt;div id="topmenu"&gt;
+
+        &lt;button id="fetch" style="background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); border: 1px solid rgb(204, 204, 204);"&gt;Fetch&lt;/button&gt;
+
+        &lt;button id="commit" style="background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); border: 1px solid rgb(204, 204, 204);"&gt;Commit&lt;/button&gt;
+
+        &lt;input type="text" style="width: 20px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); border: 1px solid rgb(204, 204, 204);" id="githubToken" value="" placeholder="GitHub Token"&gt;
+
+        &lt;input type="text" style="width: 20px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); border: 1px solid rgb(204, 204, 204);" id="repoOwner" value="" placeholder="Repo Owner"&gt;
+
+        &lt;input type="text" style="width: 20px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); border: 1px solid rgb(204, 204, 204);" id="repoName" value="" placeholder="Repo Name"&gt;
+
+        &lt;input type="text" style="width: 20px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); border: 1px solid rgb(204, 204, 204);" id="filePath" value="" placeholder="File Path"&gt;
+
+        &lt;input type="text" style="width: 20px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); border: 1px solid rgb(204, 204, 204);" id="branch" value="" placeholder="Branch"&gt;
+
+        &lt;!-- "Save Icon" by Mahesh Keshvala from Noun Project, licensed under CC BY 3.0. --&gt;
+
+        &lt;!-- https://creativecommons.org/licenses/by/3.0/ --&gt;
+
+        &lt;!-- Source: https://thenounproject.com/icon/save-2209758/ --&gt;
+
+        &lt;!-- changes to the original icon are dynamically made switching to dark-mode.  --&gt;
+
+        &lt;button id="saveAs" style="background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); border: 1px solid rgb(204, 204, 204);"&gt;
+
+            &lt;svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 400 500" style="enable-background:new 0 0 400 400;" xml:space="preserve"&gt;&lt;g&gt;&lt;path d="M358.8,272.2v70.3c0,1.4-0.2,2.7-0.5,3.9v0c0,0,0,0,0,0c-1.4,6.9-7.5,12.1-14.7,12.1H56.3c-7.7,0-14.1-5.9-14.9-13.4   c-0.2-0.9-0.2-1.7-0.2-2.7v-70.3c0-8.3,6.8-15,15-15c4.1,0,7.9,1.7,10.6,4.4c2.7,2.7,4.4,6.5,4.4,10.6v56.3h257.7v-56.3   c0-8.3,6.8-15,15-15c4.1,0,7.9,1.7,10.6,4.4C357.1,264.3,358.8,268.1,358.8,272.2z" fill="#000"&gt;&lt;/path&gt;&lt;path d="M286.5,201.8l-73.7,73.7c-0.1,0.2-0.3,0.3-0.4,0.4c-2.7,2.7-6.2,4.4-9.7,4.9c-0.3,0-0.6,0.1-0.9,0.1   c-0.6,0.1-1.2,0.1-1.8,0.1h0l-1.7-0.1c-0.3,0-0.6-0.1-0.9-0.1c-3.6-0.5-7-2.2-9.7-4.9c-0.1-0.1-0.3-0.3-0.4-0.4l-73.7-73.7   c-3.4-3.4-5.1-7.9-5.1-12.4c0-4.5,1.7-9,5.1-12.4c6.8-6.8,17.9-6.8,24.8,0l44.3,44.3V59c0-9.6,7.9-17.5,17.5-17.5   c4.8,0,9.2,2,12.4,5.1c3.2,3.2,5.1,7.5,5.1,12.4v162.3l44.3-44.3c6.8-6.8,17.9-6.8,24.8,0C293.3,183.9,293.3,195,286.5,201.8z" fill="#000"&gt;&lt;/path&gt;&lt;/g&gt;&lt;text x="0" y="415" fill="#000" font-size="5px" font-weight="bold" font-family="'Helvetica Neue', Helvetica, Arial-Unicode, Arial, Sans-serif"&gt;Created by Mahesh Keshvala&lt;/text&gt;&lt;text x="0" y="420" fill="#000" font-size="5px" font-weight="bold" font-family="'Helvetica Neue', Helvetica, Arial-Unicode, Arial, Sans-serif"&gt;from the Noun Project&lt;/text&gt;&lt;/svg&gt;
+
+		&lt;/button&gt;
+
+		&lt;!-- "Save File Icon" by Kosong Tujuh from Noun Project, licensed under CC BY 3.0. --&gt;
+
+        &lt;!-- https://creativecommons.org/licenses/by/3.0/ --&gt;
+
+        &lt;!-- Source: https://thenounproject.com/icon/save-6980338/ --&gt;
+
+        &lt;!-- remove text element on the left corner  --&gt;
+
+        &lt;!-- changes to the original icon are dynamically made switching to dark-mode.  --&gt;
+
+		&lt;button id="saveFile" style="background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); border: 1px solid rgb(204, 204, 204);"&gt;
+
+            &lt;svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="-5.0 -10.0 110.0 135.0"&gt;&lt;g&gt;&lt;path d="m32.609 51.621c-1.1406 0-2.0703 0.92969-2.0703 2.0703v36.309h38.922v-36.309c0-1.1406-0.92969-2.0703-2.0703-2.0703z" fill="#000"&gt;&lt;/path&gt;&lt;path d="m30.539 10v15.602c0 1.1406 0.92969 2.0703 2.0703 2.0703h34.781c1.1406 0 2.0703-0.92969 2.0703-2.0703v-15.602h-5.0703v8.8398c0 0.89844-0.73047 1.6211-1.6211 1.6211s-1.6211-0.73047-1.6211-1.6211v-8.8398z" fill="#000"&gt;&lt;/path&gt;&lt;path d="m82.281 90c3.7188 0 6.7383-3.0195 6.7383-6.7383v-59.082c0-0.58984-0.23047-1.1406-0.64844-1.5586l-11.98-11.98c-0.42188-0.42188-0.96875-0.64844-1.5586-0.64844h-2.1289v15.602c0 2.9297-2.3789 5.3203-5.3203 5.3203h-34.781c-2.9297 0-5.3203-2.3789-5.3203-5.3203v-15.602h-9.5703c-3.7188 0-6.7383 3.0195-6.7383 6.7383v66.52c0 3.7188 3.0195 6.7383 6.7383 6.7383h9.5703v-36.309c0-2.9297 2.3789-5.3203 5.3203-5.3203h34.781c2.9297 0 5.3203 2.3789 5.3203 5.3203v36.309h9.5703z" fill="#000"&gt;&lt;/path&gt;&lt;/g&gt;&lt;/svg&gt;
+
+        &lt;/button&gt;
+
+		&lt;!-- "New File Icon" by wiran toni from Noun Project, licensed under CC BY 3.0. --&gt;
+
+        &lt;!-- https://creativecommons.org/licenses/by/3.0/ --&gt;
+
+        &lt;!-- Source: https://thenounproject.com/icon/new-file-6801117/ --&gt;
+
+        &lt;!-- remove text element on the left corner  --&gt;
+
+        &lt;!-- changes to the original icon are dynamically made switching to dark-mode.  --&gt;
+
+		&lt;button id="newFile" style="background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); border: 1px solid rgb(204, 204, 204);"&gt;
+
+            &lt;svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="-5.0 -10.0 110.0 135.0"&gt;&lt;g&gt;&lt;path d="m22.656 28.008v32.914c0 1.5547 1.2578 2.8125 2.8125 2.8125s2.8125-1.2578 2.8125-2.8125v-32.914c0-3.5547 2.8945-6.4453 6.4453-6.4453h23.199v10.816c0 5.082 4.1328 9.2148 9.2188 9.2148h10.262v30.395c0 3.5547-2.8945 6.4453-6.4453 6.4453h-32.508c-1.5547 0-2.8125 1.2578-2.8125 2.8125 0 1.5547 1.2578 2.8125 2.8125 2.8125h32.508c6.6562 0 12.07-5.4141 12.07-12.074v-33.199c0-0.11719-0.054688-0.21875-0.066406-0.33203-0.027344-0.24219-0.054688-0.49219-0.14844-0.72266-0.097656-0.23438-0.25391-0.42969-0.40625-0.62891-0.070312-0.085937-0.10156-0.19531-0.17969-0.27734l-19.48-20.035c-0.003906-0.003906-0.007812-0.007812-0.015625-0.007812-0.24219-0.24609-0.53516-0.44531-0.85547-0.58594-0.35938-0.16406-0.74219-0.25-1.1328-0.25391-0.007813 0-0.007813-0.003906-0.011719-0.003906h-26.012c-6.6523 0-12.066 5.4141-12.066 12.07zm40.895 4.3711v-6.7031l10.012 10.297h-6.418c-1.9805 0-3.5938-1.6133-3.5938-3.5938z" fill="#000"&gt;&lt;/path&gt;&lt;path d="m22.656 72.746h-2.875c-1.5547 0-2.8125 1.2578-2.8125 2.8125 0 1.5547 1.2578 2.8125 2.8125 2.8125h2.875v2.8789c0 1.5547 1.2578 2.8125 2.8125 2.8125s2.8125-1.2578 2.8125-2.8125v-2.875h2.875c1.5547 0 2.8125-1.2578 2.8125-2.8125s-1.2578-2.8125-2.8125-2.8125h-2.875v-2.875c0-1.5547-1.2578-2.8125-2.8125-2.8125s-2.8125 1.2578-2.8125 2.8125z" fill="#000"&gt;&lt;/path&gt;&lt;/g&gt;&lt;/svg&gt;
+
+        &lt;/button&gt;
+
+		&lt;!-- "Toggle Theme Icon" by Jessiey from Noun Project, licensed under CC BY 3.0. --&gt;
+
+        &lt;!-- https://creativecommons.org/licenses/by/3.0/ --&gt;
+
+        &lt;!-- Source: https://thenounproject.com/icon/theme-6000228/ --&gt;
+
+        &lt;!-- remove text element on the left corner  --&gt;
+
+        &lt;!-- changes to the original icon are dynamically made switching to dark-mode.  --&gt;
+
+		&lt;button id="toggleTheme" style="background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); border: 1px solid rgb(204, 204, 204); margin-right: 0px;"&gt;
+
+            &lt;svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="-1.6 -3.2 35.2 43.2" x="0px" y="0px"&gt;&lt;path d="m14.29,7.81c-.39-.39-1.02-.39-1.41,0l-4.95,4.95c-.78.78-.78,2.05,0,2.83l2.12,2.12-4.24,4.24c-1.17,1.17-1.17,3.07,0,4.24.57.57,1.32.88,2.12.88s1.55-.31,2.12-.88l4.24-4.24,2.12,2.12c.78.78,2.05.78,2.83,0l4.95-4.95c.19-.19.29-.44.29-.71s-.11-.52-.29-.71L14.29,7.81Zm3.54,14.85l-2.83-2.83c-.39-.39-1.02-.39-1.41,0l-4.95,4.95c-.38.38-1.04.38-1.41,0-.39-.39-.39-1.02,0-1.41l4.95-4.95c.19-.19.29-.44.29-.71s-.11-.52-.29-.71l-2.83-2.83h0s4.24-4.24,4.24-4.24l8.49,8.49-4.24,4.24Z" fill="#000"&gt;&lt;/path&gt;&lt;path d="m12.82,13.4c-.39.39-.39,1.02,0,1.41l4.32,4.32c.2.2.45.29.71.29s.51-.1.71-.29c.39-.39.39-1.02,0-1.41l-4.32-4.32c-.39-.39-1.02-.39-1.41,0Z" fill="#000"&gt;&lt;/path&gt;&lt;path d="m28.43,12.05l-4.24-4.24s0,0,0,0,0,0,0,0l-2.12-2.12s0,0,0,0,0,0,0,0l-2.12-2.12c-.38-.38-.88-.59-1.41-.59h0c-.53,0-1.04.21-1.41.59l-2.12,2.12c-.39.39-.39,1.02,0,1.41.39.39,1.02.39,1.41,0l2.12-2.12,1.41,1.41-1.43,1.43c-.39.39-.39,1.02,0,1.41.2.2.45.29.71.29s.51-.1.71-.29l1.43-1.43.71.71-1.43,1.43c-.39.39-.39,1.02,0,1.41.2.2.45.29.71.29s.51-.1.71-.29l1.43-1.43.71.71-1.43,1.43c-.39.39-.39,1.02,0,1.41.2.2.45.29.71.29s.51-.1.71-.29l1.43-1.43,1.41,1.41-2.12,2.12c-.39.39-.39,1.02,0,1.41.2.2.45.29.71.29s.51-.1.71-.29l2.12-2.12c.38-.38.59-.88.59-1.41s-.21-1.04-.59-1.41Z" fill="#000"&gt;&lt;/path&gt;&lt;/svg&gt;
+
+        &lt;/button&gt;
+
+    &lt;/div&gt;
+
+    &lt;div style="height:5px;display:block;"&gt;&lt;/div&gt;
+
+    &lt;div id="editor" ondrop="handleDrop(event)" ondragover="allowDrop(event)" class=" ace_editor ace_hidpi ace-chrome" draggable="false"&gt;&lt;/div&gt;
+
+    &lt;div style="height:5px;display:block;"&gt;&lt;/div&gt;
+
+    &lt;div id="statusbar"&gt;Status:&amp;nbsp;&lt;div id="status"&gt;&lt;/div&gt;&lt;/div&gt;
+
+    &lt;div id="storedData"&gt;&amp;lt;html lang="en" style="--scrollbar-bg:#FFF; --scrollbar-thumb:#CCC;"&amp;gt;&amp;lt;head&amp;gt;
+
+&amp;lt;!-- EDITOR.shts --&amp;gt;
+
+&amp;lt;script&amp;gt;
+
+/* for the demo */
+
+const defaultExportName = "Editor.shts"
+
+&amp;lt;/script&amp;gt;
+
+    &amp;lt;meta charset="UTF-8"&amp;gt;
+
+    &amp;lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&amp;gt;
+
+    &amp;lt;title&amp;gt;Editor&amp;lt;/title&amp;gt;
+
+    &amp;lt;link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400&amp;amp;amp;display=swap" rel="stylesheet"&amp;gt;
+
+    &amp;lt;style&amp;gt;
+
+		/* Custom scrollbar styles */
+
+		:root {
+
+			--scrollbar-bg: #FFF;
+
+			--scrollbar-thumb: #CCC;
+
+		}
+
+		::-webkit-scrollbar {
+
+			width: 12px;
+
+			height: 12px;
+
+		}
+
+		::-webkit-scrollbar-track {
+
+			background: var(--scrollbar-bg);
+
+		}
+
+		::-webkit-scrollbar-thumb {
+
+			background-color: var(--scrollbar-thumb);
+
+			border-radius: 10px;
+
+			border: 3px solid var(--scrollbar-bg);
+
+		}
+
+		::-webkit-scrollbar-thumb:hover {
+
+			background-color: #888;
+
+		}
+
+        body {
+
+            background-color: #272822;
+
+            color: #ddd;
+
+			scrollbar-width: thin;
+
+			scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-bg);
+
+			font-family: 'Open Sans', sans-serif;
+
+			font-size:14px;
+
+        }
+
+        #statusbar {
+
+            height: 10px;
+
+            width: 100vh;
+
+        }
+
+        #status {
+
+            display: inline;
+
+            height: 10px;
+
+        }
+
+        #editor {
+
+            width: 100%;
+
+            height: calc(100vh - 70px);
+
+            border: 0px solid #ccc;
+
+        }
+
+        #storedData, #themeTag, #post {
+
+            display: none;
+
+        }
+
+        #topmenu {
+
+            margin-bottom: 5px;
+
+            white-space: nowrap;
+
+            display: flex;
+
+            align-items: center; /* Align items in the center vertically */
+
+        }
+
+        #topmenu button {
+
+            margin-right: 2px;
+
+            padding: 2px 3px;
+
+            background-color: #444; /* Darker background color */
+
+            border: 1px solid #444; /* Border color matching the theme */
+
+            color: white; /* White text color */
+
+            border-radius: 1px; /* Rounded corners */
+
+            cursor: pointer; /* Pointer cursor on hover */
+
+            font-size: 12px; /* Font size adjustment */
+
+            display: flex;
+
+            align-items: center; /* Center items within the button */
+
+        }
+
+        /* Additional hover effect for buttons */
+
+        #topmenu button:hover {
+
+            background-color: #555; /* Slightly lighter background on hover */
+
+            border-color: #888; /* Slightly lighter border on hover */
+
+        }
+
+        #topmenu input {
+
+			flex-grow: 1;
+
+            margin: 0 2px;
+
+        }
+
+        input[type="text"] {
+
+            padding: 1px;
+
+            border: 1px solid #D3D3D3;
+
+            border-radius: 1px;
+
+            box-shadow: none;
+
+            background-color: #D3D3D3;
+
+            color: #272822;
+
+            outline: none;
+
+			height:22px;
+
+        }
+
+        input[type="text"]:focus {
+
+            border-color: #D3D3D3;
+
+        }
+
+        #saveAs, #saveFile, #newFile, #toggleTheme {
+
+            padding: 0px;
+
+            margin-top: 0px;
+
+        }
+
+        
+
+        #topmenu button {
+
+            height:22px;
+
+            overflow:hidden;
+
+        }
+
+        
+
+        #topmenu button svg {
+
+            width: 18px;
+
+            height: 20px;
+
+        }
+
+    &amp;lt;/style&amp;gt;
+
+	&amp;lt;script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"&amp;gt;&amp;lt;/script&amp;gt;
+
+    &amp;lt;script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"&amp;gt;&amp;lt;/script&amp;gt;
+
+	&amp;lt;script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/theme-monokai.js"&amp;gt;&amp;lt;/script&amp;gt;
+
+	&amp;lt;script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/mode-javascript.js"&amp;gt;&amp;lt;/script&amp;gt;
+
+	&amp;lt;script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/theme-chrome.js"&amp;gt;&amp;lt;/script&amp;gt;
+
+&amp;lt;/head&amp;gt;
+
+&amp;lt;body style="background-color: rgb(221, 221, 221); color: rgb(39, 40, 34);"&amp;gt;
+
+    &amp;lt;div id="topmenu"&amp;gt;
+
+        &amp;lt;button id="fetch" style="background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); border: 1px solid rgb(204, 204, 204);"&amp;gt;Fetch&amp;lt;/button&amp;gt;
+
+        &amp;lt;button id="commit" style="background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); border: 1px solid rgb(204, 204, 204);"&amp;gt;Commit&amp;lt;/button&amp;gt;
+
+        &amp;lt;input type="text" style="width:20px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); border: 1px solid rgb(204, 204, 204);" id="githubToken" value="" placeholder="GitHub Token"&amp;gt;
+
+        &amp;lt;input type="text" style="width:20px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); border: 1px solid rgb(204, 204, 204);" id="repoOwner" value="" placeholder="Repo Owner"&amp;gt;
+
+        &amp;lt;input type="text" style="width:20px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); border: 1px solid rgb(204, 204, 204);" id="repoName" value="" placeholder="Repo Name"&amp;gt;
+
+        &amp;lt;input type="text" style="width:20px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); border: 1px solid rgb(204, 204, 204);" id="filePath" value="" placeholder="File Path"&amp;gt;
+
+        &amp;lt;input type="text" style="width:20px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); border: 1px solid rgb(204, 204, 204);" id="branch" value="" placeholder="Branch"&amp;gt;
+
+        &amp;lt;!-- "Save Icon" by Mahesh Keshvala from Noun Project, licensed under CC BY 3.0. --&amp;gt;
+
+        &amp;lt;!-- https://creativecommons.org/licenses/by/3.0/ --&amp;gt;
+
+        &amp;lt;!-- Source: https://thenounproject.com/icon/save-2209758/ --&amp;gt;
+
+        &amp;lt;!-- changes to the original icon are dynamically made switching to dark-mode.  --&amp;gt;
+
+        &amp;lt;button id="saveAs" style="background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); border: 1px solid rgb(204, 204, 204);"&amp;gt;
+
+            &amp;lt;svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 400 500" style="enable-background:new 0 0 400 400;" xml:space="preserve"&amp;gt;&amp;lt;g&amp;gt;&amp;lt;path d="M358.8,272.2v70.3c0,1.4-0.2,2.7-0.5,3.9v0c0,0,0,0,0,0c-1.4,6.9-7.5,12.1-14.7,12.1H56.3c-7.7,0-14.1-5.9-14.9-13.4   c-0.2-0.9-0.2-1.7-0.2-2.7v-70.3c0-8.3,6.8-15,15-15c4.1,0,7.9,1.7,10.6,4.4c2.7,2.7,4.4,6.5,4.4,10.6v56.3h257.7v-56.3   c0-8.3,6.8-15,15-15c4.1,0,7.9,1.7,10.6,4.4C357.1,264.3,358.8,268.1,358.8,272.2z" fill="#000"&amp;gt;&amp;lt;/path&amp;gt;&amp;lt;path d="M286.5,201.8l-73.7,73.7c-0.1,0.2-0.3,0.3-0.4,0.4c-2.7,2.7-6.2,4.4-9.7,4.9c-0.3,0-0.6,0.1-0.9,0.1   c-0.6,0.1-1.2,0.1-1.8,0.1h0l-1.7-0.1c-0.3,0-0.6-0.1-0.9-0.1c-3.6-0.5-7-2.2-9.7-4.9c-0.1-0.1-0.3-0.3-0.4-0.4l-73.7-73.7   c-3.4-3.4-5.1-7.9-5.1-12.4c0-4.5,1.7-9,5.1-12.4c6.8-6.8,17.9-6.8,24.8,0l44.3,44.3V59c0-9.6,7.9-17.5,17.5-17.5   c4.8,0,9.2,2,12.4,5.1c3.2,3.2,5.1,7.5,5.1,12.4v162.3l44.3-44.3c6.8-6.8,17.9-6.8,24.8,0C293.3,183.9,293.3,195,286.5,201.8z" fill="#000"&amp;gt;&amp;lt;/path&amp;gt;&amp;lt;/g&amp;gt;&amp;lt;text x="0" y="415" fill="#000" font-size="5px" font-weight="bold" font-family="'Helvetica Neue', Helvetica, Arial-Unicode, Arial, Sans-serif"&amp;gt;Created by Mahesh Keshvala&amp;lt;/text&amp;gt;&amp;lt;text x="0" y="420" fill="#000" font-size="5px" font-weight="bold" font-family="'Helvetica Neue', Helvetica, Arial-Unicode, Arial, Sans-serif"&amp;gt;from the Noun Project&amp;lt;/text&amp;gt;&amp;lt;/svg&amp;gt;
+
+		&amp;lt;/button&amp;gt;
+
+		&amp;lt;!-- "Save File Icon" by Kosong Tujuh from Noun Project, licensed under CC BY 3.0. --&amp;gt;
+
+        &amp;lt;!-- https://creativecommons.org/licenses/by/3.0/ --&amp;gt;
+
+        &amp;lt;!-- Source: https://thenounproject.com/icon/save-6980338/ --&amp;gt;
+
+        &amp;lt;!-- remove text element on the left corner  --&amp;gt;
+
+        &amp;lt;!-- changes to the original icon are dynamically made switching to dark-mode.  --&amp;gt;
+
+		&amp;lt;button id="saveFile" style="background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); border: 1px solid rgb(204, 204, 204);"&amp;gt;
+
+            &amp;lt;svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="-5.0 -10.0 110.0 135.0"&amp;gt;&amp;lt;g&amp;gt;&amp;lt;path d="m32.609 51.621c-1.1406 0-2.0703 0.92969-2.0703 2.0703v36.309h38.922v-36.309c0-1.1406-0.92969-2.0703-2.0703-2.0703z"&amp;gt;&amp;lt;/path&amp;gt;&amp;lt;path d="m30.539 10v15.602c0 1.1406 0.92969 2.0703 2.0703 2.0703h34.781c1.1406 0 2.0703-0.92969 2.0703-2.0703v-15.602h-5.0703v8.8398c0 0.89844-0.73047 1.6211-1.6211 1.6211s-1.6211-0.73047-1.6211-1.6211v-8.8398z"&amp;gt;&amp;lt;/path&amp;gt;&amp;lt;path d="m82.281 90c3.7188 0 6.7383-3.0195 6.7383-6.7383v-59.082c0-0.58984-0.23047-1.1406-0.64844-1.5586l-11.98-11.98c-0.42188-0.42188-0.96875-0.64844-1.5586-0.64844h-2.1289v15.602c0 2.9297-2.3789 5.3203-5.3203 5.3203h-34.781c-2.9297 0-5.3203-2.3789-5.3203-5.3203v-15.602h-9.5703c-3.7188 0-6.7383 3.0195-6.7383 6.7383v66.52c0 3.7188 3.0195 6.7383 6.7383 6.7383h9.5703v-36.309c0-2.9297 2.3789-5.3203 5.3203-5.3203h34.781c2.9297 0 5.3203 2.3789 5.3203 5.3203v36.309h9.5703z"&amp;gt;&amp;lt;/path&amp;gt;&amp;lt;/g&amp;gt;&amp;lt;/svg&amp;gt;
+
+        &amp;lt;/button&amp;gt;
+
+		&amp;lt;!-- "New File Icon" by wiran toni from Noun Project, licensed under CC BY 3.0. --&amp;gt;
+
+        &amp;lt;!-- https://creativecommons.org/licenses/by/3.0/ --&amp;gt;
+
+        &amp;lt;!-- Source: https://thenounproject.com/icon/new-file-6801117/ --&amp;gt;
+
+        &amp;lt;!-- remove text element on the left corner  --&amp;gt;
+
+        &amp;lt;!-- changes to the original icon are dynamically made switching to dark-mode.  --&amp;gt;
+
+		&amp;lt;button id="newFile" style="background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); border: 1px solid rgb(204, 204, 204);"&amp;gt;
+
+            &amp;lt;svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="-5.0 -10.0 110.0 135.0"&amp;gt;&amp;lt;g&amp;gt;&amp;lt;path d="m22.656 28.008v32.914c0 1.5547 1.2578 2.8125 2.8125 2.8125s2.8125-1.2578 2.8125-2.8125v-32.914c0-3.5547 2.8945-6.4453 6.4453-6.4453h23.199v10.816c0 5.082 4.1328 9.2148 9.2188 9.2148h10.262v30.395c0 3.5547-2.8945 6.4453-6.4453 6.4453h-32.508c-1.5547 0-2.8125 1.2578-2.8125 2.8125 0 1.5547 1.2578 2.8125 2.8125 2.8125h32.508c6.6562 0 12.07-5.4141 12.07-12.074v-33.199c0-0.11719-0.054688-0.21875-0.066406-0.33203-0.027344-0.24219-0.054688-0.49219-0.14844-0.72266-0.097656-0.23438-0.25391-0.42969-0.40625-0.62891-0.070312-0.085937-0.10156-0.19531-0.17969-0.27734l-19.48-20.035c-0.003906-0.003906-0.007812-0.007812-0.015625-0.007812-0.24219-0.24609-0.53516-0.44531-0.85547-0.58594-0.35938-0.16406-0.74219-0.25-1.1328-0.25391-0.007813 0-0.007813-0.003906-0.011719-0.003906h-26.012c-6.6523 0-12.066 5.4141-12.066 12.07zm40.895 4.3711v-6.7031l10.012 10.297h-6.418c-1.9805 0-3.5938-1.6133-3.5938-3.5938z"/&amp;gt;&amp;lt;path d="m22.656 72.746h-2.875c-1.5547 0-2.8125 1.2578-2.8125 2.8125 0 1.5547 1.2578 2.8125 2.8125 2.8125h2.875v2.8789c0 1.5547 1.2578 2.8125 2.8125 2.8125s2.8125-1.2578 2.8125-2.8125v-2.875h2.875c1.5547 0 2.8125-1.2578 2.8125-2.8125s-1.2578-2.8125-2.8125-2.8125h-2.875v-2.875c0-1.5547-1.2578-2.8125-2.8125-2.8125s-2.8125 1.2578-2.8125 2.8125z"/&amp;gt;&amp;lt;/g&amp;gt;&amp;lt;/svg&amp;gt;
+
+        &amp;lt;/button&amp;gt;
+
+		&amp;lt;!-- "Toggle Theme Icon" by Jessiey from Noun Project, licensed under CC BY 3.0. --&amp;gt;
+
+        &amp;lt;!-- https://creativecommons.org/licenses/by/3.0/ --&amp;gt;
+
+        &amp;lt;!-- Source: https://thenounproject.com/icon/theme-6000228/ --&amp;gt;
+
+        &amp;lt;!-- remove text element on the left corner  --&amp;gt;
+
+        &amp;lt;!-- changes to the original icon are dynamically made switching to dark-mode.  --&amp;gt;
+
+		&amp;lt;button id="toggleTheme" style="background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); border: 1px solid rgb(204, 204, 204); margin-right:0px;"&amp;gt;
+
+            &amp;lt;svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" viewBox="-1.6 -3.2 35.2 43.2" x="0px" y="0px"&amp;gt;&amp;lt;path d="m14.29,7.81c-.39-.39-1.02-.39-1.41,0l-4.95,4.95c-.78.78-.78,2.05,0,2.83l2.12,2.12-4.24,4.24c-1.17,1.17-1.17,3.07,0,4.24.57.57,1.32.88,2.12.88s1.55-.31,2.12-.88l4.24-4.24,2.12,2.12c.78.78,2.05.78,2.83,0l4.95-4.95c.19-.19.29-.44.29-.71s-.11-.52-.29-.71L14.29,7.81Zm3.54,14.85l-2.83-2.83c-.39-.39-1.02-.39-1.41,0l-4.95,4.95c-.38.38-1.04.38-1.41,0-.39-.39-.39-1.02,0-1.41l4.95-4.95c.19-.19.29-.44.29-.71s-.11-.52-.29-.71l-2.83-2.83h0s4.24-4.24,4.24-4.24l8.49,8.49-4.24,4.24Z"&amp;gt;&amp;lt;/path&amp;gt;&amp;lt;path d="m12.82,13.4c-.39.39-.39,1.02,0,1.41l4.32,4.32c.2.2.45.29.71.29s.51-.1.71-.29c.39-.39.39-1.02,0-1.41l-4.32-4.32c-.39-.39-1.02-.39-1.41,0Z"&amp;gt;&amp;lt;/path&amp;gt;&amp;lt;path d="m28.43,12.05l-4.24-4.24s0,0,0,0,0,0,0,0l-2.12-2.12s0,0,0,0,0,0,0,0l-2.12-2.12c-.38-.38-.88-.59-1.41-.59h0c-.53,0-1.04.21-1.41.59l-2.12,2.12c-.39.39-.39,1.02,0,1.41.39.39,1.02.39,1.41,0l2.12-2.12,1.41,1.41-1.43,1.43c-.39.39-.39,1.02,0,1.41.2.2.45.29.71.29s.51-.1.71-.29l1.43-1.43.71.71-1.43,1.43c-.39.39-.39,1.02,0,1.41.2.2.45.29.71.29s.51-.1.71-.29l1.43-1.43.71.71-1.43,1.43c-.39.39-.39,1.02,0,1.41.2.2.45.29.71.29s.51-.1.71-.29l1.43-1.43,1.41,1.41-2.12,2.12c-.39.39-.39,1.02,0,1.41.2.2.45.29.71.29s.51-.1.71-.29l2.12-2.12c.38-.38.59-.88.59-1.41s-.21-1.04-.59-1.41Z"&amp;gt;&amp;lt;/path&amp;gt;&amp;lt;/svg&amp;gt;
+
+        &amp;lt;/button&amp;gt;
+
+    &amp;lt;/div&amp;gt;
+
+    &amp;lt;div style="height:5px;display:block;"&amp;gt;&amp;lt;/div&amp;gt;
+
+    &amp;lt;div id="editor" ondrop="handleDrop(event)" ondragover="allowDrop(event)" class=" ace_editor ace_hidpi ace-chrome" draggable="false"&amp;gt;&amp;lt;/div&amp;gt;
+
+    &amp;lt;div style="height:5px;display:block;"&amp;gt;&amp;lt;/div&amp;gt;
+
+    &amp;lt;div id="statusbar"&amp;gt;Status:&amp;amp;nbsp;&amp;lt;div id="status"&amp;gt;&amp;lt;/div&amp;gt;&amp;lt;/div&amp;gt;
+
+    &amp;lt;div id="storedData"&amp;gt;&amp;lt;/div&amp;gt;
+
+	&amp;lt;div id="themeTag"&amp;gt;light&amp;lt;/div&amp;gt;
+
+	&amp;lt;div id="post"&amp;gt;&amp;lt;/div&amp;gt;
+
+    &amp;lt;script&amp;gt;
+
+        const editor = ace.edit("editor");
+
+        editor.setTheme("ace/theme/monokai");
+
+        editor.session.setMode("ace/mode/javascript");
+
+        const getGithubConfig = () =&amp;gt; {
+
+            return {
+
+                githubToken: document.getElementById('githubToken').value,
+
+                repoOwner: document.getElementById('repoOwner').value,
+
+                repoName: document.getElementById('repoName').value,
+
+                filePath: document.getElementById('filePath').value,
+
+                branch: document.getElementById('branch').value
+
+            };
+
+        };
+
+        const saveInputValues = () =&amp;gt; {
+
+            document.getElementById('githubToken').setAttribute('value', document.getElementById('githubToken').value);
+
+            document.getElementById('repoOwner').setAttribute('value', document.getElementById('repoOwner').value);
+
+            document.getElementById('repoName').setAttribute('value', document.getElementById('repoName').value);
+
+            document.getElementById('filePath').setAttribute('value', document.getElementById('filePath').value);
+
+            document.getElementById('branch').setAttribute('value', document.getElementById('branch').value);
+
+        };
+
+        document.getElementById('githubToken').addEventListener('input', saveInputValues);
+
+        document.getElementById('repoOwner').addEventListener('input', saveInputValues);
+
+        document.getElementById('repoName').addEventListener('input', saveInputValues);
+
+        document.getElementById('filePath').addEventListener('input', saveInputValues);
+
+        document.getElementById('branch').addEventListener('input', saveInputValues);
+
+        editor.session.on('change', () =&amp;gt; {
+
+            document.getElementById('storedData').textContent = editor.getValue();
+
+        });
+
+        document.getElementById('fetch').addEventListener('click', async () =&amp;gt; {
+
+            const { githubToken, repoOwner, repoName, filePath } = getGithubConfig();
+
+            try {
+
+                const response = await axios.get(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/${filePath}`, {
+
+                    headers: { Authorization: `token ${githubToken}` }
+
+                });
+
+                const fileContent = atob(response.data.content);
+
+                editor.setValue(fileContent);
+
+                
+
+                const detectedLanguage = autoDetectLanguage(fileContent);
+
+                editor.session.setMode(`ace/mode/${detectedLanguage}`);
+
+                document.getElementById('storedData').textContent = fileContent;
+
+                document.getElementById('status').textContent = 'File fetched successfully';
+
+            } catch (error) {
+
+                console.error('Error fetching file:', error);
+
+                alert('Failed to fetch file from GitHub.');
+
+                document.getElementById('status').textContent = 'Failed to fetch file from GitHub';
+
+            }
+
+        });
+
+        document.getElementById('commit').addEventListener('click', async () =&amp;gt; {
+
+            const { githubToken, repoOwner, repoName, filePath, branch } = getGithubConfig();
+
+            try {
+
+                const getShaResponse = await axios.get(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/${filePath}`, {
+
+                    headers: { Authorization: `token ${githubToken}` }
+
+                });
+
+                const sha = getShaResponse.data.sha;
+
+                const content = editor.getValue();
+
+                const encodedContent = btoa(unescape(encodeURIComponent(content)));
+
+                const response = await axios.put(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/${filePath}`, {
+
+                    message: 'Commit from Ace editor',
+
+                    content: encodedContent,
+
+                    sha: sha,
+
+                    branch: branch
+
+                }, {
+
+                    headers: { Authorization: `token ${githubToken}` }
+
+                });
+
+                alert('File committed to GitHub.');
+
+                document.getElementById('storedData').textContent = content;
+
+                document.getElementById('status').textContent = 'File committed successfully';
+
+            } catch (error) {
+
+                console.error('Error committing file:', error);
+
+                alert('Failed to commit file to GitHub.');
+
+                document.getElementById('status').textContent = 'Failed to commit file to GitHub';
+
+            }
+
+        });
+
+        function allowDrop(event) {
+
+            event.preventDefault();
+
+        }
+
+        function getModeForFileExtension(extension) {
+
+            const modes = {
+
+                'js': 'javascript',
+
+                'json': 'json',
+
+                'html': 'html',
+
+                'css': 'css',
+
+                'java': 'java',
+
+                'py': 'python',
+
+                'xml': 'xml',
+
+                'md': 'markdown'
+
+            };
+
+            return modes[extension] || 'text';
+
+        }
+
+        function autoDetectLanguage(content) {
+
+            const keywords = {
+
+                'html': /&amp;lt;!DOCTYPE html&amp;gt;|&amp;lt;html\b|&amp;lt;head\b|&amp;lt;body\b|&amp;lt;\/body&amp;gt;|&amp;lt;\/html&amp;gt;|&amp;lt;div\b|&amp;lt;span\b|&amp;lt;button\b|&amp;lt;form\b|&amp;lt;input\b|&amp;lt;img\b|&amp;lt;a\b|&amp;lt;ul\b|&amp;lt;li\b|&amp;lt;table\b|&amp;lt;tr\b|&amp;lt;td\b|&amp;lt;\/div&amp;gt;|&amp;lt;\/span&amp;gt;|&amp;lt;\/button&amp;gt;|&amp;lt;\/form&amp;gt;|&amp;lt;\/input&amp;gt;|&amp;lt;\/img&amp;gt;|&amp;lt;\/a&amp;gt;|&amp;lt;\/ul&amp;gt;|&amp;lt;\/li&amp;gt;|&amp;lt;\/table&amp;gt;|&amp;lt;\/tr&amp;gt;|&amp;lt;\/td&amp;gt;/i,
+
+                'python': /\b(def|import|from|as|if|else|elif|for|while|return|print|class|with|try|except|lambda)\b/g,
+
+                'javascript': /\b(function|var|let|const|if|else|return|for|while|console\.log|=&amp;gt;|import|export|class|new)\b/g,
+
+                'java': /\b(class|public|private|protected|void|static|int|new|if|else|while|for|return|import|package|throws|extends|implements)\b/g,
+
+                'css': /\b(color|background|font-size|margin|padding|border|display|flex|grid|align|justify|position|float|clear)\b/g,
+
+                'json': /^\s*(\{|\[)|\b(true|false|null)\b/g,
+
+                'xml': /^\s*&amp;lt;\?xml\b|\&amp;lt;\/?\w+\b/g,
+
+                'markdown': /^(#|\*|-|\d+\.)\s|\[(.*?)\]\((.*?)\)|`{1,3}/g,
+
+                'sql': /\b(SELECT|INSERT|UPDATE|DELETE|FROM|WHERE|JOIN|INNER|LEFT|RIGHT|FULL|CREATE|DROP|ALTER|TABLE|DATABASE|INDEX|VIEW)\b/g,
+
+                'bash': /(^#!\/bin\/bash\b|^#!\/bin\/sh\b)|\b(echo|export|if|then|else|fi|for|in|do|done|while|case|esac|function)\b/g,
+
+                'ruby': /\b(def|class|module|if|else|elsif|end|do|while|for|require|include|begin|rescue)\b/g,
+
+                'php': /\b(&amp;lt;\?php|\$[a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]*|\becho\b|if|else|elseif|while|for|foreach|function|return|require|include)\b/g,
+
+                'csharp': /\b(class|public|private|protected|void|static|int|if|else|while|for|return|namespace|using|new|try|catch|finally|throw|async|await)\b/g,
+
+                'go': /\b(func|package|import|var|const|if|else|for|return|struct|interface|go|defer|select|case)\b/g,
+
+                'kotlin': /\b(fun|val|var|if|else|for|while|when|return|class|object|interface|import|package)\b/g,
+
+                'r': /\b(function|if|else|for|while|repeat|break|next|return|library|source|&amp;lt;-|TRUE|FALSE)\b/g
+
+            };
+
+        
+
+            const matchCounts = {};
+
+            const lines = content.split('\n');
+
+            const maxLines = 100; // Adjust this to cover more or fewer lines
+
+        
+
+            // Check up to maxLines for more weight at the beginning
+
+            for (let i = 0; i &amp;lt; Math.min(lines.length, maxLines); i++) {
+
+                const line = lines[i];
+
+                for (const [language, regex] of Object.entries(keywords)) {
+
+                    const matches = line.match(regex);
+
+                    if (matches) {
+
+                        if (!matchCounts[language]) {
+
+                            matchCounts[language] = 0;
+
+                        }
+
+                        matchCounts[language] += matches.length * (maxLines - i); // More weight for earlier lines
+
+                    }
+
+                }
+
+            }
+
+        
+
+            // Check the rest of the content with less weight
+
+            for (let i = maxLines; i &amp;lt; lines.length; i++) {
+
+                const line = lines[i];
+
+                for (const [language, regex] of Object.entries(keywords)) {
+
+                    const matches = line.match(regex);
+
+                    if (matches) {
+
+                        if (!matchCounts[language]) {
+
+                            matchCounts[language] = 0;
+
+                        }
+
+                        matchCounts[language] += matches.length; // No extra weight for later lines
+
+                    }
+
+                }
+
+            }
+
+        
+
+            let detectedLanguage = 'text';
+
+            let maxMatches = 0;
+
+        
+
+            for (const [language, count] of Object.entries(matchCounts)) {
+
+                if (count &amp;gt; maxMatches) {
+
+                    maxMatches = count;
+
+                    detectedLanguage = language;
+
+                }
+
+            }
+
+        
+
+            // If CSS, JavaScript, or XML is detected, check again if it might be HTML
+
+            if (['css', 'javascript', 'xml'].includes(detectedLanguage)) {
+
+                if (keywords.html.test(content)) {
+
+                    detectedLanguage = 'html';
+
+                }
+
+            }
+
+        
+
+            console.log("detected language: " + detectedLanguage);
+
+            return detectedLanguage;
+
+        }
+
+        function handleDrop(event) {
+
+            event.preventDefault();
+
+            const files = event.dataTransfer.files;
+
+            if (files.length &amp;gt; 0) {
+
+                const file = files[0];
+
+                const reader = new FileReader();
+
+                const fileExtension = file.name.split('.').pop().toLowerCase();
+
+                reader.onload = function(e) {
+
+                    const cursorPos = editor.getCursorPosition();
+
+                    const fileContent = e.target.result;
+
+                    const detectedLanguage = autoDetectLanguage(fileContent);
+
+                    editor.session.setMode(`ace/mode/${detectedLanguage}`);
+
+                    editor.session.insert(cursorPos, fileContent);
+
+                };
+
+                if (file.type.startsWith("text/")) {
+
+                    reader.readAsText(file);
+
+                } else if (file.type === "image/png") {
+
+                    reader.onload = function(e) {
+
+                        const cursorPos = editor.getCursorPosition();
+
+                        const base64String = e.target.result;
+
+                        const imageTag = `![Image](${base64String})`;
+
+                        editor.session.insert(cursorPos, imageTag);
+
+                    };
+
+                    reader.readAsDataURL(file);
+
+                } else {
+
+                    reader.readAsText(file);
+
+                }
+
+            }
+
+        }
+
+        let detectTimeout;
+
+        editor.session.on('change', () =&amp;gt; {
+
+            clearTimeout(detectTimeout);
+
+            detectTimeout = setTimeout(() =&amp;gt; {
+
+                const content = editor.getValue();
+
+                const detectedLanguage = autoDetectLanguage(content);
+
+                editor.session.setMode(`ace/mode/${detectedLanguage}`);
+
+            }, 500);
+
+        });
+
+		let isDarkTheme = true;
+
+		function applyTheme() {
+
+            const bodyStyles = document.body.style;
+
+            const editorStyles = document.getElementById('editor').style;
+
+            const svgPaths = document.querySelectorAll('svg path');
+
+            const svgTexts = document.querySelectorAll('svg text');
+
+            if (isDarkTheme) {
+
+                document.getElementById('themeTag').textContent = "dark";
+
+                bodyStyles.backgroundColor = '#272822';
+
+                bodyStyles.color = '#ddd';
+
+                editor.setTheme("ace/theme/monokai");
+
+                document.querySelectorAll('input[type="text"]').forEach(input =&amp;gt; {
+
+                    input.style.backgroundColor = '#D3D3D3';
+
+                    input.style.color = '#272822';
+
+                    input.style.border = '1px solid #D3D3D3';
+
+                });
+
+                document.querySelectorAll('#topmenu button').forEach(button =&amp;gt; {
+
+                    button.style.backgroundColor = '#444';
+
+                    button.style.color = '#DDD';
+
+                    button.style.border = '1px solid #444';
+
+                });
+
+                // Update SVG color for dark theme
+
+                svgPaths.forEach(path =&amp;gt; {
+
+                    path.setAttribute('fill', '#FFF');
+
+                });
+
+                svgTexts.forEach(text =&amp;gt; {
+
+                    text.setAttribute('fill', '#FFF');
+
+                });
+
+                // Apply dark scrollbar styles
+
+                document.documentElement.style.setProperty('--scrollbar-bg', '#444');
+
+                document.documentElement.style.setProperty('--scrollbar-thumb', '#666');
+
+            } else {
+
+                document.getElementById('themeTag').textContent = "light";
+
+                bodyStyles.backgroundColor = '#DDD';
+
+                bodyStyles.color = '#272822';
+
+                editor.setTheme("ace/theme/chrome");
+
+                document.querySelectorAll('input[type="text"]').forEach(input =&amp;gt; {
+
+                    input.style.backgroundColor = '#FFFFFF';
+
+                    input.style.color = '#000000';
+
+                    input.style.border = '1px solid #CCC';
+
+                });
+
+                document.querySelectorAll('#topmenu button').forEach(button =&amp;gt; {
+
+                    button.style.backgroundColor = '#FFF';
+
+                    button.style.color = '#000';
+
+                    button.style.border = '1px solid #CCC';
+
+                });
+
+                // Update SVG color for light theme
+
+                svgPaths.forEach(path =&amp;gt; {
+
+                    path.setAttribute('fill', '#000');
+
+                });
+
+                svgTexts.forEach(text =&amp;gt; {
+
+                    text.setAttribute('fill', '#000');
+
+                });
+
+                // Revert to light scrollbar styles
+
+                document.documentElement.style.setProperty('--scrollbar-bg', '#FFF');
+
+                document.documentElement.style.setProperty('--scrollbar-thumb', '#CCC');
+
+            }
+
+        }
+
+		document.getElementById('toggleTheme').addEventListener('click', () =&amp;gt; {
+
+			isDarkTheme = !isDarkTheme;
+
+			applyTheme();
+
+		});
+
+		
+
+		function saveAs() {
+
+			// Get the content from the editor
+
+			const content = editor.getValue();
+
+			// Update the storedData element with the editor content
+
+			document.getElementById('storedData').textContent = content;
+
+			// Create a blob with the content
+
+			const blob = new Blob([content], { type: 'text/plain' });
+
+			// Create a link element
+
+			const link = document.createElement('a');
+
+			// Set the download attribute with a filename
+
+			link.download = defaultExportName;
+
+			// Create an object URL for the blob
+
+			link.href = URL.createObjectURL(blob);
+
+			// Append the link to the body (required for Firefox)
+
+			document.body.appendChild(link);
+
+			// Programmatically click the link to trigger the download
+
+			link.click();
+
+			// Remove the link from the document
+
+			document.body.removeChild(link);
+
+		}
+
+		
+
+		document.getElementById('saveAs').addEventListener('click', () =&amp;gt; {
+
+			saveAs();
+
+		});
+
+		
+
+		function newFile() {
+
+			editor.setValue("");
+
+			// Get all elements within the head tag
+
+			const headElements = document.head.children;
+
+			// Iterate over the elements
+
+			for (let i = 0; i &amp;lt; headElements.length; i++) {
+
+				// Check if the current element is not a &amp;lt;style&amp;gt; tag
+
+				if (headElements[i].tagName !== 'STYLE') {
+
+					break; // Exit the loop once we encounter a non-&amp;lt;style&amp;gt; tag
+
+				}
+
+				// Remove the &amp;lt;style&amp;gt; tag
+
+				headElements[i].parentNode.removeChild(headElements[i]);
+
+				// Since we are modifying the DOM, decrement the index to account for the removed element
+
+				i--;
+
+			}
+
+            const editorElement = document.getElementById('editor');
+
+            const originalContent = editorElement.innerHTML;
+
+            editorElement.innerHTML = '';
+
+            const content = document.documentElement.outerHTML;
+
+			SHTS.new(content);
+
+		}
+
+		
+
+	    document.getElementById('newFile').addEventListener('click', () =&amp;gt; {
+
+	        saveFile();
+
+	        newFile();
+
+		});
+
+		
+
+		function saveFile() {
+
+			document.getElementById('storedData').textContent = editor.getValue();
+
+			// Get all elements within the head tag
+
+			const headElements = document.head.children;
+
+			// Iterate over the elements
+
+			for (let i = 0; i &amp;lt; headElements.length; i++) {
+
+				// Check if the current element is not a &amp;lt;style&amp;gt; tag
+
+				if (headElements[i].tagName !== 'STYLE') {
+
+					break; // Exit the loop once we encounter a non-&amp;lt;style&amp;gt; tag
+
+				}
+
+				// Remove the &amp;lt;style&amp;gt; tag
+
+				headElements[i].parentNode.removeChild(headElements[i]);
+
+				// Since we are modifying the DOM, decrement the index to account for the removed element
+
+				i--;
+
+			}
+
+            const editorElement = document.getElementById('editor');
+
+            const originalContent = editorElement.innerHTML;
+
+            editorElement.innerHTML = '';
+
+            const content = document.documentElement.outerHTML;
+
+            SHTS.save(content);
+
+		}
+
+		
+
+	    document.getElementById('saveFile').addEventListener('click', () =&amp;gt; {
+
+			saveFile();
+
+		});
+
+		
+
+		window.onload = () =&amp;gt; {		
+
+			console.log("get theme");
+
+            const themeTag = document.getElementById('themeTag').textContent;
+
+            if (themeTag === "dark") {
+
+                isDarkTheme = true;
+
+            } else {
+
+                isDarkTheme = false; // Default to light theme
+
+            }
+
+            
+
+			console.log("apply theme");
+
+			applyTheme();
+
+			
+
+			console.log("loading");
+
+			let fileContent = document.getElementById('storedData').textContent;
+
+			fileContent = fileContent.replace(/[\r\n]+/g, '\n');
+
+			editor.setValue(fileContent);
+
+                
+
+            const detectedLanguage = autoDetectLanguage(fileContent);
+
+            editor.session.setMode(`ace/mode/${detectedLanguage}`);
+
+            
+
+            // clear status
+
+            document.getElementById('status').textContent = "";
+
+        };
+
+        
+
+        window.addEventListener("beforeunload", (event) =&amp;gt; {
+
+			document.getElementById('storedData').textContent = editor.getValue();
+
+			// Get all elements within the head tag
+
+			const headElements = document.head.children;
+
+			// Iterate over the elements
+
+			for (let i = 0; i &amp;lt; headElements.length; i++) {
+
+				// Check if the current element is not a &amp;lt;style&amp;gt; tag
+
+				if (headElements[i].tagName !== 'STYLE') {
+
+					break; // Exit the loop once we encounter a non-&amp;lt;style&amp;gt; tag
+
+				}
+
+				// Remove the &amp;lt;style&amp;gt; tag
+
+				headElements[i].parentNode.removeChild(headElements[i]);
+
+				// Since we are modifying the DOM, decrement the index to account for the removed element
+
+				i--;
+
+			}
+
+            const editorElement = document.getElementById('editor');
+
+            const originalContent = editorElement.innerHTML;
+
+            editorElement.innerHTML = '';
+
+            const content = document.documentElement.outerHTML;
+
+            SHTS.save(content);
+
+        });
+
+    &amp;lt;/script&amp;gt;
+
+&amp;lt;/body&amp;gt;&amp;lt;/html&amp;gt;&lt;/div&gt;
+
+	&lt;div id="themeTag"&gt;light&lt;/div&gt;
+
+	&lt;div id="post"&gt;&lt;/div&gt;
+
+    &lt;script&gt;
+
+        const editor = ace.edit("editor");
+
+        editor.setTheme("ace/theme/monokai");
+
+        editor.session.setMode("ace/mode/javascript");
+
+        const getGithubConfig = () =&gt; {
+
+            return {
+
+                githubToken: document.getElementById('githubToken').value,
+
+                repoOwner: document.getElementById('repoOwner').value,
+
+                repoName: document.getElementById('repoName').value,
+
+                filePath: document.getElementById('filePath').value,
+
+                branch: document.getElementById('branch').value
+
+            };
+
+        };
+
+        const saveInputValues = () =&gt; {
+
+            document.getElementById('githubToken').setAttribute('value', document.getElementById('githubToken').value);
+
+            document.getElementById('repoOwner').setAttribute('value', document.getElementById('repoOwner').value);
+
+            document.getElementById('repoName').setAttribute('value', document.getElementById('repoName').value);
+
+            document.getElementById('filePath').setAttribute('value', document.getElementById('filePath').value);
+
+            document.getElementById('branch').setAttribute('value', document.getElementById('branch').value);
+
+        };
+
+        document.getElementById('githubToken').addEventListener('input', saveInputValues);
+
+        document.getElementById('repoOwner').addEventListener('input', saveInputValues);
+
+        document.getElementById('repoName').addEventListener('input', saveInputValues);
+
+        document.getElementById('filePath').addEventListener('input', saveInputValues);
+
+        document.getElementById('branch').addEventListener('input', saveInputValues);
+
+        editor.session.on('change', () =&gt; {
+
+            document.getElementById('storedData').textContent = editor.getValue();
+
+        });
+
+        document.getElementById('fetch').addEventListener('click', async () =&gt; {
+
+            const { githubToken, repoOwner, repoName, filePath } = getGithubConfig();
+
+            try {
+
+                const response = await axios.get(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/${filePath}`, {
+
+                    headers: { Authorization: `token ${githubToken}` }
+
+                });
+
+                const fileContent = atob(response.data.content);
+
+                editor.setValue(fileContent);
+
+                
+
+                const detectedLanguage = autoDetectLanguage(fileContent);
+
+                editor.session.setMode(`ace/mode/${detectedLanguage}`);
+
+                document.getElementById('storedData').textContent = fileContent;
+
+                document.getElementById('status').textContent = 'File fetched successfully';
+
+            } catch (error) {
+
+                console.error('Error fetching file:', error);
+
+                alert('Failed to fetch file from GitHub.');
+
+                document.getElementById('status').textContent = 'Failed to fetch file from GitHub';
+
+            }
+
+        });
+
+        document.getElementById('commit').addEventListener('click', async () =&gt; {
+
+            const { githubToken, repoOwner, repoName, filePath, branch } = getGithubConfig();
+
+            try {
+
+                const getShaResponse = await axios.get(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/${filePath}`, {
+
+                    headers: { Authorization: `token ${githubToken}` }
+
+                });
+
+                const sha = getShaResponse.data.sha;
+
+                const content = editor.getValue();
+
+                const encodedContent = btoa(unescape(encodeURIComponent(content)));
+
+                const response = await axios.put(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/${filePath}`, {
+
+                    message: 'Commit from Ace editor',
+
+                    content: encodedContent,
+
+                    sha: sha,
+
+                    branch: branch
+
+                }, {
+
+                    headers: { Authorization: `token ${githubToken}` }
+
+                });
+
+                alert('File committed to GitHub.');
+
+                document.getElementById('storedData').textContent = content;
+
+                document.getElementById('status').textContent = 'File committed successfully';
+
+            } catch (error) {
+
+                console.error('Error committing file:', error);
+
+                alert('Failed to commit file to GitHub.');
+
+                document.getElementById('status').textContent = 'Failed to commit file to GitHub';
+
+            }
+
+        });
+
+        function allowDrop(event) {
+
+            event.preventDefault();
+
+        }
+
+        function getModeForFileExtension(extension) {
+
+            const modes = {
+
+                'js': 'javascript',
+
+                'json': 'json',
+
+                'html': 'html',
+
+                'css': 'css',
+
+                'java': 'java',
+
+                'py': 'python',
+
+                'xml': 'xml',
+
+                'md': 'markdown'
+
+            };
+
+            return modes[extension] || 'text';
+
+        }
+
+        function autoDetectLanguage(content) {
+
+            const keywords = {
+
+                'html': /&lt;!DOCTYPE html&gt;|&lt;html\b|&lt;head\b|&lt;body\b|&lt;\/body&gt;|&lt;\/html&gt;|&lt;div\b|&lt;span\b|&lt;button\b|&lt;form\b|&lt;input\b|&lt;img\b|&lt;a\b|&lt;ul\b|&lt;li\b|&lt;table\b|&lt;tr\b|&lt;td\b|&lt;\/div&gt;|&lt;\/span&gt;|&lt;\/button&gt;|&lt;\/form&gt;|&lt;\/input&gt;|&lt;\/img&gt;|&lt;\/a&gt;|&lt;\/ul&gt;|&lt;\/li&gt;|&lt;\/table&gt;|&lt;\/tr&gt;|&lt;\/td&gt;/i,
+
+                'python': /\b(def|import|from|as|if|else|elif|for|while|return|print|class|with|try|except|lambda)\b/g,
+
+                'javascript': /\b(function|var|let|const|if|else|return|for|while|console\.log|=&gt;|import|export|class|new)\b/g,
+
+                'java': /\b(class|public|private|protected|void|static|int|new|if|else|while|for|return|import|package|throws|extends|implements)\b/g,
+
+                'css': /\b(color|background|font-size|margin|padding|border|display|flex|grid|align|justify|position|float|clear)\b/g,
+
+                'json': /^\s*(\{|\[)|\b(true|false|null)\b/g,
+
+                'xml': /^\s*&lt;\?xml\b|\&lt;\/?\w+\b/g,
+
+                'markdown': /^(#|\*|-|\d+\.)\s|\[(.*?)\]\((.*?)\)|`{1,3}/g,
+
+                'sql': /\b(SELECT|INSERT|UPDATE|DELETE|FROM|WHERE|JOIN|INNER|LEFT|RIGHT|FULL|CREATE|DROP|ALTER|TABLE|DATABASE|INDEX|VIEW)\b/g,
+
+                'bash': /(^#!\/bin\/bash\b|^#!\/bin\/sh\b)|\b(echo|export|if|then|else|fi|for|in|do|done|while|case|esac|function)\b/g,
+
+                'ruby': /\b(def|class|module|if|else|elsif|end|do|while|for|require|include|begin|rescue)\b/g,
+
+                'php': /\b(&lt;\?php|\$[a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]*|\becho\b|if|else|elseif|while|for|foreach|function|return|require|include)\b/g,
+
+                'csharp': /\b(class|public|private|protected|void|static|int|if|else|while|for|return|namespace|using|new|try|catch|finally|throw|async|await)\b/g,
+
+                'go': /\b(func|package|import|var|const|if|else|for|return|struct|interface|go|defer|select|case)\b/g,
+
+                'kotlin': /\b(fun|val|var|if|else|for|while|when|return|class|object|interface|import|package)\b/g,
+
+                'r': /\b(function|if|else|for|while|repeat|break|next|return|library|source|&lt;-|TRUE|FALSE)\b/g
+
+            };
+
+        
+
+            const matchCounts = {};
+
+            const lines = content.split('\n');
+
+            const maxLines = 100; // Adjust this to cover more or fewer lines
+
+        
+
+            // Check up to maxLines for more weight at the beginning
+
+            for (let i = 0; i &lt; Math.min(lines.length, maxLines); i++) {
+
+                const line = lines[i];
+
+                for (const [language, regex] of Object.entries(keywords)) {
+
+                    const matches = line.match(regex);
+
+                    if (matches) {
+
+                        if (!matchCounts[language]) {
+
+                            matchCounts[language] = 0;
+
+                        }
+
+                        matchCounts[language] += matches.length * (maxLines - i); // More weight for earlier lines
+
+                    }
+
+                }
+
+            }
+
+        
+
+            // Check the rest of the content with less weight
+
+            for (let i = maxLines; i &lt; lines.length; i++) {
+
+                const line = lines[i];
+
+                for (const [language, regex] of Object.entries(keywords)) {
+
+                    const matches = line.match(regex);
+
+                    if (matches) {
+
+                        if (!matchCounts[language]) {
+
+                            matchCounts[language] = 0;
+
+                        }
+
+                        matchCounts[language] += matches.length; // No extra weight for later lines
+
+                    }
+
+                }
+
+            }
+
+        
+
+            let detectedLanguage = 'text';
+
+            let maxMatches = 0;
+
+        
+
+            for (const [language, count] of Object.entries(matchCounts)) {
+
+                if (count &gt; maxMatches) {
+
+                    maxMatches = count;
+
+                    detectedLanguage = language;
+
+                }
+
+            }
+
+        
+
+            // If CSS, JavaScript, or XML is detected, check again if it might be HTML
+
+            if (['css', 'javascript', 'xml'].includes(detectedLanguage)) {
+
+                if (keywords.html.test(content)) {
+
+                    detectedLanguage = 'html';
+
+                }
+
+            }
+
+        
+
+            console.log("detected language: " + detectedLanguage);
+
+            return detectedLanguage;
+
+        }
+
+        function handleDrop(event) {
+
+            event.preventDefault();
+
+            const files = event.dataTransfer.files;
+
+            if (files.length &gt; 0) {
+
+                const file = files[0];
+
+                const reader = new FileReader();
+
+                const fileExtension = file.name.split('.').pop().toLowerCase();
+
+                reader.onload = function(e) {
+
+                    const cursorPos = editor.getCursorPosition();
+
+                    const fileContent = e.target.result;
+
+                    const detectedLanguage = autoDetectLanguage(fileContent);
+
+                    editor.session.setMode(`ace/mode/${detectedLanguage}`);
+
+                    editor.session.insert(cursorPos, fileContent);
+
+                };
+
+                if (file.type.startsWith("text/")) {
+
+                    reader.readAsText(file);
+
+                } else if (file.type === "image/png") {
+
+                    reader.onload = function(e) {
+
+                        const cursorPos = editor.getCursorPosition();
+
+                        const base64String = e.target.result;
+
+                        const imageTag = `![Image](${base64String})`;
+
+                        editor.session.insert(cursorPos, imageTag);
+
+                    };
+
+                    reader.readAsDataURL(file);
+
+                } else {
+
+                    reader.readAsText(file);
+
+                }
+
+            }
+
+        }
+
+        let detectTimeout;
+
+        editor.session.on('change', () =&gt; {
+
+            clearTimeout(detectTimeout);
+
+            detectTimeout = setTimeout(() =&gt; {
+
+                const content = editor.getValue();
+
+                const detectedLanguage = autoDetectLanguage(content);
+
+                editor.session.setMode(`ace/mode/${detectedLanguage}`);
+
+            }, 500);
+
+        });
+
+		let isDarkTheme = true;
+
+		function applyTheme() {
+
+            const bodyStyles = document.body.style;
+
+            const editorStyles = document.getElementById('editor').style;
+
+            const svgPaths = document.querySelectorAll('svg path');
+
+            const svgTexts = document.querySelectorAll('svg text');
+
+            if (isDarkTheme) {
+
+                document.getElementById('themeTag').textContent = "dark";
+
+                bodyStyles.backgroundColor = '#272822';
+
+                bodyStyles.color = '#ddd';
+
+                editor.setTheme("ace/theme/monokai");
+
+                document.querySelectorAll('input[type="text"]').forEach(input =&gt; {
+
+                    input.style.backgroundColor = '#D3D3D3';
+
+                    input.style.color = '#272822';
+
+                    input.style.border = '1px solid #D3D3D3';
+
+                });
+
+                document.querySelectorAll('#topmenu button').forEach(button =&gt; {
+
+                    button.style.backgroundColor = '#444';
+
+                    button.style.color = '#DDD';
+
+                    button.style.border = '1px solid #444';
+
+                });
+
+                // Update SVG color for dark theme
+
+                svgPaths.forEach(path =&gt; {
+
+                    path.setAttribute('fill', '#FFF');
+
+                });
+
+                svgTexts.forEach(text =&gt; {
+
+                    text.setAttribute('fill', '#FFF');
+
+                });
+
+                // Apply dark scrollbar styles
+
+                document.documentElement.style.setProperty('--scrollbar-bg', '#444');
+
+                document.documentElement.style.setProperty('--scrollbar-thumb', '#666');
+
+            } else {
+
+                document.getElementById('themeTag').textContent = "light";
+
+                bodyStyles.backgroundColor = '#DDD';
+
+                bodyStyles.color = '#272822';
+
+                editor.setTheme("ace/theme/chrome");
+
+                document.querySelectorAll('input[type="text"]').forEach(input =&gt; {
+
+                    input.style.backgroundColor = '#FFFFFF';
+
+                    input.style.color = '#000000';
+
+                    input.style.border = '1px solid #CCC';
+
+                });
+
+                document.querySelectorAll('#topmenu button').forEach(button =&gt; {
+
+                    button.style.backgroundColor = '#FFF';
+
+                    button.style.color = '#000';
+
+                    button.style.border = '1px solid #CCC';
+
+                });
+
+                // Update SVG color for light theme
+
+                svgPaths.forEach(path =&gt; {
+
+                    path.setAttribute('fill', '#000');
+
+                });
+
+                svgTexts.forEach(text =&gt; {
+
+                    text.setAttribute('fill', '#000');
+
+                });
+
+                // Revert to light scrollbar styles
+
+                document.documentElement.style.setProperty('--scrollbar-bg', '#FFF');
+
+                document.documentElement.style.setProperty('--scrollbar-thumb', '#CCC');
+
+            }
+
+        }
+
+		document.getElementById('toggleTheme').addEventListener('click', () =&gt; {
+
+			isDarkTheme = !isDarkTheme;
+
+			applyTheme();
+
+		});
+
+		
+
+		function saveAs() {
+
+			// Get the content from the editor
+
+			const content = editor.getValue();
+
+			// Update the storedData element with the editor content
+
+			document.getElementById('storedData').textContent = content;
+
+			// Create a blob with the content
+
+			const blob = new Blob([content], { type: 'text/plain' });
+
+			// Create a link element
+
+			const link = document.createElement('a');
+
+			// Set the download attribute with a filename
+
+			link.download = defaultExportName;
+
+			// Create an object URL for the blob
+
+			link.href = URL.createObjectURL(blob);
+
+			// Append the link to the body (required for Firefox)
+
+			document.body.appendChild(link);
+
+			// Programmatically click the link to trigger the download
+
+			link.click();
+
+			// Remove the link from the document
+
+			document.body.removeChild(link);
+
+		}
+
+		
+
+		document.getElementById('saveAs').addEventListener('click', () =&gt; {
+
+			saveAs();
+
+		});
+
+		
+
+		function newFile() {
+
+			editor.setValue("");
+
+			// Get all elements within the head tag
+
+			const headElements = document.head.children;
+
+			// Iterate over the elements
+
+			for (let i = 0; i &lt; headElements.length; i++) {
+
+				// Check if the current element is not a &lt;style&gt; tag
+
+				if (headElements[i].tagName !== 'STYLE') {
+
+					break; // Exit the loop once we encounter a non-&lt;style&gt; tag
+
+				}
+
+				// Remove the &lt;style&gt; tag
+
+				headElements[i].parentNode.removeChild(headElements[i]);
+
+				// Since we are modifying the DOM, decrement the index to account for the removed element
+
+				i--;
+
+			}
+
+            const editorElement = document.getElementById('editor');
+
+            const originalContent = editorElement.innerHTML;
+
+            editorElement.innerHTML = '';
+
+            const content = document.documentElement.outerHTML;
+
+			SHTS.new(content);
+
+		}
+
+		
+
+	    document.getElementById('newFile').addEventListener('click', () =&gt; {
+
+	        saveFile();
+
+	        newFile();
+
+		});
+
+		
+
+		function saveFile() {
+
+			document.getElementById('storedData').textContent = editor.getValue();
+
+			// Get all elements within the head tag
+
+			const headElements = document.head.children;
+
+			// Iterate over the elements
+
+			for (let i = 0; i &lt; headElements.length; i++) {
+
+				// Check if the current element is not a &lt;style&gt; tag
+
+				if (headElements[i].tagName !== 'STYLE') {
+
+					break; // Exit the loop once we encounter a non-&lt;style&gt; tag
+
+				}
+
+				// Remove the &lt;style&gt; tag
+
+				headElements[i].parentNode.removeChild(headElements[i]);
+
+				// Since we are modifying the DOM, decrement the index to account for the removed element
+
+				i--;
+
+			}
+
+            const editorElement = document.getElementById('editor');
+
+            const originalContent = editorElement.innerHTML;
+
+            editorElement.innerHTML = '';
+
+            const content = document.documentElement.outerHTML;
+
+            SHTS.save(content);
+
+		}
+
+		
+
+	    document.getElementById('saveFile').addEventListener('click', () =&gt; {
+
+			saveFile();
+
+		});
+
+		
+
+		window.onload = () =&gt; {		
+
+			console.log("get theme");
+
+            const themeTag = document.getElementById('themeTag').textContent;
+
+            if (themeTag === "dark") {
+
+                isDarkTheme = true;
+
+            } else {
+
+                isDarkTheme = false; // Default to light theme
+
+            }
+
+            
+
+			console.log("apply theme");
+
+			applyTheme();
+
+			
+
+			console.log("loading");
+
+			let fileContent = document.getElementById('storedData').textContent;
+
+			fileContent = fileContent.replace(/[\r\n]+/g, '\n');
+
+			editor.setValue(fileContent);
+
+                
+
+            const detectedLanguage = autoDetectLanguage(fileContent);
+
+            editor.session.setMode(`ace/mode/${detectedLanguage}`);
+
+            
+
+            // clear status
+
+            document.getElementById('status').textContent = "";
+
+        };
+
+        
+
+        window.addEventListener("beforeunload", (event) =&gt; {
+
+			document.getElementById('storedData').textContent = editor.getValue();
+
+			// Get all elements within the head tag
+
+			const headElements = document.head.children;
+
+			// Iterate over the elements
+
+			for (let i = 0; i &lt; headElements.length; i++) {
+
+				// Check if the current element is not a &lt;style&gt; tag
+
+				if (headElements[i].tagName !== 'STYLE') {
+
+					break; // Exit the loop once we encounter a non-&lt;style&gt; tag
+
+				}
+
+				// Remove the &lt;style&gt; tag
+
+				headElements[i].parentNode.removeChild(headElements[i]);
+
+				// Since we are modifying the DOM, decrement the index to account for the removed element
+
+				i--;
+
+			}
+
+            const editorElement = document.getElementById('editor');
+
+            const originalContent = editorElement.innerHTML;
+
+            editorElement.innerHTML = '';
+
+            const content = document.documentElement.outerHTML;
+
+            SHTS.save(content);
+
+        });
+
+    &lt;/script&gt;
+
+&lt;/body&gt;&lt;/html&gt;</div></li><li class="fileItem" id="file-Encryptednote.shts"><div class="fileNameWrapper"><span>Encryptednote.shts</span><button class="deleteBtn">Delete</button></div><div class="fileContent">&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+&lt;meta charset="UTF-8"&gt;
+&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+&lt;title&gt;Encrypted Note&lt;/title&gt;
+&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"&gt;&lt;/script&gt;
+&lt;style&gt;
+	body {
+        font-family: Arial, sans-serif;
+        margin: 0px;
+		overflow: hidden;
+    }
+        
+	textarea {
+        width: calc(100vw - 0px);
+        height: calc(100vh - 0px);
+        font-size: 16px;
+		border: none;
+        padding: 5px;
+        box-sizing: border-box;
+        resize: none;
+    }
+	
+	textarea:focus {
+        outline: none;
+    }
+	
+	#customContextMenu {
+		display: none;
+		position: absolute;
+		z-index: 1000;
+		background-color: #f2f2f2;
+		border: 1px solid #ccc;
+		box-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+		font-family: "Arial", sans-serif;
+	}
+	#customContextMenu ul {
+		list-style: none;
+		width: 80px;
+		padding: 5px 0;
+		margin: 0;
+		font-size: 12px;
+	}
+	#customContextMenu ul li {
+		padding: 8px 12px;
+		cursor: pointer;
+	}
+	#customContextMenu ul li:hover {
+		background-color: #d9d9d9;
+	}
+	#customContextMenu ul #spacer {
+		padding: 0px;
+		margin-left: 5px;
+	}
+	#customContextMenu ul #spacer:hover {
+		background-color: #f2f2f2;
+	}
+&lt;/style&gt;
+&lt;script&gt;
+    // Save encrypted content to file to update the current state of the application
+    function saveContentToFile() {
+        const content = document.documentElement.outerHTML;
+	    SHTS.save(content);
+    }
+    
+    function saveEncryptedData() {
+        const textarea = document.getElementsByTagName('textarea')[0];
+        if (textarea.value === "") {
+            document.getElementById('data').textContent = "";
+        } else {
+            const encryptedContent = CryptoJS.AES.encrypt(textarea.value, encryptionKey).toString();
+		    document.getElementById('data').textContent = encryptedContent;
+        }
+    }
+	
+    // Fairly efficient auto-save
+    window.addEventListener('beforeunload', function (event) {
+        saveContentToFile();
+    });
+    let encryptionKey = prompt("Enter the encryption key:");
+    document.addEventListener('DOMContentLoaded', function() {
+        const textarea = document.getElementsByTagName('textarea')[0];
+        const customContextMenu = document.getElementById('customContextMenu');
+        const downloadAnchor = document.getElementById('downloadAnchor');
+        let savedNote = document.getElementById('data').textContent;
+        
+        if (encryptionKey === null) {
+            // If the user confirms to exit, close the window or redirect to another page
+            window.close(); // This might not work in all browsers due to security reasons
+            return; // Or you can redirect to another page or simply break the loop
+        }
+        
+        // Decrypt the note if there's saved content
+        if (savedNote) {
+            try {
+                const decrypted = CryptoJS.AES.decrypt(savedNote, encryptionKey);
+                savedNote = decrypted.toString(CryptoJS.enc.Utf8);
+                if (savedNote) {
+                    textarea.value = savedNote;
+                } else {
+                    confirmExit = alert("Incorrect key or the content is not encrypted properly.");
+                    location.reload();
+                }
+            } catch (e) {
+                confirmExit = alert("Incorrect key or the content is not encrypted properly.");
+                location.reload();
+            }
+        }
+                    
+        // Show custom context menu on right-click
+        textarea.addEventListener('contextmenu', function(event) {
+            event.preventDefault();
+            customContextMenu.style.display = 'block';
+            customContextMenu.style.left = `${event.pageX}px`;
+            customContextMenu.style.top = `${event.pageY}px`;
+        });
+        
+        textarea.addEventListener('keydown', function(e) {
+            if (e.key === 'Tab') {
+                e.preventDefault();
+                const start = this.selectionStart;
+                const end = this.selectionEnd;
+                this.value = this.value.substring(0, start) + "    " + this.value.substring(end);
+                this.selectionStart = this.selectionEnd = start + 4;
+            }
+            saveEncryptedData();
+        });
+        // Hide custom context menu on clicking elsewhere
+        document.addEventListener('click', function(event) {
+            if (!customContextMenu.contains(event.target)) {
+                customContextMenu.style.display = 'none';
+            }
+        });
+        // Focus textarea and execute command
+        function executeCommand(command) {
+            textarea.focus();
+            document.execCommand(command);
+            customContextMenu.style.display = 'none';
+        }
+        // Undo functionality
+        document.getElementById('undo').addEventListener('click', function() {
+            executeCommand('undo');
+        });
+        // Redo functionality
+        document.getElementById('redo').addEventListener('click', function() {
+            executeCommand('redo');
+        });
+        // Cut functionality
+        document.getElementById('cut').addEventListener('click', function() {
+            executeCommand('cut');
+        });
+        // Copy functionality
+        document.getElementById('copy').addEventListener('click', function() {
+            executeCommand('copy');
+        });
+        // Paste functionality
+        document.getElementById('paste').addEventListener('click', function() {
+            textarea.focus();
+            navigator.clipboard.readText().then(text =&gt; {
+                document.execCommand('insertText', false, text);
+            });
+            customContextMenu.style.display = 'none';
+        });
+        // Delete functionality
+        document.getElementById('delete').addEventListener('click', function() {
+            executeCommand('delete');
+        });
+        // Select All functionality
+        document.getElementById('selectAll').addEventListener('click', function() {
+            textarea.select();
+            customContextMenu.style.display = 'none';
+        });
+        // Handle drag and drop
+        textarea.addEventListener('dragover', handleDragOver, false);
+        textarea.addEventListener('drop', handleFileSelect, false);
+        function handleDragOver(event) {
+            event.preventDefault();
+            event.dataTransfer.dropEffect = 'copy';
+        }
+        function handleFileSelect(event) {
+            event.preventDefault();
+            const files = event.dataTransfer.files;
+            for (let i = 0, f; f = files[i]; i++) {
+                const reader = new FileReader();
+                reader.onload = (function(theFile) {
+                    return function(e) {
+                        const currentContent = textarea.value;
+                        // Check if the file is an image
+                        if (theFile.type.match('image.*')) {
+                            const newContent = `data:${theFile.type};base64,${btoa(e.target.result)}`;
+                            textarea.value = currentContent + newContent;
+                        } else {
+                            const newContent = e.target.result.replace(/\t/g, '    ');
+                            textarea.value = currentContent + newContent;
+                        }
+                    };
+                })(f);
+                if (f.type.match('image.*')) {
+                    reader.readAsDataURL(f);
+                } else {
+                    reader.readAsText(f);
+                }
+            }
+        }
+    });
+&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;textarea&gt;&lt;/textarea&gt;
+&lt;div id="data" style="display:none;"&gt;&lt;/div&gt;
+&lt;div id="customContextMenu" style="display: none;"&gt;
+  &lt;ul&gt;
+    &lt;li id="undo"&gt;Undo&lt;/li&gt;
+    &lt;li id="redo"&gt;Redo&lt;/li&gt;
+    &lt;li id="spacer"&gt;-----------------&lt;/li&gt;
+    &lt;li id="cut"&gt;Cut&lt;/li&gt;
+    &lt;li id="copy"&gt;Copy&lt;/li&gt;
+    &lt;li id="paste"&gt;Paste&lt;/li&gt;
+    &lt;li id="delete"&gt;Delete&lt;/li&gt;
+    &lt;li id="spacer"&gt;-----------------&lt;/li&gt;
+    &lt;li id="selectAll"&gt;Select all&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/div&gt;
+&lt;a id="downloadAnchor" style="display: none;"&gt;&lt;/a&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</div></li></ul>
+	<div id="dropZone">Drag and drop to add new templates or to update existing items</div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const dropZone = document.getElementsByTagName('body')[0];
+            const fileList = document.getElementById('fileList');
+            const filesData = {};  // Object to store file contents by name
+
+            dropZone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                dropZone.classList.add('dragging');
+            });
+
+            dropZone.addEventListener('dragleave', () => {
+                dropZone.classList.remove('dragging');
+            });
+
+            dropZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropZone.classList.remove('dragging');
+
+                const files = Array.from(e.dataTransfer.files);
+                files.forEach(file => {
+                    if (filesData[file.name]) {
+                        updateFileContent(file);
+                    } else {
+                        addFileItem(file);
+                    }
+                });
+            });
+
+            function addFileItem(file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    filesData[file.name] = e.target.result;
+
+                    createListItem(file.name, e.target.result);
+					
+					// Save
+					saveContentToFile();
+                };
+                reader.readAsText(file);
+            }
+
+            function updateFileContent(file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    filesData[file.name] = e.target.result;
+
+                    const listItem = document.getElementById(`file-${file.name}`);
+                    listItem.remove(); // Remove the old list item
+                    createListItem(file.name, e.target.result); // Create a new one with updated content
+					
+					// Save
+					saveContentToFile();
+                };
+                reader.readAsText(file);
+            }
+
+            function createListItem(fileName, fileContent) {
+                const listItem = document.createElement('li');
+                listItem.classList.add('fileItem');
+                listItem.id = `file-${fileName}`;
+
+                const fileNameWrapper = document.createElement('div');
+                fileNameWrapper.classList.add('fileNameWrapper');
+
+                const fileNameSpan = document.createElement('span');
+                fileNameSpan.textContent = fileName;
+                fileNameWrapper.appendChild(fileNameSpan);
+
+                fileNameWrapper.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    fileClickHandler(listItem);
+                });
+
+                const deleteBtn = document.createElement('button');
+                deleteBtn.classList.add('deleteBtn');
+                deleteBtn.textContent = 'Delete';
+                deleteBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    listItem.remove();
+                    delete filesData[fileName];
+					
+					// Save
+					saveContentToFile();
+                });
+
+                const fileContentDiv = document.createElement('div');
+                fileContentDiv.classList.add('fileContent');
+                fileContentDiv.textContent = fileContent;
+
+                fileNameWrapper.appendChild(deleteBtn);
+                listItem.appendChild(fileNameWrapper);
+                listItem.appendChild(fileContentDiv);
+                fileList.appendChild(listItem);
+            }
+
+            function fileClickHandler(listItem) {
+                const fileContent = listItem.querySelector('.fileContent').textContent;
+				SHTS.new(fileContent);
+            }
+
+            // Function to reattach event listeners to existing list items
+            function reattachEventListeners() {
+                const listItems = document.querySelectorAll('.fileItem');
+                listItems.forEach(listItem => {
+                    const fileNameWrapper = listItem.querySelector('.fileNameWrapper');
+                    const deleteBtn = listItem.querySelector('.deleteBtn');
+
+                    fileNameWrapper.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        fileClickHandler(listItem);
+                    });
+
+                    deleteBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        listItem.remove();
+                        const fileName = listItem.id.replace('file-', '');
+                        delete filesData[fileName];
+						
+						// Save
+						saveContentToFile();
+                    });
+
+                    // Repopulate filesData
+                    const fileName = listItem.id.replace('file-', '');
+                    const fileContent = listItem.querySelector('.fileContent').textContent;
+                    filesData[fileName] = fileContent;
+                });
+            }
+
+            reattachEventListeners();
+        });
+    </script>
+</body></html>
