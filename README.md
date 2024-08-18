@@ -1,6 +1,7 @@
 # SHTS
 		
 Inspired by the idea of having digital paper: one file script, scripted for each specific case, save-able, recreatable, copyable (just like paper)
+
 Download and install latest binary: (PC - terminal)
 ```
 git clone https://gitlab.com/shts/SHTS.git & cd SHTS & install.bat & cd .. & rmdir SHTS
