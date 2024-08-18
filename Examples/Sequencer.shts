@@ -1,0 +1,203 @@
+<!-- SHTS example created by Marijn van Tricht -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Sequencer</title>
+	<style>
+		body {
+			overflow: hidden;
+            margin: 0;
+            padding: 0;
+		}
+		.bar {
+			position:fixed;
+			bottom:0;
+			width:100%;
+			background-color:#222;
+			color:#eee;
+			padding:5px;
+		}
+		.bar * {
+			display:inline;
+		}
+		
+		#time, #tempo {
+			float:right;
+			margin-right:10px;
+		}
+		
+		#addTrack {
+			background-color:#222;
+			color:#eee;
+			padding:15px;
+			display:inline-block;
+			cursor:pointer;
+		}
+		#addTrackMenu {
+			display:none;
+			margin:0;
+			padding:0;
+		}
+		
+		#addTrackMenu li {
+			background-color:#222;
+			border-radius:10px;
+			list-style: none;
+			padding:10px;
+			margin:0;
+			color:#eee;
+			display: inline-block;
+			max-width:50%;
+			word-break:break-all; 
+		}
+		.clickable {
+			cursor:pointer;
+		}
+	</style>
+</head>
+<body>
+	<div id="tracks">
+		
+	</div>
+	
+	<div>
+		<div id="addTrack">+</div>
+	</div>
+	
+	<div id="addTrackMenu">
+        <ul>
+            <li class="clickable", id="addKickTrack">Kick</li>
+            <li class="clickable", id="addRimTrack">Rim</li>
+            <li class="clickable", id="addSynthTrack">Synth</li>
+        </ul>
+    </div>
+
+	<div class="bar">
+		<div id="status">Loading...</div>
+		<div id="time">timesignature:&nbsp
+			<div id="time-value-0" contenteditable="true">4</div>/<div id="time-value-1" contenteditable="true">4</div>
+		</div>
+		<div id="tempo">bpm:&nbsp
+			<div id="tempo-value" contenteditable="true">108</div>
+		</div>
+	</div>
+	
+	<script src="https://hku-shts-d3c8eaf17695625716a79e4491b9763366cd6bf40c8b508a8dfaaa.gitlab.io/soundLib.js"></script>
+	
+	<script>
+    window.addEventListener('load', async () => {
+	
+		const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+		const trackList = new TrackList();
+		trackList.loop(1);
+	
+		const kickSample = await fetchFromUrl('https://hku-shts-d3c8eaf17695625716a79e4491b9763366cd6bf40c8b508a8dfaaa.gitlab.io/Samples/Kick.wav');
+		const rimSample = await fetchFromUrl('https://hku-shts-d3c8eaf17695625716a79e4491b9763366cd6bf40c8b508a8dfaaa.gitlab.io/Samples/Rim.wav');
+		
+		document.getElementById('addKickTrack').addEventListener('click', function (e) {
+			const tempo = parseFloat(document.getElementById('tempo-value').innerHTML);
+			const timeSignature0 = parseFloat(document.getElementById('time-value-0').innerHTML);
+			const timeSignature1 = parseFloat(document.getElementById('time-value-1').innerHTML);
+			e.target.closest('addTrackMenu').style.display = 'none';
+		
+		});
+		
+		document.getElementById('addRimTrack').addEventListener('click', function (e) {
+			const tempo = parseFloat(document.getElementById('tempo-value').innerHTML);
+			const timeSignature0 = parseFloat(document.getElementById('time-value-0').innerHTML);
+			const timeSignature1 = parseFloat(document.getElementById('time-value-1').innerHTML);	
+		
+		});
+		
+		document.getElementById('addSynthTrack').addEventListener('click', function (e) {
+			const tempo = parseFloat(document.getElementById('tempo-value').innerHTML);
+			const timeSignature0 = parseFloat(document.getElementById('time-value-0').innerHTML);
+			const timeSignature1 = parseFloat(document.getElementById('time-value-1').innerHTML);	
+		
+		});
+		
+		document.getElementById('status').textContent = "Loaded";
+		
+		const addTrackBtn = document.getElementById('addTrack');
+		const addTrackMenu = document.getElementById('addTrackMenu');
+		
+		document.addEventListener('click', function (e) {
+            if (!addTrackMenu.contains(e.target) && e.target !== addTrackBtn) {
+                addTrackMenu.style.display = 'none';
+            }
+        });
+		
+		addTrackBtn.addEventListener('click', function (e) {
+            addTrackMenu.style.top = `${e.pageY}px`;
+            addTrackMenu.style.left = `${e.pageX}px`;
+            if (addTrackMenu.style.display === 'none' || addTrackMenu.style.display === '') {
+				addTrackMenu.style.display = 'block';
+			} else {
+				addTrackMenu.style.display = 'none';
+			}
+        });
+		
+		// create single line editable divs
+		{ // time-value-0
+			const editableDiv = document.getElementById('time-value-0');
+			editableDiv.addEventListener('keydown', function(event) {
+				if (event.key === 'Enter') {
+					event.preventDefault();
+					
+					const currentContent = editableDiv.innerHTML;
+					if (currentContent === "") return;
+					
+					editableDiv.blur();
+					
+					// set Timesignature
+					trackList.tracks.forEach(function(track) {
+						track.timeSignature = [currentContent,track.timeSignature[1]];
+					});
+					//trackList.syncTime();
+				}
+			});
+		}
+		{ // time-value-1
+			const editableDiv = document.getElementById('time-value-1');
+			editableDiv.addEventListener('keydown', function(event) {
+				if (event.key === 'Enter') {
+					event.preventDefault();
+					
+					const currentContent = editableDiv.innerHTML;
+					if (currentContent === "") return;
+					
+					editableDiv.blur();
+					
+					// set Timesignature
+					trackList.tracks.forEach(function(track) {
+						track.timeSignature = [track.timeSignature[0],currentContent];
+					});
+					//trackList.syncTime();
+				}
+			});
+		}
+		{ // tempo-value
+			const editableDiv = document.getElementById('tempo-value');
+			editableDiv.addEventListener('keydown', function(event) {
+				if (event.key === 'Enter') {
+					event.preventDefault();
+					
+					const currentContent = editableDiv.innerHTML;
+					if (currentContent === "") return;
+					
+					editableDiv.blur();
+					
+					// set Tempo
+					trackList.tracks.forEach(function(track) {
+						track.tempo = currentContent;
+					});
+					//trackList.syncTime();
+				}
+			});
+		}
+    });
+	</script>
+</body>
+</html>
