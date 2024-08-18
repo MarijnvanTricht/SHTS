@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Information Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.25;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h2, h3 {
+            color: #333;
+			padding-top: 10px;
+			border-top: 1px dashed #e2e2e2;
+        }
+        p {
+            margin: 20px 0;
+        }
+        ul, ol {
+            margin: 20px 0;
+            padding-left: 20px;
+        }
+        code {
+            background: #f4f4f4;
+            padding: 2px 4px;
+            border-radius: 4px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        pre {
+            background: #f4f4f4;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        blockquote {
+            margin: 20px 0;
+            padding: 10px 20px;
+            background: #f9f9f9;
+            border-left: 10px solid #ccc;
+        }
+        a {
+            color: #3498db;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+            }
+        }
+		.copycode {
+			cursor: pointer;
+		}
+		
+		.info-div {
+			max-width: 80%;
+			float:left;
+			margin: auto auto;
+			padding: 5px;
+			position:fixed;
+			bottom:10px;
+			left: 10px;
+			background-color: #1c2833;
+			color: white;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			border-radius: 10px;
+			font-size: 14px;
+			opacity: 1;
+			animation: fadeEffect 3s ease-in-out forwards;
+		}
+		
+		@keyframes fadeEffect {
+			0% { opacity: 1; }
+			20% { opacity: 1; }
+			80% { opacity: 1; }
+			100% { opacity: 0; }
+		}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>SHTS</h1>		
+		<p>Inspired by the idea of having digital paper: one file script, scripted for each specific case, save-able, recreatable, copyable (just like paper)</p>
+		<p>Download and install latest binary: (PC terminal)<p>
+		<pre class="copycode"><code>git clone https://gitlab.com/shts/SHTS.git & cd SHTS & install.bat & cd .. & rmdir SHTS</code></pre>
+		<p>Download and install latest binary: (PC powershell)<p>
+		<pre class="copycode"><code>git clone https://gitlab.com/shts/SHTS.git; cd SHTS; ./install.bat; cd ..; Remove-Item -Path SHTS -Recurse -Force</code></pre>
+		<p>Download and install latest binary: (MAC)<p>
+		<pre class="copycode"><code>...</code></pre>
+        <h3>How?</h3>
+        <p>SHTS is a program that runs .shts and .shtml files. 
+		These files are run as if it were .shtml files, with the ability to use the extra functions that SHTS provides.</p>
+		<p>SHTS exposes the SHTS interface to the shts file which contains 4 functions.</p>
+		<a href="https://gitlab.com/shts/SHTS/-/tree/main/Examples?ref_type=heads"><p>Examples can be found here<p></a>
+		<h4>.save</h4>
+		<pre class="copycode"><code>SHTS.save(content)</code></pre>
+		<p>This functions saves the HTML content provided as argument to the current file that is running. 
+		To create a viable application, the developer of the script is still responsible of making this work and making sure that the data that needs to be loaded and saved is inside a HTML tag. 
+		It is recommended to use the following code to save the HTML to the current file:
+		<pre class="copycode"><code>window.addEventListener("beforeunload", (event) => {
+	const content = document.documentElement.outerHTML;
+	SHTS.save(content);
+});</code></pre>
+		Note that <code>SHTS.save(content)</code> will reload the browser with the new content.
+		</p>
+		<h4>.new</h4>
+		<pre class="copycode"><code>SHTS.new(content)</code></pre>
+		<p>Same as save, but for a new file, depending on the command line argument --save-before. 
+		If this argument is given by the user, the file is saved at the new location given by the user. 
+		If not, the user will get the option to save the file at a specific location when the user closes the application. </p>
+		<h4>.startServer</h4>
+		<pre class="copycode"><code>SHTS.startServer(port, bridge_info)</code></pre>
+		<p>
+		This starts a server. bridge_info can be <code>{protocol:'tcp', port:9090}</code> to start a TCP bridge or <code>{protocol:'udp', inport:9090, outport:9091}</code> to start an UDP bridge.
+		</p>
+		<h4>.stopServer</h4>
+		<pre class="copycode"><code>SHTS.stopServer()</code></pre>
+		<p>This functions stops the server. The server is also automatically closed when the script is closed.</p>
+		<p>Note that all functions are Async and that as of yet these functions do not return the result back to javascript. 
+		Therefore it is difficult to know if for example a server has started succesfully. It's a thing. </p>		
+		<h4>file system access?</h4>
+		<p>Maybe in the future file system handles should be able to be saved on a user-level using the localStorage property.</p>
+		<h3>Program usage</h3>
+		<p>SHTS can be started with a few command arguments to augment the program behaviour. The arguments are:</p>
+		<ul>
+			<li><code>--allow-network-access</code> <i>For allowing the server to start.</i></li>
+			<li><code>--deny-network-access</code> <i>For disabling the message to allow to start the server.</i></li>
+			<li><code>--disable-save-warning</code> <i>For disabling the message when the user cancels the save dialog.</i></li>
+			<li><code>--save-before-creating</code> <i>Default the application creates a tempfile when html content is loaded to a new file with SHTS.new(content). 
+			With this argument the user is presented with the save dialog when the SHTS.new(content) function is called instead.</i></li>
+		</ul>
+		<p>For development reasons the argument <code>--open-DevTools</code> is added to open the DevTools of the browser.</p>
+		<pre><code>SHTS program.shts [--allow-network-access] [--deny-network-access] [--disable-save-warning] [--save-before-creating] [--open-DevTools]</code></pre>
+		<h3>The END</h3>
+		<h4>missing features</h4>
+		<p>&emsp;- Interfaces that need permissions in the browser do not work as of yet, like AudioCapture, VideoCapture, Geolocation, Midi MidiSysex (midi), Notifications, ClipboardReadWrite  ClipboardSanitizedWrite (clipboard), BackgroundSync, ProtectedMediaIdentifier, Sensors, PaymentHandler, DurableStorage, IdleDetection, WakeLockScreen, WakeLockSystem, PeriodicBackgroundSync, Nfc.<br>&emsp;- fullscreen mode</p>
+		<h4>special thanks</h4>
+		<p>&emsp;- cztomczak for cefpython and a good example script that is used as starting point.</p>
+    </div>
+	
+	<script>
+	const codeBlocks = document.querySelectorAll(".copycode");
+	codeBlocks.forEach(block => {
+		block.addEventListener("click", function() {
+			const codeText = this.querySelector("code").innerText;
+			
+			if (navigator.clipboard) {
+				navigator.clipboard.writeText(codeText).then(() => {
+					console.log("succesfully copied to clipboard: ", codeText);
+					info("succesfully copied to clipboard: " + codeText);
+				}).catch(err => {
+					console.error("Failed to copy: ", err);
+					info("Failed to copy");
+				});
+			} else {
+				console.error("Clipboard API not supported");
+				info("Clipboard API not supported");
+			}
+		});
+	});
+	
+	
+	function info(text) {
+		const infoDiv = document.createElement('div');
+		infoDiv.textContent = text;
+		infoDiv.classList.add('info-div');
+		document.body.appendChild(infoDiv);
+
+		setTimeout(() => {
+			infoDiv.remove();
+		}, 3000);
+    }
+	</script>
+</body>
+</html>

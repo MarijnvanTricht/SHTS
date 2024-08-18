@@ -25,6 +25,8 @@ mkdir "%TARGET_FOLDER%"
 REM Copy folder to AppData
 xcopy "%SOURCE_FOLDER%" "%TARGET_FOLDER%" /s /e /y /i /q
 
+echo Folder copied to AppData
+
 REM Create file type and associate with the executable
 REM ftype YourAppFileType="%APP_EXECUTABLE% %%1"
 REM assoc %FILE_EXTENSION%=YourAppFileType
@@ -38,7 +40,12 @@ echo This should be added manually
 
 echo .
 
-echo Folder copied to AppData and file association created.
+set TARGET_PATH=%TARGET_FOLDER%\SHTS.exe
+set SHORTCUT_NAME=SHTS.lnk
+set PROGRAMS_PATH=%APPDATA%\Microsoft\Windows\Start Menu\Programs
+PowerShell -Command "$ws = New-Object -ComObject WScript.Shell; $s = $ws.CreateShortcut('%PROGRAMS_PATH%\%SHORTCUT_NAME%'); $s.TargetPath = '%TARGET_PATH%'; $s.Save()"
+
+echo Shortcut created in the Programs menu
 
 REM Check if TARGET_FOLDER is already in PATH
 echo %PATH% | find /i "%TARGET_FOLDER%" >nul
