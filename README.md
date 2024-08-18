@@ -1,93 +1,79 @@
 # SHTS
+		
+Inspired by the idea of having digital paper: one file script, scripted for each specific case, save-able, recreatable, copyable (just like paper)
+Download and install latest binary: (PC)
 
+`gitlab clone
+run install && delete clone
+Download and install latest binary: (MAC)`
 
+`gitlab clone
+run install && delete clone`
 
-## Getting started
+## How?
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+SHTS is a program that runs .shts and .shtml files. 
+These files are run as if it were .shtml files, with the ability to use the extra functions that SHTS provides.
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+SHTS exposes the SHTS interface to the shts file which contains 4 functions.
 
-## Add your files
+#### .save
+`SHTS.save(content)`
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
-
+This functions saves the HTML content provided as argument to the current file that is running. To create a viable application, the developer of the script is still responsible of making this work and making sure that the data that needs to be loaded and saved is inside a HTML tag. It is recommended to use the following code to save the HTML to the current file:
 ```
-cd existing_repo
-git remote add origin https://gitlab.com/shts/SHTS.git
-git branch -M main
-git push -uf origin main
+window.addEventListener("beforeunload", (event) => { 
+    const content = document.documentElement.outerHTML;
+	SHTS.save(content);
+});
 ```
 
-## Integrate with your tools
+Note that `SHTS.save(content)` will reload the browser with the new content.
+		
+#### .new
+`SHTS.new(content)`
+Same as save, but for a new file. Depending on the command line argument `--save-before`, this will either open a save dialog and save a new file at that location with the content or will create a temp file and open the save dialog when the application is closed.
+#### .startServer
+`SHTS.startServer(port, bridge_info)`
 
-- [ ] [Set up project integrations](https://gitlab.com/shts/SHTS/-/settings/integrations)
+This starts a server. bridge_info can be {protocol:'tcp', port:9090} to start a TCP bridge or {protocol:'udp', inport:9090, outport:9091} to start an UDP bridge.
 
-## Collaborate with your team
+#### .stopServer
+`SHTS.stopServer()`.
+This functions stops the server. The server is also automatically closed when the script is closed. 
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+#### file system access?
+Maybe in the future file system handles should be able to be saved on a user-level using the localStorage property.
 
-## Test and Deploy
+### Program usage
+SHTS can be started with a few command arguments to augment the program behaviour. The arguments are:
+- --allow-network-access <i>For allowing the server to start.</i>
+- --deny-network-access <i>For disabling the message to allow to start the server.</i>
+- --disable-save-warning For disabling the message when the user cancels the save dialog.</i>
+- --save-before-creating <i>Default the application creates a tempfile when html content is loaded to a new file with SHTS.new(content). With this argument the user is presented with the save dialog when the SHTS.new(content) function is called instead.</i>
 
-Use the built-in continuous integration in GitLab.
+For development reasons the argument --open-DevTools is added to open the DevTools of the browser before loading the page.
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+`SHTS program.shts [--allow-network-access] [--deny-network-access] [--disable-save-warning] [--save-before-creating] [--open-DevTools]`
 
-***
+### The END
 
-# Editing this README
+#### missing features
+- Interfaces that need permissions in the browser do not work as of yet, like AudioCapture, VideoCapture, Geolocation, Midi MidiSysex (midi), Notifications, ClipboardReadWrite  ClipboardSanitizedWrite (clipboard), BackgroundSync, ProtectedMediaIdentifier, Sensors, PaymentHandler, DurableStorage, IdleDetection, WakeLockScreen, WakeLockSystem, PeriodicBackgroundSync, Nfc.
+- fullscreen mode
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
+#### want to help out?
 
-## Suggestions for a good README
+Serious about helping out and feel that you can contribute to one of the items listed below, contact me (marijn@shts.io).
+- saving file system handles
+- updating binaries for PC and or MAC
+- updating code to allow for implementing the missing features
+- rewriting SHTS using CEFsharp instead of CEFpython
+- creating installers (or scripts for the binaries)
+- set file association in windows/mac
+- correct me on spelling and writing style and use of terms
 
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+<b>Please be resolute, to the point and serious</b>, and give me time to respond.
 
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+#### special thanks
+- cztomczak for cefpython and a good example script that is used as starting point.
