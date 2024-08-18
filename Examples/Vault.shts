@@ -1,0 +1,363 @@
+<!-- SHTS example created by Marijn van Tricht -->
+<html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&amp;display=swap" rel="stylesheet">
+<title>Home</title>
+<style>
+    body {
+        background-color: white;
+        margin: 0px;
+        color: black;
+        font-family: "Inter", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 400;
+        font-style: normal;
+        font-variation-settings: "slnt" 0;
+    }
+    
+    #dropZone {
+        width: calc(100vw - 23px);
+        height: 45px;
+        border: 2px dashed #ccc;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 10px;
+        margin-bottom: 5px;
+        margin-top: 5px;
+    }
+
+    #fileList {
+        margin-top: 0px;
+        margin-bottom: 0px;
+        list-style: none;
+        padding: 3px;
+    }
+
+    .fileItem {
+        padding: 10px;
+        margin: 5px;
+        background-color: #7D8491;
+        color: white;
+        border: 1px solid white;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+    }
+
+    .fileItem:hover {
+        background-color: #7D8491;
+        border: 1px solid #888;
+    }
+    
+    .fileNameWrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+    }
+    
+    .btn, .deleteBtn {
+        background-color: #666;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        margin: 5px;
+    }
+
+    .btn:hover, .deleteBtn:hover {
+        background-color: #555;
+    }
+    
+    .deleteBtn {
+        background-color: #800000;
+    }
+
+    .deleteBtn:hover {
+        background-color: #a00000;
+    }
+    
+    .fileContent {
+        display: none;
+    }
+    
+    .buttonGroup {
+        display: flex;
+        align-items: center;
+    }
+    
+    .buttonGroup button {
+        margin-right: 5px;
+    }
+</style>
+<script>
+    async function generateKey(password) {
+        const enc = new TextEncoder();
+        const keyMaterial = await window.crypto.subtle.importKey(
+            "raw", 
+            enc.encode(password), 
+            "PBKDF2", 
+            false, 
+            ["deriveKey"]
+        );
+        return window.crypto.subtle.deriveKey(
+            {
+                "name": "PBKDF2",
+                "salt": enc.encode("salt"),
+                "iterations": 100000,
+                "hash": "SHA-256"
+            },
+            keyMaterial,
+            { "name": "AES-GCM", "length": 256 },
+            true,
+            ["encrypt", "decrypt"]
+        );
+    }
+
+    async function encryptData(key, data) {
+        const enc = new TextEncoder();
+        const iv = window.crypto.getRandomValues(new Uint8Array(12));
+        const encrypted = await window.crypto.subtle.encrypt(
+            {
+                name: "AES-GCM",
+                iv: iv
+            },
+            key,
+            enc.encode(data)
+        );
+        return {
+            iv: iv,
+            data: new Uint8Array(encrypted)
+        };
+    }
+
+    async function decryptData(key, iv, data) {
+        const dec = new TextDecoder();
+        const decrypted = await window.crypto.subtle.decrypt(
+            {
+                name: "AES-GCM",
+                iv: iv
+            },
+            key,
+            data
+        );
+        return dec.decode(decrypted);
+    }
+
+    function saveContentToFile() {
+        const content = document.documentElement.outerHTML;
+        SHTS.save(content);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const fileList = document.getElementById('fileList');
+        const filesData = {};  // Object to store file contents by name
+        let cachedFiles = [];
+        
+        const fileItems = fileList.querySelectorAll('.fileItem');
+        fileItems.forEach(listItem => {
+            const fileName = listItem.id.replace('file-', '');
+            const fileContent = listItem.querySelector('.fileContent').textContent;
+            const iv = new Uint8Array(JSON.parse(listItem.querySelector('.fileContent').getAttribute('data-iv')));
+            const data = new Uint8Array(JSON.parse(fileContent));
+            filesData[fileName] = { iv, data };
+        });
+    
+        document.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            document.body.classList.add('dragging');
+        });
+    
+        document.addEventListener('dragleave', () => {
+            document.body.classList.remove('dragging');
+        });
+    
+        document.addEventListener('drop', (e) => {
+            e.preventDefault();
+            document.body.classList.remove('dragging');
+    
+            cachedFiles = Array.from(e.dataTransfer.files);
+            if (cachedFiles.length === 0) {
+                console.log('No files dropped');
+                return;
+            }
+    
+            const key = prompt("Enter encryption key:");
+            if (!key) {
+                alert("Encryption key is required.");
+                cachedFiles = [];
+                return;
+            }
+    
+            handleFiles(cachedFiles, key, filesData);
+        });
+    
+        async function handleFiles(files, key, filesData) {
+            const keyMaterial = await generateKey(key);
+            files.forEach(file => {
+                handleFile(file, keyMaterial, filesData[file.name], filesData);
+            });
+        }
+    
+        async function handleFile(file, key, isUpdate, filesData) {
+            const reader = new FileReader();
+            reader.onload = async (e) => {
+                const encrypted = await encryptData(key, e.target.result);
+                filesData[file.name] = {
+                    iv: encrypted.iv,
+                    data: encrypted.data
+                };
+    
+                if (isUpdate) {
+                    const listItem = document.getElementById(`file-${file.name}`);
+                    listItem.remove();
+                }
+                createListItem(file.name, filesData[file.name]);
+                saveContentToFile();
+            };
+            reader.readAsText(file);
+        }
+    
+        function createListItem(fileName, fileContent) {
+            const listItem = document.createElement('li');
+            listItem.classList.add('fileItem');
+            listItem.id = `file-${fileName}`;
+    
+            const fileNameWrapper = document.createElement('div');
+            fileNameWrapper.classList.add('fileNameWrapper');
+    
+            const fileNameSpan = document.createElement('span');
+            fileNameSpan.textContent = fileName;
+            fileNameWrapper.appendChild(fileNameSpan);
+    
+            const buttonGroup = document.createElement('div');
+            buttonGroup.classList.add('buttonGroup');
+    
+            const viewBtn = document.createElement('button');
+            viewBtn.classList.add('btn');
+            viewBtn.textContent = 'View';
+            viewBtn.addEventListener('click', async (e) => {
+                e.stopPropagation();
+                const key = prompt("Enter decryption key:");
+                if (!key) {
+                    alert("Decryption key is required.");
+                    return;
+                }
+                const keyMaterial = await generateKey(key);
+                const fileData = filesData[fileName];
+                const decryptedContent = await decryptData(keyMaterial, fileData.iv, fileData.data);
+                SHTS.new(decryptedContent);
+            });
+    
+            const downloadBtn = document.createElement('button');
+            downloadBtn.classList.add('btn');
+            downloadBtn.textContent = 'Download';
+            downloadBtn.addEventListener('click', async (e) => {
+                e.stopPropagation();
+                const key = prompt("Enter decryption key:");
+                if (!key) {
+                    alert("Decryption key is required.");
+                    return;
+                }
+                const keyMaterial = await generateKey(key);
+                await downloadFile(fileName, keyMaterial);
+            });
+    
+            const deleteBtn = document.createElement('button');
+            deleteBtn.classList.add('deleteBtn');
+            deleteBtn.textContent = 'Delete';
+            deleteBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                listItem.remove();
+                delete filesData[fileName];
+                saveContentToFile();
+            });
+    
+            const fileContentDiv = document.createElement('div');
+            fileContentDiv.classList.add('fileContent');
+            fileContentDiv.textContent = fileContent;
+    
+            buttonGroup.appendChild(viewBtn);
+            buttonGroup.appendChild(downloadBtn);
+            buttonGroup.appendChild(deleteBtn);
+            listItem.appendChild(buttonGroup);
+            listItem.appendChild(fileNameWrapper);
+            listItem.appendChild(fileContentDiv);
+            fileList.appendChild(listItem);
+        }
+    
+        async function downloadFile(fileName, key) {
+            const fileData = filesData[fileName];
+            const decryptedContent = await decryptData(key, fileData.iv, fileData.data);
+    
+            const blob = new Blob([decryptedContent], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+    
+        reattachEventListeners();
+    });
+    
+    function reattachEventListeners() {
+        const listItems = document.querySelectorAll('.fileItem');
+        listItems.forEach(listItem => {
+            const viewBtn = listItem.querySelector('.btn:nth-of-type(1)');
+            const downloadBtn = listItem.querySelector('.btn:nth-of-type(2)');
+            const deleteBtn = listItem.querySelector('.deleteBtn');
+    
+            viewBtn.addEventListener('click', async (e) => {
+                e.stopPropagation();
+                const key = prompt("Enter decryption key:");
+                if (!key) {
+                    alert("Decryption key is required.");
+                    return;
+                }
+                const keyMaterial = await generateKey(key);
+                const fileName = listItem.id.replace('file-', '');
+                const fileData = filesData[fileName];
+                const decryptedContent = await decryptData(keyMaterial, fileData.iv, fileData.data);
+                SHTS.new(decryptedContent);
+            });
+    
+            downloadBtn.addEventListener('click', async (e) => {
+                e.stopPropagation();
+                const key = prompt("Enter decryption key:");
+                if (!key) {
+                    alert("Decryption key is required.");
+                    return;
+                }
+                const keyMaterial = await generateKey(key);
+                const fileName = listItem.id.replace('file-', '');
+                await downloadFile(fileName, keyMaterial);
+            });
+    
+            deleteBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                listItem.remove();
+                const fileName = listItem.id.replace('file-', '');
+                delete filesData[fileName];
+                saveContentToFile();
+            });
+    
+            //const fileName = listItem.id.replace('file-', '');
+            //const fileContent = listItem.querySelector('.fileContent').textContent;
+            //filesData[fileName] = fileContent;
+        });
+    }
+</script>
+</head>
+<body class="">
+    <ul id="fileList"><li class="fileItem" id="file-Pico8Port.shts"><div class="buttonGroup"><button class="btn">View</button><button class="btn">Download</button><button class="deleteBtn">Delete</button></div><div class="fileNameWrapper"><span>Pico8Port.shts</span></div><div class="fileContent">[object Object]</div></li></ul>
+    <div id="dropZone">Drag and drop to add items to this vault</div>
+</body></html>

@@ -1,0 +1,613 @@
+<!-- SHTS example created by Marijn van Tricht -->
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScreenSaver</title>
+    <!-- Include p5.js library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+    <style>
+		html {
+			background-color:#ddd;
+		}
+        body {
+			overflow: hidden;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        canvas {
+            border: 0px solid black;
+        }
+    </style>
+</head>
+<body>
+<script>
+	// Save content to file to update the current state of the application
+	function saveContentToFile() {
+        const content = document.documentElement.outerHTML;
+        //SHTS.save(content);
+    }
+	
+	// Fairly efficient auto-save
+	window.addEventListener('beforeunload', function (event) {
+		saveContentToFile();
+	});
+</script>
+<script>
+	// P5js fix, delete old instance
+	document.addEventListener('DOMContentLoaded', function() {
+		var mainElement = document.querySelector('main');
+		if (mainElement) {
+			mainElement.parentNode.removeChild(mainElement);
+		}
+	});
+</script>
+    <script id="worker-script" type="javascript/worker">
+        self.onmessage = function(e) {
+            const { index, blob, neighbors } = e.data;
+            const newBlob = moveBlob(blob, neighbors);
+            self.postMessage({ index, updatedBlob: newBlob });
+        };
+
+        function moveBlob(blob, neighbors) {
+            let target = null;
+            let minDistSq = Infinity;
+
+            for (let neighbor of neighbors) {
+                if (neighbor !== blob) {
+                    let dx = neighbor.x - blob.x;
+                    let dy = neighbor.y - blob.y;
+                    let distSq = dx * dx + dy * dy;
+                    if (distSq < minDistSq) {
+                        minDistSq = distSq;
+                        target = neighbor;
+                    }
+                }
+            }
+
+            if (target !== null) {
+                let dx = target.x - blob.x;
+                let dy = target.y - blob.y;
+                let angle = Math.atan2(dy, dx);
+
+                const movementFactor = blob.s * (target.r / Math.sqrt(minDistSq)) * 0.1;
+
+                blob.x += Math.cos(angle) * movementFactor;
+                blob.y += Math.sin(angle) * movementFactor;
+
+                blob.xOffset += blob.s * 0.001 * map(blob.r, 0, 50, 0.1, 1);
+                blob.yOffset += blob.s * 0.001 * map(blob.r, 0, 50, 0.1, 1);
+            }
+
+            return blob;
+        }
+
+        function map(value, start1, stop1, start2, stop2) {
+            return start2 + (stop2 - start2) * ((value - start1) / (stop1 - start1));
+        }
+    </script>
+<script>
+	// block right mouse click 
+/*
+	document.addEventListener('DOMContentLoaded', (event) => {
+		document.addEventListener('contextmenu', (e) => {
+			e.preventDefault();
+		});
+	});
+*/
+</script>
+<script>
+// number munchers keep your spawning munchers satisfied with their number needs to go to the next level.
+// growing munchers, but keeping their number, needs more numbers
+// spawing munchers, create need for new or existing numbers.
+/* ================= GLOBAL VARIABLES =================== */
+let canvasWidth = window.innerWidth;
+let canvasHeight = window.innerHeight + 3;
+let autosave = false;
+let activebox = null;
+
+let appInstance;
+
+/* ================== help functions ==================== */
+
+// modulo fix with negatives
+function strictmodulo(n, m) {
+  return ((n % m) + m) % m;
+}
+
+function intersects(line1, line2) {
+  let dx1 = line1.x2 - line1.x1;
+  let dy1 = line1.y2 - line1.y1;
+  let dx2 = line2.x2 - line2.x1;
+  let dy2 = line2.y2 - line2.y1;
+  
+  let denominator = dx1 * dy2 - dy1 * dx2;
+  
+  if (denominator == 0) {
+    return false;
+  }
+  
+  let t1 = ((line2.x1 - line1.x1) * dy2 - (line2.y1 - line1.y1) * dx2) / denominator;
+  let t2 = ((line2.x1 - line1.x1) * dy1 - (line2.y1 - line1.y1) * dx1) / denominator;
+  
+  return t1 >= 0 && t1 <= 1 && t2 >= 0 && t2 <= 1;
+}
+
+function chance(probability) {
+    return Math.random() < (probability/100);
+}
+
+/* ================== Classes ========================== */
+
+class Blob {
+    constructor(x, y) {
+        this.r = 0.45 + Math.random();
+        this.x = x;
+        this.y = y;
+        this.s = 0.01 + Math.random() * 0.005;
+        this.xOffset = Math.random() * 1000;
+        this.yOffset = Math.random() * 1000;
+    }
+
+    offScreen() {
+        return this.x + this.r < 0 || this.x - this.r > windowWidth || this.y + this.r < 0 || this.y - this.r > windowHeight;
+    }
+
+    hit(x, y) {
+        return (this.x - x) ** 2 + (this.y - y) ** 2 < (this.r / 2) ** 2;
+    }
+
+    move(grid) {
+		/*
+        let target = null;
+        let minDistWeighted = Infinity;
+
+        const neighbors = grid.getNeighbors(this);
+
+        for (let _target of neighbors) {
+            if (_target !== this) {
+                let dx = _target.x - this.x;
+                let dy = _target.y - this.y;
+                let distSq = dx * dx + dy * dy;
+				let distWeighted = distSq;
+				if (_target.r > 1) {
+					distWeighted = distSq / _target.r; // Weight by the target's radius
+				}
+
+                if (distWeighted < minDistWeighted) {
+                    minDistWeighted = distWeighted;
+                    target = _target;
+                }
+            }
+        }
+
+        if (target !== null) {
+            let dx = target.x - this.x;
+            let dy = target.y - this.y;
+            let angle = Math.atan2(dy, dx);
+            const oldX = this.x;
+            const oldY = this.y;
+
+            const movementFactor = this.s * (target.r / Math.sqrt(minDistWeighted)) * 0.5;
+
+            this.x += Math.cos(angle) * movementFactor;
+            this.y += Math.sin(angle) * movementFactor;
+
+            grid.update(this, oldX, oldY);
+        }*/
+
+        this.floats(grid);
+    }
+	
+	fillScreen() {
+        const maxSize = Math.max(canvasWidth, canvasHeight) * 2;
+        if (this.r >= maxSize) {
+            return true;
+        }
+        return false;
+    }
+
+    floats(grid) {
+        const oldX = this.x;
+        const oldY = this.y;
+
+        const floatFactor = map(this.r, 0, 50, 0.1, 1);
+
+        this.x += map(noise(this.xOffset), 0, 1, -1, 1);
+        this.y += map(noise(this.yOffset), 0, 1, -1, 1);
+        this.xOffset += this.s * 0.0001 * floatFactor;
+        this.yOffset += this.s * 0.0001 * floatFactor;
+
+        grid.update(this, oldX, oldY);
+    }
+
+    draw(color) {
+        fill(color);
+        circle(this.x, this.y, this.r);
+    }
+}
+
+class Grid {
+    constructor(cellSize) {
+        this.cellSize = cellSize;
+        this.cells = new Map();
+    }
+
+    _hash(x, y) {
+        return `${Math.floor(x / this.cellSize)}:${Math.floor(y / this.cellSize)}`;
+    }
+
+    add(item) {
+        const hash = this._hash(item.x, item.y);
+        if (!this.cells.has(hash)) {
+            this.cells.set(hash, []);
+        }
+        this.cells.get(hash).push(item);
+    }
+
+    remove(item) {
+        const hash = this._hash(item.x, item.y);
+        const cell = this.cells.get(hash);
+        if (cell) {
+            const index = cell.indexOf(item);
+            if (index !== -1) {
+                cell.splice(index, 1);
+                if (cell.length === 0) {
+                    this.cells.delete(hash);
+                }
+            }
+        }
+    }
+
+    update(item, oldX, oldY) {
+        const oldHash = this._hash(oldX, oldY);
+        const newHash = this._hash(item.x, item.y);
+        if (oldHash !== newHash) {
+            this.remove(item);
+            this.add(item);
+        }
+    }
+
+    getNeighbors(item) {
+        const neighbors = [];
+        const x = Math.floor(item.x / this.cellSize);
+        const y = Math.floor(item.y / this.cellSize);
+        for (let dx = -1; dx <= 1; dx++) {
+            for (let dy = -1; dy <= 1; dy++) {
+                const cell = this.cells.get(`${x + dx}:${y + dy}`);
+                if (cell) {
+                    neighbors.push(...cell);
+                }
+            }
+        }
+        return neighbors;
+    }
+}
+
+class app {
+    constructor() {
+        this.title = "ScreenSaver";
+        this.autosave = true;
+        this.score = 0;
+        this.scoremul = [1, 0.4];
+        this.clickresidue = [];
+        this.grid = new Grid(30);
+		this.bg = "#ddd";
+		this.color = "#000";
+    }
+
+    addBlob(x, y) {
+        let matchfound = false;
+        for (let i = 0; i < this.clickresidue.length; i++) {
+            if (this.clickresidue[i].hit(x, y)) {
+                this.clickresidue[i].r += 1;
+                matchfound = true;
+            }
+        }
+        if (!matchfound) {
+            const newBlob = new Blob(x, y);
+            this.clickresidue.push(newBlob);
+            this.grid.add(newBlob);
+        }
+    }
+	
+checkTotalAreaCoversScreen() {
+    const cellSize = 10; // Size of each cell in the grid
+    const cols = Math.ceil(windowWidth / cellSize);
+    const rows = Math.ceil(windowHeight / cellSize);
+    const totalCells = cols * rows;
+
+    let coveredCells = new Set();
+
+    for (let blob of this.clickresidue) {
+        const effectiveRadius = blob.r / 2; // Reduce radius to half
+        const minX = Math.max(0, Math.floor((blob.x - effectiveRadius) / cellSize));
+        const maxX = Math.min(cols, Math.ceil((blob.x + effectiveRadius) / cellSize));
+        const minY = Math.max(0, Math.floor((blob.y - effectiveRadius) / cellSize));
+        const maxY = Math.min(rows, Math.ceil((blob.y + effectiveRadius) / cellSize));
+
+        for (let x = minX; x < maxX; x++) {
+            for (let y = minY; y < maxY; y++) {
+                const cellX = x * cellSize + cellSize / 2;
+                const cellY = y * cellSize + cellSize / 2;
+                const distSq = (cellX - blob.x) ** 2 + (cellY - blob.y) ** 2;
+                if (distSq <= effectiveRadius ** 2) {
+                    coveredCells.add(`${x},${y}`);
+                }
+            }
+        }
+    }
+
+    return coveredCells.size >= totalCells;
+}
+
+
+    mousePressed() {
+        this.addBlob(mouseX, mouseY);
+    }
+	
+	mouseReleased() {}
+	windowResized() {}
+	mouseDragged() {}
+	run() {}
+
+    draw() {
+        if (frameRate() > 20) {
+            for (let f = 10; f > 0; f--) {
+                this.addBlob(random(windowWidth), random(windowHeight));
+            }
+        }
+
+        background(this.bg);
+
+        fill(0);
+        strokeWeight(0);
+        textSize(12);
+        text(round(this.score, 2), 20, 20);
+        text(round(this.clickresidue.length, 2), 20, 40);
+
+        for (let i = 0; i < this.clickresidue.length; i++) {
+            const item = this.clickresidue[i];
+            const neighbors = this.grid.getNeighbors(item);
+            const oldX = item.x;
+            const oldY = item.y;
+
+            for (let j = 0; j < neighbors.length; j++) {
+                const neighbor = neighbors[j];
+                if (item !== neighbor) {
+                    if (item.r > neighbor.r) {
+                        if (item.hit(neighbor.x, neighbor.y)) {
+                            item.r += Math.min(1, ((item.r / neighbor.r) / neighbor.r));
+                            neighbor.r = 0;
+
+                            if (neighbor.r <= 0) {
+                                this.grid.remove(neighbor);
+                                const index = this.clickresidue.indexOf(neighbor);
+                                if (index > -1) {
+                                    this.clickresidue.splice(index, 1);
+                                }
+                            }
+							// only absorb once per item
+							break;
+                        }
+                    }
+                }
+            }
+
+            this.grid.update(item, oldX, oldY);
+        }
+
+        for (let w = 0; w < this.clickresidue.length; w++) {
+            const item = this.clickresidue[w];
+            item.move(this.grid);
+            item.draw(this.color);
+
+            if (item.offScreen()) {
+                this.clickresidue.splice(w, 1);
+                w--;
+            }
+			
+			// Start new cycle with a new colour
+			/*
+			if (item.fillScreen()) {
+				this.clickresidue = [];
+				this.bg = this.color;
+				this.color = color(random(255),random(255),random(255));
+				break;
+			}*/
+        }
+		
+		if (this.checkTotalAreaCoversScreen()) {
+			this.clickresidue = [];
+			this.bg = this.color;
+			this.color = color(random(255),random(255),random(255));
+		}
+    }
+}
+
+/* ================== FUNCTIONS ====================== */
+
+function mouseWheel() {
+	appInstance.mouseWheel();
+}
+	
+function mouseReleased() {
+	appInstance.mouseReleased();
+	update_window = true;
+	if (autosave) {
+		// not efficient for a clicker game
+		//saveData();
+	}
+}
+
+function mousePressed() {
+	appInstance.mousePressed();
+}
+
+function mouseDragged() {
+	appInstance.mouseDragged();
+}
+
+function keyReleased() {
+	appInstance.keyReleased();
+}
+
+function keyPressed() {
+	appInstance.keyPressed();
+}
+
+function serialize(deserialized) {
+    let uniqueId = 0;
+
+    function prepare(obj) {
+        if (Array.isArray(obj)) {
+            obj.forEach((item, index) => {
+                obj[index] = prepare(item);
+            });
+        } else if (typeof obj === 'object' && obj !== null) {
+            obj.uniqueId = uniqueId++;
+            obj.constructorName = obj.constructor.name;
+            for (const key in obj) {
+                if (Object.hasOwnProperty.call(obj, key) && key !== 'uniqueId' && key !== 'constructorName') {
+                    obj[key] = prepare(obj[key]);
+                }
+            }
+        }
+        return obj;
+    }
+
+    function _serialize(obj) {
+        if (Array.isArray(obj)) {
+            return obj.map(item => _serialize(item));
+        } else if (typeof obj === 'object' && obj !== null) {
+            const serializedObj = {};
+            for (const key in obj) {
+                if (Object.hasOwnProperty.call(obj, key)) {
+                    serializedObj[key] = _serialize(obj[key]);
+                }
+            }
+            return serializedObj;
+        } else {
+            return obj;
+        }
+    }
+
+    console.log("serializing data");
+    prepare(deserialized);
+    return JSON.stringify(_serialize(deserialized));
+}
+
+function deserialize(serialized) {
+    const serialized_parsed = JSON.parse(serialized);
+    const instanceMap = {};
+
+    function _deserialize(obj) {
+        if (Array.isArray(obj)) {
+            return obj.map(item => _deserialize(item));
+        } else if (typeof obj === 'object' && obj !== null) {
+            if (obj.hasOwnProperty("constructorName")) {
+                const constructorName = obj.constructorName;
+                const uniqueId = obj.uniqueId;
+                if (instanceMap[uniqueId]) {
+                    return instanceMap[uniqueId];
+                } else {
+                    const ConstructorClass = eval(constructorName);
+                    if (ConstructorClass) {
+                        const instance = new ConstructorClass();
+                        instanceMap[uniqueId] = instance;
+                        for (const prop in obj) {
+                            if (Object.hasOwnProperty.call(obj, prop) && prop !== 'constructorName' && prop !== 'uniqueId') {
+                                instance[prop] = _deserialize(obj[prop]);
+                            }
+                        }
+                        return instance;
+                    } else {
+                        console.warn(`Class ${constructorName} not found.`);
+                        return null;
+                    }
+                }
+            } else {
+                const deserializedObj = {};
+                for (const key in obj) {
+                    if (Object.hasOwnProperty.call(obj, key)) {
+                        deserializedObj[key] = _deserialize(obj[key]);
+                    }
+                }
+                return deserializedObj;
+            }
+        } else {
+            return obj;
+        }
+    }
+
+    return _deserialize(serialized_parsed);
+}
+
+function loadData() {
+	console.log("loadData");
+	const existingScriptTag = document.querySelector('script[type="text/json"]');
+
+	if (existingScriptTag) {
+		appInstance = deserialize(existingScriptTag.textContent);
+		document.title = appInstance.title;
+		autosave = appInstance.autosave;
+	} else {
+		console.log("Serialized data not found.");
+	}
+}
+
+function saveData() {
+	console.log("saveData");
+    // Serialize the app
+    const serializedData = serialize(appInstance);
+
+    // Store serialized data in a script tag within the HTML content
+    let scriptTag = document.querySelector('script[type="text/json"]');
+    if (scriptTag) {
+		console.log("adding to scriptTag");
+        scriptTag.textContent = serializedData;
+    } else {
+		console.log("creating new scriptTag");
+        scriptTag = document.createElement('script');
+        scriptTag.type = 'text/json';
+        scriptTag.textContent = serializedData;
+		document.body.appendChild(scriptTag);
+    }
+}
+
+/* ================== PROGRAM ======================== */
+
+function windowResized() {
+	canvasWidth = window.innerWidth;
+	canvasHeight = window.innerHeight + 3;
+	resizeCanvas(canvasWidth, canvasHeight);
+	appInstance.windowResized();
+}
+
+function preload() {
+	appInstance = new app();
+	loadData();
+	document.title = appInstance.title;
+	autosave = appInstance.autosave;
+	appInstance.run();
+}
+
+function setup() {
+	createCanvas(canvasWidth, canvasHeight);
+}
+
+function draw() {
+	appInstance.draw();
+	
+	// draw FPS
+	fill(0);
+	noStroke();
+	textSize(12);
+	text('FPS: ' + nf(frameRate(), 2, 2), 10, height - 10);
+}
+</script>
+</body>
+</html>

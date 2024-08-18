@@ -1,0 +1,76 @@
+<!-- SHTS example created by Marijn van Tricht -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>OSC Client</title>
+	<script src="https://hku-shts-d3c8eaf17695625716a79e4491b9763366cd6bf40c8b508a8dfaaa.gitlab.io/oscLib.js"></script>
+</head>
+<body>
+    <h1>OSC Client</h1>
+    <div id="messages"></div>
+	<button onclick="startserver(9999,9998)">Start Server</button>
+	<button onclick="stopserver()">Stop Server</button>
+    <button onclick="sendMessage('Hello')">Send Message</button>
+    <script>
+		function startserver(sendPort,recvPort) {
+			startOSCServer([sendPort,recvPort, null],	
+				function(event) {
+					// onMessage
+					if (event.data instanceof Blob) {
+						// Convert Blob to ArrayBuffer
+						let reader = new FileReader();
+						reader.onload = function() {
+							let arrayBuffer = reader.result;
+							decodeAndShowOSCMessage(arrayBuffer);
+						};
+						reader.readAsArrayBuffer(event.data);
+					} else if (event.data instanceof ArrayBuffer) {
+						// Directly process ArrayBuffer
+						decodeAndShowOSCMessage(event.data);
+					} else if (typeof event.data === 'string') {
+						// Directly process string
+						decodeAndShowOSCMessage(event.data);
+					} else {
+						console.error('Unsupported message type:', typeof event.data);
+					}
+				},
+				function(error) {
+					//onError
+				},
+				function() {
+					//onOpen
+					document.getElementById('messages').innerHTML = "sending on port 9998, receiving on port 9999";
+					
+					// enable send message
+					
+				},
+				function() {
+					//onClose
+					document.getElementById('messages').innerHTML = "";
+					
+					// disable send message
+				}
+			);
+		}
+		
+		function decodeAndShowOSCMessage(message) {
+			try {
+				const decodedMessage = decodeOSCMessage(data);
+				document.getElementById('messages').innerHTML = `Received message: ${JSON.stringify(decodedMessage)}`;
+			} catch (err) {
+				document.getElementById('messages').innerHTML = `<p>Error decoding message: $err</p>`;
+			}
+		}
+		
+		function sendMessage(message) {
+			sendOSCMessage(createOSCMessage(message, []));
+			document.getElementById('messages').innerHTML = `Send message: ${JSON.stringify(message)}`;
+		}
+		
+		function stopserver() {
+			stopOSCServer();
+		}
+	</script>
+</body>
+</html>

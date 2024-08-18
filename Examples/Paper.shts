@@ -1,0 +1,396 @@
+<!-- SHTS example created by Marijn van Tricht -->
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>paper</title>
+    <!-- Include p5.js library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+    <style>
+		html {
+			background-color:#ddd;
+		}
+        body {
+			overflow: hidden;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        canvas {
+            border: 0px solid black;
+        }
+		#notes {
+			position: absolute;
+			top: 70px;
+			right: 20px;
+			background-color: rgba(255, 255, 255, 0.97);
+			padding: 10px;
+			border-radius: 5px;
+			border: 1px solid black;
+			z-index: 1;
+		}
+		#stats {
+			position: absolute;
+			bottom: 4px;
+			left: 40px;
+			background-color: rgba(255, 255, 255, 0.97);
+			padding: 2px 5px 2px 5px;
+			border-radius: 5px;
+			border: 1px solid black;
+			z-index: 1;
+			font-family: monospace;
+			font-size: 12px;
+			line-height: 1.2; 
+		}
+    </style>
+</head>
+<body>
+<script>
+	// Save content to file to update the current state of the application
+	function saveContentToFile() {
+        const content = document.documentElement.outerHTML;
+        SHTS.save(content);
+    }
+	
+	// Fairly efficient auto-save
+	window.addEventListener('beforeunload', function (event) {
+		saveContentToFile();
+	});
+</script>
+<script>
+	// P5js fix, delete old instance
+	document.addEventListener('DOMContentLoaded', function() {
+		var mainElement = document.querySelector('main');
+		if (mainElement) {
+			mainElement.parentNode.removeChild(mainElement);
+		}
+	});
+</script>
+<script>
+	// block right mouse click
+	document.addEventListener('DOMContentLoaded', (event) => {
+		document.addEventListener('contextmenu', (e) => {
+			e.preventDefault();
+		});
+	});
+</script>
+<script>
+/* ================= GLOBAL VARIABLES =================== */
+let canvasWidth = window.innerWidth;
+let canvasHeight = window.innerHeight + 3;
+let autosave = false;
+
+/* ================== APP ====================== */
+
+class app {
+	constructor() {
+		this.title = "paper";
+		this.autosave = true;
+		this.brushsize = 6;
+		this.pixelsize = 1;
+		this.grid = this.newGrid();
+		this.newLinePoints = [];
+		this.delLinePoints = [];
+		this.gridupdate = true;
+	}
+	
+	newGrid() {
+		const grid = [];
+		for (let x = 0; x < canvasWidth; x += this.pixelsize) {
+			let col = [];
+			for (let y = 0; y < canvasHeight; y += this.pixelsize) {
+				col.push(255); 
+			}
+			grid.push(col);
+		}
+		return grid;
+	}
+	expandGrid() {
+		let newWidth = canvasWidth;
+		let newHeight = canvasHeight;
+
+		if (canvasWidth * this.pixelsize > this.grid.length || canvasHeight * this.pixelsize > this.grid[0].length) {
+			const newGrid = this.newGrid();
+			for (let x = 0; x < this.grid.length; x++) {
+				for (let y = 0; y < this.grid[0].length; y++) {
+					newGrid[x][y] = this.grid[x][y];
+				}
+			}
+			this.grid = newGrid;
+		}
+		this.gridupdate = true;
+	}
+	drawGrid() {
+		if (this.gridupdate === true) {
+			console.log("update grid");
+			push();
+			noStroke();
+			background(255);
+			for (let x = 0; x < canvasWidth; x += this.pixelsize) {
+				for (let y = 0; y < canvasHeight; y += this.pixelsize) {
+					let ix = floor(x/this.pixelsize);
+					let iy = floor(y/this.pixelsize);
+					if (this.grid[ix][iy] != 255) {
+						fill(color(this.grid[ix][iy]));
+						rect(x, y, this.pixelsize, this.pixelsize);
+					}
+				}
+			}
+			pop();
+			this.gridupdate = false;
+		}
+	}
+	dotGrid(p1, pixelcolor = 0) {
+		let radius = Math.ceil(this.brushsize / 2);
+		for (let i = p1.x - radius; i <= p1.x + radius; i++) {
+			for (let j = p1.y - radius; j <= p1.y + radius; j++) {
+				let dx = i - p1.x;
+				let dy = j - p1.y;
+				if (dx*dx + dy*dy <= radius*radius) {
+					let ix = Math.floor(i / this.pixelsize);
+					let iy = Math.floor(j / this.pixelsize);
+					if (ix >= 0 && iy >= 0 && ix < this.grid.length && iy < this.grid[0].length) {
+						this.grid[ix][iy] = pixelcolor;
+					}
+				}
+			}
+		}
+	}
+	
+	lineGrid(p1, p2, pixelcolor = 0) {
+		let dx = p2.x - p1.x;
+		let dy = p2.y - p1.y;
+		let steps = max(abs(dx), abs(dy));
+		let xIncrement = dx / steps;
+		let yIncrement = dy / steps;
+		let x = p1.x;
+		let y = p1.y;
+		for (let i = 0; i < steps; i++) {
+			for (let brushX = -this.brushsize / 2; brushX <= this.brushsize / 2; brushX++) {
+				for (let brushY = -this.brushsize / 2; brushY <= this.brushsize / 2; brushY++) {
+					let ix = floor((x + brushX) / this.pixelsize);
+					let iy = floor((y + brushY) / this.pixelsize);
+					this.grid[ix][iy] = pixelcolor;
+				}
+			}
+			x += xIncrement;
+			y += yIncrement;
+		}
+	}
+	lineGridDot(p1, p2, pixelcolor = 0) {
+		let dx = p2.x - p1.x;
+		let dy = p2.y - p1.y;
+		let steps = Math.max(Math.abs(dx), Math.abs(dy));
+		let xIncrement = dx / steps;
+		let yIncrement = dy / steps;
+		let x = p1.x;
+		let y = p1.y;
+
+		for (let i = 0; i < steps; i++) {
+			for (let brushX = -this.brushsize / 2; brushX <= this.brushsize / 2; brushX++) {
+				for (let brushY = -this.brushsize / 2; brushY <= this.brushsize / 2; brushY++) {
+					let cx = x + brushX;
+					let cy = y + brushY;
+					let distance = Math.sqrt(Math.pow(cx - x, 2) + Math.pow(cy - y, 2));
+					if (distance <= this.brushsize / 2) {
+						let ix = Math.floor(cx / this.pixelsize);
+						let iy = Math.floor(cy / this.pixelsize);
+						if (ix >= 0 && iy >= 0 && ix < this.grid.length && iy < this.grid[0].length) {
+							this.grid[ix][iy] = pixelcolor;
+						}
+					}
+				}
+			}
+			x += xIncrement;
+			y += yIncrement;
+		}
+	}
+
+	mouseReleased() {
+		if (this.newLinePoints.length > 0) {
+			this.dotGrid(this.newLinePoints[0]);
+
+			for (let i = 0; i < this.newLinePoints.length - 1; i++) {
+				let p1 = this.newLinePoints[i];
+				let p2 = this.newLinePoints[i + 1];
+				this.lineGridDot(p1, p2);
+			}
+			
+			this.newLinePoints = [];
+		}
+		
+		if (this.delLinePoints.length > 0) {		
+			this.dotGrid(this.delLinePoints[0]);
+		
+			for (let i = 0; i < this.delLinePoints.length - 1; i++) {
+				let p1 = this.delLinePoints[i];
+				let p2 = this.delLinePoints[i + 1];
+				this.lineGridDot(p1, p2, 255);
+			}
+			
+			this.delLinePoints = [];
+		}
+		this.gridupdate = true;
+	}
+	mousePressed() { 
+		if (mouseButton === RIGHT) {
+			//this.delLinePoints.push(createVector(mouseX, mouseY));
+		} else {
+			//this.newLinePoints.push(createVector(mouseX, mouseY)); 
+		}
+	}
+	mouseDragged() {		
+		if (mouseButton === RIGHT) {
+			this.delLinePoints.push(createVector(mouseX, mouseY));
+		} else {
+			this.newLinePoints.push(createVector(mouseX, mouseY));
+		}
+	}
+	
+	keyReleased() {
+		if (key === 'Shift') {
+			this.brushsize = 10;
+		}	
+	}
+	keyPressed() {
+		if (key === 'Shift') {
+			this.brushsize = 50;
+		}
+	}
+	
+	windowResized() { 
+		this.expandGrid();
+		this.gridupdate = true; 
+	}
+	
+    stringify() {
+        return JSON.stringify(this.grid);
+    }
+
+    parse(gridString) {
+        this.grid = JSON.parse(gridString);
+		this.windowResized();
+    }
+	
+	draw() {
+		this.drawGrid();
+		
+		// preview new linepoints
+		if (this.newLinePoints.length > 0) {
+			for (let i = 0; i < this.newLinePoints.length - 1; i++) {
+				let p1 = this.newLinePoints[i];
+				let p2 = this.newLinePoints[i + 1];
+				strokeWeight(this.brushsize);
+				stroke(0);
+				fill(0);
+				line(p1.x,p1.y, p2.x,p2.y);
+			}
+		}
+		
+		if (this.delLinePoints.length > 0) {
+			for (let i = 0; i < this.delLinePoints.length - 1; i++) {
+				let p1 = this.delLinePoints[i];
+				let p2 = this.delLinePoints[i + 1];
+				strokeWeight(this.brushsize);
+				stroke(255);
+				fill(255);
+				line(p1.x,p1.y, p2.x,p2.y);
+			}
+		}
+	}
+}
+
+let appInstance;
+
+/* ================== FUNCTIONS ====================== */
+
+function mouseReleased() {
+	appInstance.mouseReleased();
+	if (autosave) {
+		saveData();
+	}
+}
+
+function mousePressed() {
+	appInstance.mousePressed();
+}
+
+function mouseDragged() {
+	appInstance.mouseDragged();
+}
+
+function keyReleased() {
+	appInstance.keyReleased();
+}
+
+function keyPressed() {
+	appInstance.keyPressed();
+}
+
+function loadData() {	
+	console.log("loadData");
+	const existingScriptTag = document.querySelector('script[type="text/json"]');
+
+	if (existingScriptTag) {
+		appInstance.parse(existingScriptTag.textContent);
+	} else {
+		console.log("Serialized data not found.");
+	}
+}
+
+function saveData() {
+    // Serialize the canvas
+    const serializedData = appInstance.stringify();
+
+    // Store serialized data in a script tag within the HTML content
+    let scriptTag = document.querySelector('script[type="text/json"]');
+    if (scriptTag) {
+		console.log("adding to scriptTag");
+        scriptTag.textContent = serializedData;
+    } else {
+		console.log("creating new scriptTag");
+        scriptTag = document.createElement('script');
+        scriptTag.type = 'text/json';
+        scriptTag.textContent = serializedData;
+		document.body.appendChild(scriptTag);
+    }
+	
+    var currentDateTime = new Date();
+    var formattedDate = currentDateTime.getFullYear() + '-' +
+        ('0' + (currentDateTime.getMonth() + 1)).slice(-2) + '-' +
+        ('0' + currentDateTime.getDate()).slice(-2);
+    var formattedTime = ('0' + currentDateTime.getHours()).slice(-2) + ':' +
+        ('0' + currentDateTime.getMinutes()).slice(-2) + ':' +
+        ('0' + currentDateTime.getSeconds()).slice(-2);
+	console.log("saved on: ", formattedDate, formattedTime);
+    // document.getElementById('lastdatesaved').innerHTML = formattedDate + ' ' + formattedTime;
+}
+
+/* ================== PROGRAM ======================== */
+
+function windowResized() {
+	canvasWidth = window.innerWidth;
+	canvasHeight = window.innerHeight + 3;
+	resizeCanvas(canvasWidth, canvasHeight);
+	appInstance.windowResized();
+}
+
+function preload() {
+	appInstance = new app();
+	loadData();
+	document.title = appInstance.title;
+	autosave = appInstance.autosave;
+}
+
+function setup() {
+	createCanvas(canvasWidth, canvasHeight);
+}
+
+function draw() {
+	appInstance.draw();
+}
+</script>
+
+<main><canvas id="defaultCanvas0" class="p5Canvas" width="1774" height="1214" style="width: 887px; height: 607px;"></canvas></main></body></html>
