@@ -51,21 +51,19 @@
 	// Save content to file to update the current state of the application
 	function saveContentToFile() {
         const content = document.documentElement.outerHTML;
+
+		// delete the canvas
+		var mainElement = document.querySelector('main');
+		if (mainElement) {
+			mainElement.parentNode.removeChild(mainElement);
+		}
+
         SHTS.save(content);
     }
 	
 	// Fairly efficient auto-save
 	window.addEventListener('beforeunload', function (event) {
 		saveContentToFile();
-	});
-</script>
-<script>
-	// P5js fix, delete old instance
-	document.addEventListener('DOMContentLoaded', function() {
-		var mainElement = document.querySelector('main');
-		if (mainElement) {
-			mainElement.parentNode.removeChild(mainElement);
-		}
 	});
 </script>
 <script>
@@ -392,5 +390,4 @@ function draw() {
 	appInstance.draw();
 }
 </script>
-
-<main><canvas id="defaultCanvas0" class="p5Canvas" width="1774" height="1214" style="width: 887px; height: 607px;"></canvas></main></body></html>
+</body></html>
