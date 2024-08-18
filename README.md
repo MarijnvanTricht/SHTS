@@ -1,14 +1,20 @@
 # SHTS
 		
 Inspired by the idea of having digital paper: one file script, scripted for each specific case, save-able, recreatable, copyable (just like paper)
-Download and install latest binary: (PC)
+Download and install latest binary: (PC - terminal)
+```
+git clone https://gitlab.com/shts/SHTS.git & cd SHTS & install.bat & cd .. & rmdir SHTS
+```
 
-`gitlab clone
-run install && delete clone
-Download and install latest binary: (MAC)`
+Download and install latest binary: (PC - powershell)
+```
+git clone https://gitlab.com/shts/SHTS.git; cd SHTS; ./install.bat; cd ..; Remove-Item -Path SHTS -Recurse -Force
+```
 
-`gitlab clone
-run install && delete clone`
+Download and install latest binary: (MAC)
+```
+...
+```
 
 ## How?
 
