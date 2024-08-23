@@ -50,22 +50,28 @@
 <script>
 	// Save content to file to update the current state of the application
 	function saveContentToFile() {
-        const content = document.documentElement.outerHTML;
-        SHTS.save(content);
+		var content = document.documentElement.outerHTML;
+
+		// Use DOMParser to safely parse the HTML content as a document
+		var parser = new DOMParser();
+		var doc = parser.parseFromString(content, 'text/html');
+
+		// Find the <main> element in the parsed document
+		var mainElement = doc.querySelector('main');
+
+		// Remove the <main> element if it exists
+		if (mainElement) {
+			mainElement.parentNode.removeChild(mainElement);
+		}
+
+		// Serialize the updated document back to a string
+		var updatedContent = doc.documentElement.outerHTML;
+        SHTS.save(updatedContent);
     }
 	
 	// Fairly efficient auto-save
 	window.addEventListener('beforeunload', function (event) {
 		saveContentToFile();
-	});
-</script>
-<script>
-	// P5js fix, delete old instance
-	document.addEventListener('DOMContentLoaded', function() {
-		var mainElement = document.querySelector('main');
-		if (mainElement) {
-			mainElement.parentNode.removeChild(mainElement);
-		}
 	});
 </script>
 <script>

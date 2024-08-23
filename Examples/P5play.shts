@@ -1,0 +1,126 @@
+<html lang="en"><!-- SHTS P5play example (move the square) created by Marijn van Tricht --><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>paper</title>
+    <!-- Include p5.js -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+	<!-- Include p5.play.js -->
+	<script src="https://molleindustria.github.io/p5.play/lib/p5.play.js"></script>
+    <style>
+        body {
+			overflow: hidden;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+    </style>
+</head>
+<body>
+<script>
+	// Save content to file to update the current state of the application
+	function saveContentToFile() {
+		var content = document.documentElement.outerHTML;
+
+		// Use DOMParser to safely parse the HTML content as a document
+		var parser = new DOMParser();
+		var doc = parser.parseFromString(content, 'text/html');
+
+		// Find the <main> element in the parsed document
+		var mainElement = doc.querySelector('main');
+
+		// Remove the <main> element if it exists
+		if (mainElement) {
+			mainElement.parentNode.removeChild(mainElement);
+		}
+
+		// Serialize the updated document back to a string
+		var updatedContent = doc.documentElement.outerHTML;
+        SHTS.save(updatedContent);
+    }
+</script>
+<script>
+/* ================= GLOBAL VARIABLES =================== */
+let canvasWidth = window.innerWidth;
+let canvasHeight = window.innerHeight + 3;
+
+/* ================= FUNCTIONS ========================== */
+function loadData() {
+	console.log("loadData");
+	// Load serialized data from the script tag within the HTML content
+	const existingScriptTag = document.querySelector('script[type="text/json"]');
+
+	if (existingScriptTag) {
+		return JSON.parse(existingScriptTag.textContent);
+	} else {
+		console.log("Serialized data not found.");
+	}
+	return [];
+}
+
+function saveData(data) {
+	const serializedData = JSON.stringify(data);
+    // Store serialized data in a script tag within the HTML content
+    let scriptTag = document.querySelector('script[type="text/json"]');
+	// Replace script tag if this exists
+    if (scriptTag) {
+		console.log("adding to scriptTag");
+        scriptTag.textContent = serializedData;
+    } else {
+		console.log("creating new scriptTag");
+        scriptTag = document.createElement('script');
+        scriptTag.type = 'text/json';
+        scriptTag.textContent = serializedData;
+		document.body.appendChild(scriptTag);
+    }
+}
+
+/* ================== PROGRAM ======================== */
+let square;
+
+function windowResized() {
+	canvasWidth = window.innerWidth;
+	canvasHeight = window.innerHeight + 3;
+	resizeCanvas(canvasWidth, canvasHeight);
+}
+
+function setup() {
+	let squarepos = loadData();
+	if (squarepos.length < 2) {
+		// set initial values for x and y position
+		squarepos = [200,200]
+	}
+    createCanvas(400, 400);
+    square = createSprite(squarepos[0], squarepos[1], 50, 50);
+}
+
+function draw() {
+    background(220);
+
+    // Check for arrow key presses and move the square accordingly
+    if (keyDown(LEFT_ARROW)) {
+		square.position.x -= 5; // Move left
+    }
+    if (keyDown(RIGHT_ARROW)) {
+		square.position.x += 5; // Move right
+    }
+    if (keyDown(UP_ARROW)) {
+		square.position.y -= 5; // Move up
+    }
+    if (keyDown(DOWN_ARROW)) {
+		square.position.y += 5; // Move down
+		
+    }
+
+    drawSprites(); // Render the sprite
+}
+
+// Fairly efficient auto-save
+window.addEventListener('beforeunload', function (event) {
+	saveData([square.position.x,square.position.y]);
+	saveContentToFile();
+});
+</script>
+</body></html>
