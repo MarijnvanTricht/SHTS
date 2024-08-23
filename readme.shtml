@@ -104,7 +104,7 @@ Run this from the current directory as:
         <h1>SHTS</h1>		
 		<p>Inspired by the idea of having digital paper: one file script, scripted for each specific case, save-able, recreatable, copyable (just like paper)</p>
 		<p>Download and install latest binary: (PC terminal)<p>
-		<pre class="copycode"><code>git clone https://gitlab.com/shts/SHTS.git & cd SHTS & install.bat & cd .. & rmdir SHTS</code></pre>
+		<pre class="copycode"><code>git clone https://gitlab.com/shts/SHTS.git & cd SHTS & install.bat & cd .. & rmdir /s /q SHTS</code></pre>
 		<p>Download and install latest binary: (PC powershell)<p>
 		<pre class="copycode"><code>git clone https://gitlab.com/shts/SHTS.git; cd SHTS; ./install.bat; cd ..; Remove-Item -Path SHTS -Recurse -Force</code></pre>
 		<p>Download and install latest binary: (MAC)<p>
