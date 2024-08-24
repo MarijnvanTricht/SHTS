@@ -1,7 +1,7 @@
 <html lang="en"><!-- SHTS P5play example (move the square) created by Marijn van Tricht --><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>paper</title>
+    <title>P5play</title>
     <!-- Include p5.js -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
 	<!-- Include p5.play.js -->
