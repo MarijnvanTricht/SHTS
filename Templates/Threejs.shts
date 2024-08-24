@@ -1,20 +1,20 @@
 <html lang="en">
 <!-- SHTS Three.js template created by Marijn van Tricht -->
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 	<style>
-        body {
+		body {
 			overflow: hidden;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-    </style>
+			margin: 0;
+			padding: 0;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 100vh;
+		}
+	</style>
 </head>
 <body>
 <script>
@@ -71,8 +71,8 @@
 		var updatedContent = doc.documentElement.outerHTML;
 		
 		// Save the updated content
-        SHTS.save(updatedContent);
-    }
+		SHTS.save(updatedContent);
+	}
 	
 	//loadData();
 	
