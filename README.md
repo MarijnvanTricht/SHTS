@@ -69,18 +69,5 @@ For development reasons the argument --open-DevTools is added to open the DevToo
 - Interfaces that need permissions in the browser do not work as of yet, like AudioCapture, VideoCapture, Geolocation, Midi MidiSysex (midi), Notifications, ClipboardReadWrite  ClipboardSanitizedWrite (clipboard), BackgroundSync, ProtectedMediaIdentifier, Sensors, PaymentHandler, DurableStorage, IdleDetection, WakeLockScreen, WakeLockSystem, PeriodicBackgroundSync, Nfc.
 - fullscreen mode
 
-#### want to help out?
-
-Serious about helping out and feel that you can contribute to one of the items listed below, contact me (marijn@shts.io).
-- saving file system handles
-- updating binaries for PC and or MAC
-- updating code to allow for implementing the missing features
-- rewriting SHTS using CEFsharp instead of CEFpython
-- creating installers (or scripts for the binaries)
-- set file association in windows/mac
-- correct me on spelling and writing style and use of terms
-
-<b>Please be resolute, to the point and serious</b>, and give me time to respond.
-
 #### special thanks
 - cztomczak for cefpython and a good example script that is used as starting point.
